@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Recepciones de Farmacia del Sistema Institucional de Inventario Hospitalario. Registro y consulta de medicamentos recibidos y su incorporación autorizada al Inventario Mayor."
+    />
+    <title>Farmacia / Recepciones</title>
+    <link rel="stylesheet" href="../../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/tablas.css" />
+    <link rel="stylesheet" href="recepciones.css" />
+  </head>
+  <body>
+    <div class="app-farmacia-recepciones-pagina">
+      <div class="app-farmacia-recepciones-contenido">
+        <!-- Encabezado -->
+        <header class="app-farmacia-recepciones-encabezado" aria-label="Encabezado de recepciones de Farmacia">
+          <div class="app-farmacia-recepciones-encabezado-texto">
+            <p class="app-farmacia-recepciones-ruta" aria-label="Ruta del módulo">Farmacia / Recepciones</p>
+            <h1 class="app-farmacia-recepciones-titulo">Recepciones</h1>
+            <p class="app-farmacia-recepciones-descripcion">
+              Registro y consulta de los medicamentos recibidos por Farmacia y gestión de su incorporación al Inventario Mayor, conforme a los procedimientos autorizados del departamento.
+              Las recepciones ordinarias se gestionan en este módulo; las donaciones se registran por separado en su módulo específico y no se duplican en las estadísticas generales de recepciones.
+            </p>
+          </div>
+          <div class="app-farmacia-recepciones-encabezado-acciones" aria-label="Accesos relacionados">
+            <button type="button" id="btn-nueva-recepcion" class="app-btn app-btn--primario">Nueva recepción</button>
+            <a class="app-btn app-btn--secundario" href="../Inventario_Mayor/mayor.html" id="acceso-inventario-mayor-recepciones">Acceso a Inventario Mayor</a>
+            <a class="app-btn app-btn--secundario" href="../Donaciones/donaciones.html" id="acceso-donaciones-recepciones">Acceso a Donaciones</a>
+          </div>
+        </header>
+
+        <!-- Mensajes y validaciones visuales -->
+        <section class="app-farmacia-recepciones-mensajes" aria-label="Mensajes de recepción">
+          <div id="mensaje-recepcion" class="app-farmacia-recepciones-mensaje-contenedor" role="status" aria-live="polite" aria-atomic="true"></div>
+        </section>
+
+        <!-- Tarjetas de resumen -->
+        <section class="app-farmacia-recepciones-resumen" aria-labelledby="titulo-resumen-recepciones">
+          <h2 id="titulo-resumen-recepciones" class="app-farmacia-recepciones-seccion-titulo-sr">Resumen de recepciones</h2>
+          <div class="app-farmacia-recepciones-tarjetas" role="list">
+            <article class="app-tarjeta app-farmacia-recepciones-tarjeta" role="listitem" aria-labelledby="tarjeta-total-recepciones-titulo">
+              <div class="app-tarjeta__cuerpo">
+                <p id="tarjeta-total-recepciones-titulo" class="app-farmacia-recepciones-tarjeta-etiqueta">Total de recepciones</p>
+                <p class="app-farmacia-recepciones-tarjeta-valor" id="resumen-total-recepciones">—</p>
+                <p class="app-farmacia-recepciones-tarjeta-ayuda">Registros reales consultados en el sistema.</p>
+              </div>
+            </article>
+            <article class="app-tarjeta app-farmacia-recepciones-tarjeta" role="listitem" aria-labelledby="tarjeta-medicamentos-recibidos-titulo">
+              <div class="app-tarjeta__cuerpo">
+                <p id="tarjeta-medicamentos-recibidos-titulo" class="app-farmacia-recepciones-tarjeta-etiqueta">Cantidad de medicamentos recibidos</p>
+                <p class="app-farmacia-recepciones-tarjeta-valor" id="resumen-medicamentos-recibidos">—</p>
+                <p class="app-farmacia-recepciones-tarjeta-ayuda">Total según movimientos reales registrados.</p>
+              </div>
+            </article>
+            <article class="app-tarjeta app-farmacia-recepciones-tarjeta" role="listitem" aria-labelledby="tarjeta-lotes-recibidos-titulo">
+              <div class="app-tarjeta__cuerpo">
+                <p id="tarjeta-lotes-recibidos-titulo" class="app-farmacia-recepciones-tarjeta-etiqueta">Cantidad de lotes recibidos</p>
+                <p class="app-farmacia-recepciones-tarjeta-valor" id="resumen-lotes-recibidos">—</p>
+                <p class="app-farmacia-recepciones-tarjeta-ayuda">Lotes incorporados en recepciones registradas.</p>
+              </div>
+            </article>
+            <article class="app-tarjeta app-farmacia-recepciones-tarjeta" role="listitem" aria-labelledby="tarjeta-periodo-titulo">
+              <div class="app-tarjeta__cuerpo">
+                <p id="tarjeta-periodo-titulo" class="app-farmacia-recepciones-tarjeta-etiqueta">Recepciones del período</p>
+                <p class="app-farmacia-recepciones-tarjeta-valor" id="resumen-recepciones-periodo">—</p>
+                <p class="app-farmacia-recepciones-tarjeta-ayuda">Según el período consultado.</p>
+              </div>
+            </article>
+            <article class="app-tarjeta app-farmacia-recepciones-tarjeta" role="listitem" aria-labelledby="tarjeta-pendientes-titulo">
+              <div class="app-tarjeta__cuerpo">
+                <p id="tarjeta-pendientes-titulo" class="app-farmacia-recepciones-tarjeta-etiqueta">Recepciones pendientes</p>
+                <p class="app-farmacia-recepciones-tarjeta-valor" id="resumen-recepciones-pendientes">—</p>
+                <p class="app-farmacia-recepciones-tarjeta-ayuda">Cuando el estado exista en el sistema.</p>
+              </div>
+            </article>
+            <article class="app-tarjeta app-farmacia-recepciones-tarjeta" role="listitem" aria-labelledby="tarjeta-confirmadas-titulo">
+              <div class="app-tarjeta__cuerpo">
+                <p id="tarjeta-confirmadas-titulo" class="app-farmacia-recepciones-tarjeta-etiqueta">Recepciones confirmadas</p>
+                <p class="app-farmacia-recepciones-tarjeta-valor" id="resumen-recepciones-confirmadas">—</p>
+                <p class="app-farmacia-recepciones-tarjeta-ayuda">Confirmadas según registros reales.</p>
+              </div>
+            </article>
+          </div>
+          <p class="app-farmacia-recepciones-resumen-nota">Los valores mostrados proceden del backend y de los movimientos reales registrados. Las donaciones se identifican por separado en su módulo y no se duplican en estas estadísticas.</p>
+        </section>
+
+        <div class="app-farmacia-recepciones-disposicion">
+          <main class="app-farmacia-recepciones-principal">
+            <!-- Formulario de nueva recepción -->
+            <section class="app-farmacia-recepciones-seccion" aria-labelledby="titulo-formulario-recepcion">
+              <div class="app-farmacia-recepciones-seccion-cabecera">
+                <div class="app-farmacia-recepciones-seccion-texto">
+                  <h2 id="titulo-formulario-recepcion" class="app-farmacia-recepciones-seccion-titulo">Nueva recepción</h2>
+                  <p class="app-farmacia-recepciones-seccion-descripcion">
+                    Registre una recepción ordinaria de medicamentos para su incorporación autorizada al Inventario Mayor. La validación, creación/actualización de lotes y confirmación definitiva se realizan en el backend.
+                  </p>
+                </div>
+              </div>
+              <div class="app-farmacia-recepciones-seccion-cuerpo">
+                <form id="form-recepcion" class="app-formulario" novalidate autocomplete="off">
+                  <div class="app-formulario__seccion">
+                    <div class="app-formulario__seccion-encabezado">
+                      <h3 class="app-formulario__seccion-titulo">Medicamento y lote</h3>
+                      <p class="app-formulario__seccion-descripcion">Seleccione el medicamento y el lote desde registros reales. No se utilizan opciones estáticas ni selección automática de lotes.</p>
+                    </div>
+
+                    <!-- A. Medicamento -->
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <div class="app-campo" id="grupo-medicamento-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-medicamento-recepcion">Medicamento <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <div class="app-campo__con-accion">
+                          <div
+                            id="campo-medicamento-recepcion"
+                            class="app-lista-buscable app-farmacia-recepciones-lista-buscable"
+                            data-app-lista-tipo="medicamento"
+                            data-requerido="true"
+                            aria-label="Medicamento para recepción"
+                          ></div>
+                          <button
+                            type="button"
+                            id="btn-agregar-medicamento-recepcion"
+                            class="app-btn app-btn--secundario app-campo__accion"
+                            hidden
+                            aria-hidden="true"
+                          >+ Agregar medicamento</button>
+                        </div>
+                        <p class="app-campo__ayuda">Busque por nombre o código. Solo se muestran medicamentos existentes registrados en el sistema. Si el medicamento no existe, utilice el proceso autorizado de registro cuando tenga permiso.</p>
+                        <p class="app-campo__mensaje" id="error-medicamento-recepcion" role="alert" aria-live="polite"></p>
+                      </div>
+                    </div>
+
+                    <!-- B. Lote -->
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <div class="app-campo" id="grupo-lote-recepcion">
+                        <span class="app-campo__etiqueta">Lote <span class="app-campo__obligatorio" aria-hidden="true">*</span></span>
+                        <p class="app-campo__ayuda">Puede seleccionar un lote existente relacionado con el medicamento (cuando la recepción continúe un lote ya registrado) o registrar los datos de un lote nuevo. La asociación y validación del lote se realizan en el backend. No se permite asociar un lote de otro medicamento.</p>
+
+                        <div class="app-farmacia-recepciones-lote-opciones" role="group" aria-label="Tipo de lote para la recepción">
+                          <label class="app-opcion-seleccion">
+                            <input type="radio" name="tipo-lote-recepcion" id="tipo-lote-existente-recepcion" value="existente" checked />
+                            <span>Lote existente del medicamento</span>
+                          </label>
+                          <label class="app-opcion-seleccion">
+                            <input type="radio" name="tipo-lote-recepcion" id="tipo-lote-nuevo-recepcion" value="nuevo" />
+                            <span>Lote nuevo</span>
+                          </label>
+                        </div>
+
+                        <div id="contenedor-lote-existente-recepcion" class="app-farmacia-recepciones-lote-bloque">
+                          <label class="app-campo__etiqueta" for="campo-lote-recepcion">Seleccionar lote existente</label>
+                          <div
+                            id="campo-lote-recepcion"
+                            class="app-lista-buscable app-farmacia-recepciones-lista-buscable"
+                            data-app-lista-tipo="lote"
+                            data-requerido="false"
+                            aria-label="Lote existente relacionado con el medicamento"
+                          ></div>
+                          <p class="app-campo__ayuda">Solo se muestran lotes relacionados con el medicamento seleccionado. La selección es manual.</p>
+                        </div>
+
+                        <div id="contenedor-lote-nuevo-recepcion" class="app-farmacia-recepciones-lote-bloque" hidden aria-hidden="true">
+                          <div class="app-formulario__fila app-formulario__fila--2">
+                            <div class="app-campo">
+                              <label class="app-campo__etiqueta" for="campo-numero-lote-recepcion">Número de lote</label>
+                              <input type="text" id="campo-numero-lote-recepcion" name="numeroLote" class="app-campo__control" autocomplete="off" placeholder="Número de lote" />
+                            </div>
+                            <div class="app-campo">
+                              <label class="app-campo__etiqueta" for="campo-fecha-entrada-lote-recepcion">Fecha de entrada</label>
+                              <input type="date" id="campo-fecha-entrada-lote-recepcion" name="fechaEntradaLote" class="app-campo__control" />
+                            </div>
+                          </div>
+                          <div class="app-formulario__fila app-formulario__fila--2">
+                            <div class="app-campo">
+                              <label class="app-campo__etiqueta" for="campo-fecha-vencimiento-lote-recepcion">Fecha de vencimiento</label>
+                              <input type="date" id="campo-fecha-vencimiento-lote-recepcion" name="fechaVencimientoLote" class="app-campo__control" />
+                            </div>
+                            <div class="app-campo">
+                              <label class="app-campo__etiqueta" for="campo-procedencia-lote-recepcion">Procedencia del lote</label>
+                              <input type="text" id="campo-procedencia-lote-recepcion" name="procedenciaLote" class="app-campo__control" autocomplete="off" placeholder="Procedencia asociada al lote" aria-describedby="ayuda-procedencia-lote-recepcion" />
+                              <p class="app-campo__ayuda" id="ayuda-procedencia-lote-recepcion">Dato informativo del lote cuando corresponda; la procedencia autorizada de la recepción se indica en el campo de procedencia del formulario.</p>
+                            </div>
+                          </div>
+                          <p class="app-campo__ayuda">La creación y validación del lote nuevo se realizan mediante el backend. No se generan números de lote ficticios.</p>
+                        </div>
+
+                        <p class="app-campo__mensaje" id="error-lote-recepcion" role="alert" aria-live="polite"></p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="app-formulario__seccion">
+                    <div class="app-formulario__seccion-encabezado">
+                      <h3 class="app-formulario__seccion-titulo">Datos de la recepción</h3>
+                      <p class="app-formulario__seccion-descripcion">Complete la cantidad recibida, la fecha efectiva y la procedencia autorizada. La recepción ordinaria se incorpora al Inventario Mayor; no se incorporan existencias directamente a Detal.</p>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--2">
+                      <!-- C. Cantidad recibida -->
+                      <div class="app-campo" id="grupo-cantidad-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-cantidad-recepcion">Cantidad recibida <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <input
+                          type="number"
+                          id="campo-cantidad-recepcion"
+                          name="cantidadRecibida"
+                          class="app-campo__control"
+                          min="1"
+                          step="1"
+                          inputmode="numeric"
+                          placeholder="Ingrese la cantidad recibida"
+                          aria-describedby="ayuda-cantidad-recepcion"
+                        />
+                        <p class="app-campo__ayuda" id="ayuda-cantidad-recepcion">Debe ser un valor numérico y positivo. La cantidad definitiva incorporada al inventario se confirma según las reglas del backend.</p>
+                        <p class="app-campo__mensaje" id="error-cantidad-recepcion" role="alert" aria-live="polite"></p>
+                      </div>
+
+                      <!-- D. Fecha de recepción -->
+                      <div class="app-campo" id="grupo-fecha-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-fecha-recepcion">Fecha de recepción (fecha efectiva) <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <input
+                          type="date"
+                          id="campo-fecha-recepcion"
+                          name="fechaEfectivaRecepcion"
+                          class="app-campo__control"
+                          aria-describedby="ayuda-fecha-recepcion"
+                        />
+                        <p class="app-campo__ayuda" id="ayuda-fecha-recepcion">
+                          Puede seleccionar o introducir manualmente la fecha, incluyendo fechas anteriores (consultas/registros históricos). La fecha y hora reales de registro serán determinadas por el servidor sin reemplazar la fecha efectiva seleccionada.
+                        </p>
+                        <p class="app-campo__mensaje" id="error-fecha-recepcion" role="alert" aria-live="polite"></p>
+                      </div>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--2">
+                      <!-- E. Procedencia -->
+                      <div class="app-campo" id="grupo-procedencia-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-procedencia-recepcion">Procedencia <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <select id="campo-procedencia-recepcion" name="procedencia" class="app-campo__control app-campo__control--select" aria-describedby="ayuda-procedencia-recepcion">
+                          <option value="">Seleccione una procedencia</option>
+                        </select>
+                        <p class="app-campo__ayuda" id="ayuda-procedencia-recepcion">Las opciones corresponden al catálogo de procedencias autorizado para recepciones ordinarias de Farmacia y se consultan en el sistema. Las donaciones deben registrarse en el módulo de Donaciones.</p>
+                        <p class="app-campo__mensaje" id="error-procedencia-recepcion" role="alert" aria-live="polite"></p>
+                      </div>
+
+                      <!-- Destino (informativo) -->
+                      <div class="app-campo">
+                        <span class="app-campo__etiqueta">Destino del inventario</span>
+                        <div id="destino-recepcion" class="app-campo__control app-campo__control--solo-lectura" aria-readonly="true">Inventario Mayor</div>
+                        <p class="app-campo__ayuda">La incorporación de una recepción ordinaria se refleja en Inventario Mayor. El abastecimiento de Detal se realiza mediante transferencias desde Mayor.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="app-formulario__seccion">
+                    <div class="app-formulario__seccion-encabezado">
+                      <h3 class="app-formulario__seccion-titulo">Información documental</h3>
+                      <p class="app-formulario__seccion-descripcion">Registre la documentación relacionada con la recepción según los datos definidos en el modelo y los formatos institucionales disponibles.</p>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--2">
+                      <div class="app-campo" id="grupo-tipo-documento-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-tipo-documento-recepcion">Tipo o referencia de documento <span class="app-campo__opcional">(cuando corresponda)</span></label>
+                        <input type="text" id="campo-tipo-documento-recepcion" name="tipoDocumento" class="app-campo__control" autocomplete="off" placeholder="Referencia o tipo de documento" />
+                        <p class="app-campo__ayuda">Campo informativo sujeto al modelo de datos y formatos institucionales.</p>
+                      </div>
+                      <div class="app-campo" id="grupo-numero-documento-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-numero-documento-recepcion">Número de documento <span class="app-campo__opcional">(cuando corresponda)</span></label>
+                        <input type="text" id="campo-numero-documento-recepcion" name="numeroDocumento" class="app-campo__control" autocomplete="off" placeholder="Número de documento" />
+                      </div>
+                    </div>
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <p class="app-campo__mensaje" id="error-documento-recepcion" role="alert" aria-live="polite"></p>
+                    </div>
+                  </div>
+
+                  <div class="app-formulario__seccion">
+                    <div class="app-formulario__seccion-encabezado">
+                      <h3 class="app-formulario__seccion-titulo">Observaciones</h3>
+                    </div>
+                    <!-- G. Observaciones -->
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <div class="app-campo" id="grupo-observaciones-recepcion">
+                        <label class="app-campo__etiqueta" for="campo-observaciones-recepcion">Observaciones <span class="app-campo__opcional">(opcional)</span></label>
+                        <textarea
+                          id="campo-observaciones-recepcion"
+                          name="observaciones"
+                          class="app-campo__control app-campo__control--textarea"
+                          rows="3"
+                          placeholder="Registre observaciones relevantes de la recepción"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="app-formulario__acciones" role="group" aria-label="Acciones del formulario de recepción">
+                    <button type="button" id="btn-cancelar-recepcion" class="app-btn app-btn--secundario">Cancelar</button>
+                    <button type="submit" id="btn-guardar-recepcion" class="app-btn app-btn--primario">Guardar recepción</button>
+                  </div>
+                  <p class="app-formulario__nota-pie">
+                    La recepción se confirmará únicamente tras la validación y respuesta del backend. No se crearán lotes ni asociaciones ficticias y cada lote conservará su identidad y existencia individual.
+                  </p>
+                </form>
+              </div>
+            </section>
+          </main>
+
+          <aside class="app-farmacia-recepciones-lateral" aria-label="Detalle de lote asociado a la recepción">
+            <!-- Detalle de lotes -->
+            <section class="app-farmacia-recepciones-seccion" aria-labelledby="titulo-detalle-lote-recepcion">
+              <div class="app-farmacia-recepciones-seccion-cabecera">
+                <div class="app-farmacia-recepciones-seccion-texto">
+                  <h2 id="titulo-detalle-lote-recepcion" class="app-farmacia-recepciones-seccion-titulo">Detalle del lote asociado</h2>
+                  <p class="app-farmacia-recepciones-seccion-descripcion">Datos del lote asociado a la recepción. Cada lote conserva su identidad y existencia individual; no se combinan lotes diferentes.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-recepciones-seccion-cuerpo">
+                <dl class="app-farmacia-recepciones-resumen-lista" aria-label="Datos del lote asociado">
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Código del medicamento</dt><dd id="detalle-lote-codigo-medicamento">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Nombre</dt><dd id="detalle-lote-nombre-medicamento">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Número de lote</dt><dd id="detalle-lote-numero">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Cantidad recibida</dt><dd id="detalle-lote-cantidad-recibida">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Fecha de entrada</dt><dd id="detalle-lote-fecha-entrada">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Fecha de vencimiento</dt><dd id="detalle-lote-fecha-vencimiento">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Procedencia</dt><dd id="detalle-lote-procedencia">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Documento relacionado</dt><dd id="detalle-lote-documento">—</dd></div>
+                  <div class="app-farmacia-recepciones-resumen-item"><dt>Estado</dt><dd id="detalle-lote-estado">—</dd></div>
+                </dl>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <!-- Historial de recepciones -->
+        <section class="app-farmacia-recepciones-seccion" aria-labelledby="titulo-historial-recepciones">
+          <div class="app-farmacia-recepciones-seccion-cabecera">
+            <div class="app-farmacia-recepciones-seccion-texto">
+              <h2 id="titulo-historial-recepciones" class="app-farmacia-recepciones-seccion-titulo">Historial de recepciones</h2>
+              <p class="app-farmacia-recepciones-seccion-descripcion">Consulte las recepciones registradas, su detalle y el estado de cada operación. Las donaciones se gestionan y consultan en su módulo específico.</p>
+            </div>
+          </div>
+
+          <div class="app-farmacia-recepciones-seccion-cuerpo">
+            <form id="form-filtros-recepciones" class="app-formulario app-formulario--plano" novalidate>
+              <div class="app-farmacia-recepciones-filtros" role="group" aria-label="Búsqueda y filtros del historial de recepciones">
+                <div class="app-campo app-farmacia-recepciones-filtro-busqueda">
+                  <label class="app-campo__etiqueta" for="busqueda-recepciones">Buscar</label>
+                  <span class="app-campo__busqueda">
+                    <span class="app-campo__busqueda-icono" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                    <input
+                      type="search"
+                      id="busqueda-recepciones"
+                      name="busqueda"
+                      class="app-campo__control"
+                      placeholder="Medicamento, código, lote o usuario"
+                      autocomplete="off"
+                    />
+                  </span>
+                  <p class="app-campo__ayuda">La búsqueda se realiza sobre registros consultados en el sistema.</p>
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-medicamento-recepcion">Medicamento</label>
+                  <input type="text" id="filtro-medicamento-recepcion" name="medicamento" class="app-campo__control" placeholder="Nombre de medicamento" autocomplete="off" />
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-codigo-recepcion">Código</label>
+                  <input type="text" id="filtro-codigo-recepcion" name="codigo" class="app-campo__control" placeholder="Código de medicamento" autocomplete="off" />
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-lote-recepcion">Lote</label>
+                  <input type="text" id="filtro-lote-recepcion" name="lote" class="app-campo__control" placeholder="Número de lote" autocomplete="off" />
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-procedencia-recepcion">Procedencia</label>
+                  <select id="filtro-procedencia-recepcion" name="procedencia" class="app-campo__control app-campo__control--select">
+                    <option value="">Todas</option>
+                  </select>
+                </div>
+
+                <div id="filtro-fecha-recepcion" class="app-farmacia-recepciones-filtro-fechas" role="group" aria-label="Filtro por rango de fechas">
+                  <div class="app-campo">
+                    <label class="app-campo__etiqueta" for="filtro-fecha-inicial-recepcion">Fecha inicial</label>
+                    <input type="date" id="filtro-fecha-inicial-recepcion" name="fechaInicial" class="app-campo__control" />
+                  </div>
+                  <div class="app-campo">
+                    <label class="app-campo__etiqueta" for="filtro-fecha-final-recepcion">Fecha final</label>
+                    <input type="date" id="filtro-fecha-final-recepcion" name="fechaFinal" class="app-campo__control" />
+                  </div>
+                  <p class="app-campo__ayuda">Puede seleccionar períodos anteriores para consultar recepciones históricas.</p>
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-estado-recepcion">Estado</label>
+                  <select id="filtro-estado-recepcion" name="estado" class="app-campo__control app-campo__control--select">
+                    <option value="">Todos</option>
+                  </select>
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-usuario-recepcion">Usuario responsable</label>
+                  <input type="text" id="filtro-usuario-recepcion" name="usuario" class="app-campo__control" placeholder="Nombre o usuario responsable" autocomplete="off" />
+                </div>
+
+                <div class="app-farmacia-recepciones-filtros-acciones">
+                  <button type="submit" id="btn-buscar-recepciones" class="app-btn app-btn--primario">Buscar</button>
+                  <button type="reset" id="btn-limpiar-filtros-recepciones" class="app-btn app-btn--secundario">Limpiar filtros</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="app-farmacia-recepciones-seccion-cuerpo app-farmacia-recepciones-seccion-cuerpo--sin-relleno">
+            <div class="app-farmacia-recepciones-tabla-marco" tabindex="0" aria-label="Tabla de historial de recepciones con desplazamiento horizontal">
+              <table class="app-tabla app-tabla--amplia app-farmacia-recepciones-tabla" id="tabla-recepciones">
+                <caption class="app-tabla__titulo app-tabla__titulo--oculto">Historial de recepciones de Farmacia</caption>
+                <thead class="app-tabla__encabezado">
+                  <tr class="app-tabla__fila">
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Identificador</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha efectiva</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha y hora de registro</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Medicamento</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Lote</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Procedencia</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Documento</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Usuario responsable</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Estado</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--acciones">Acción</th>
+                  </tr>
+                </thead>
+                <tbody class="app-tabla__cuerpo">
+                  <tr class="app-tabla__fila">
+                    <td colspan="11" class="app-tabla__celda app-tabla__celda--estado">
+                      <div class="app-tabla__estado-vacio">
+                        <p class="app-tabla__estado-vacio-titulo">No hay recepciones para mostrar</p>
+                        <p class="app-tabla__estado-vacio-texto">Use la búsqueda y los filtros para consultar las recepciones registradas en el sistema.</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="app-farmacia-recepciones-tabla-desplazamiento">
+              <span aria-hidden="true">↔</span> Desplácese horizontalmente para ver todas las columnas del historial.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Modal de detalle de recepción -->
+    <div id="modal-detalle-recepcion" class="app-modal" hidden aria-hidden="true">
+      <div class="app-modal__dialogo" role="dialog" aria-modal="true" aria-labelledby="modal-detalle-recepcion-titulo" aria-describedby="modal-detalle-recepcion-descripcion">
+        <div class="app-modal__encabezado">
+          <div>
+            <h2 id="modal-detalle-recepcion-titulo" class="app-modal__titulo">Detalle de recepción</h2>
+            <p id="modal-detalle-recepcion-descripcion" class="app-modal__descripcion">Información registrada de la recepción seleccionada. Los datos mostrados corresponden a registros consultados en el sistema.</p>
+          </div>
+          <button type="button" class="app-modal__cerrar" id="modal-detalle-recepcion-cerrar" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="app-modal__cuerpo">
+          <div id="modal-detalle-recepcion-contenido" class="app-farmacia-recepciones-modal-detalle">
+            <dl class="app-farmacia-recepciones-resumen-lista" aria-label="Datos del detalle de recepción">
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Identificador</dt><dd id="modal-detalle-recepcion-id">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Fecha efectiva</dt><dd id="modal-detalle-recepcion-fecha-efectiva">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Fecha y hora de registro</dt><dd id="modal-detalle-recepcion-fecha-registro">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Medicamento</dt><dd id="modal-detalle-recepcion-medicamento">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Código del medicamento</dt><dd id="modal-detalle-recepcion-codigo">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Lote</dt><dd id="modal-detalle-recepcion-lote">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Cantidad</dt><dd id="modal-detalle-recepcion-cantidad">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Procedencia</dt><dd id="modal-detalle-recepcion-procedencia">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Documento</dt><dd id="modal-detalle-recepcion-documento">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Usuario responsable</dt><dd id="modal-detalle-recepcion-usuario">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Estado</dt><dd id="modal-detalle-recepcion-estado">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Fecha de entrada del lote</dt><dd id="modal-detalle-recepcion-fecha-entrada">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Fecha de vencimiento</dt><dd id="modal-detalle-recepcion-fecha-vencimiento">—</dd></div>
+              <div class="app-farmacia-recepciones-resumen-item"><dt>Observaciones</dt><dd id="modal-detalle-recepcion-observaciones">—</dd></div>
+            </dl>
+          </div>
+          <p id="modal-detalle-recepcion-estado-carga" class="app-farmacia-recepciones-modal-estado" role="status" aria-live="polite"></p>
+        </div>
+        <div class="app-modal__pie">
+          <div class="app-modal__acciones">
+            <button type="button" id="modal-detalle-recepcion-aceptar" class="app-btn app-btn--primario">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="recepciones.js"></script>
+  </body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sistema Institucional de Inventario Hospitalario. Inicio de sesión para gestión de Farmacia y Almacén."
+    />
+    <title>Sistema Institucional de Inventario Hospitalario</title>
+    <link rel="stylesheet" href="../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body class="app-login-page">
+    <main class="login-shell" aria-label="Inicio de sesión del sistema">
+      <section class="login-panel" aria-labelledby="titulo-login">
+        <header class="login-header" aria-label="Encabezado institucional">
+          <div class="login-logo" aria-hidden="true">
+            <span class="login-logo-mark">SI</span>
+          </div>
+          <div class="login-header-copy">
+            <p class="login-eyebrow">Sistema institucional</p>
+            <h1 id="titulo-login">Sistema Institucional de Inventario Hospitalario</h1>
+            <p class="login-subtitle">Gestión de Farmacia y Almacén</p>
+          </div>
+        </header>
+
+        <form id="form-login" class="login-form" novalidate>
+          <div class="login-form-header">
+            <h2>Iniciar sesión</h2>
+            <p>Ingrese sus credenciales para acceder al sistema</p>
+          </div>
+
+          <div class="login-field">
+            <label for="campo-usuario">Usuario</label>
+            <input
+              id="campo-usuario"
+              name="usuario"
+              type="text"
+              autocomplete="username"
+              required
+              aria-required="true"
+              aria-describedby="mensaje-login"
+            />
+          </div>
+
+          <div class="login-field">
+            <label for="campo-contrasena">Contraseña</label>
+            <div class="input-password-wrap">
+              <input
+                id="campo-contrasena"
+                name="contrasena"
+                type="password"
+                autocomplete="current-password"
+                required
+                aria-required="true"
+                aria-describedby="mensaje-login"
+              />
+              <button
+                id="btn-toggle-password"
+                class="btn-toggle-password"
+                type="button"
+                aria-label="Mostrar contraseña"
+                aria-pressed="false"
+              >
+                Mostrar
+              </button>
+            </div>
+          </div>
+
+          <div class="login-actions">
+            <button id="btn-iniciar-sesion" class="btn btn-primary" type="submit">
+              Iniciar sesión
+            </button>
+            <button type="button" class="btn btn-link login-link-recuperacion" aria-label="Recuperar contraseña">
+              ¿Olvidó su contraseña?
+            </button>
+          </div>
+
+          <div id="estado-carga" class="estado-carga" aria-live="polite" aria-atomic="true"></div>
+
+          <div
+            id="mensaje-login"
+            class="mensaje-login"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+          ></div>
+        </form>
+
+        <section id="seccion-segundo-factor" class="seccion-segundo-factor hidden" aria-labelledby="titulo-segundo-factor">
+          <h3 id="titulo-segundo-factor">Verificación de seguridad</h3>
+          <p>Ingrese el código recibido para completar la autenticación.</p>
+
+          <div class="login-field">
+            <label for="campo-codigo-2fa">Código de verificación</label>
+            <input
+              id="campo-codigo-2fa"
+              name="codigo2fa"
+              type="text"
+              inputmode="numeric"
+              autocomplete="one-time-code"
+              aria-describedby="mensaje-login"
+            />
+          </div>
+
+          <div class="login-actions login-actions-2fa">
+            <button id="btn-verificar-2fa" class="btn btn-primary" type="button">
+              Verificar
+            </button>
+            <button id="btn-volver-login" class="btn btn-secondary" type="button">
+              Volver al inicio de sesión
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <footer class="login-footer">
+        <p>Sistema Institucional de Inventario Hospitalario</p>
+      </footer>
+    </main>
+
+    <script type="module" src="login.js"></script>
+  </body>
+</html>

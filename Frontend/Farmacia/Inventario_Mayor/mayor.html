@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Inventario Mayor de Farmacia. Consulta de medicamentos, lotes, vencimientos, movimientos y transferencias autorizadas."
+    />
+    <title>Farmacia / Inventario Mayor</title>
+    <link rel="stylesheet" href="../../compartidos/css/base.css" />
+    <link rel="stylesheet" href="../../compartidos/css/componentes.css" />
+    <link rel="stylesheet" href="../../compartidos/css/formularios.css" />
+    <link rel="stylesheet" href="../../compartidos/css/tablas.css" />
+    <link rel="stylesheet" href="mayor.css" />
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral de Farmacia">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>Farmacia</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal de Farmacia">
+          <ul>
+            <li><button type="button" class="app-superadmin-nav-item">Panel principal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item is-active" aria-current="page">Inventario Mayor</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Inventario Detal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Transferencias</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Recepciones</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Donaciones</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Kardex</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Tratamientos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Control de insulina</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Reportes</button></li>
+            <li><button type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger">Cerrar sesión</button></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>Farmacia / Inventario Mayor</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span id="mayor-usuario-nombre" class="app-superadmin-user-name">—</span>
+              <span class="app-superadmin-user-meta">Jefe de Farmacia</span>
+            </div>
+            <div class="app-superadmin-user-mini app-superadmin-user-mini-compact">
+              <span class="app-superadmin-user-name">Departamento</span>
+              <span class="app-superadmin-user-meta">Farmacia</span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <header class="app-superadmin-header">
+            <div>
+              <h2 class="app-superadmin-section-title">Inventario Mayor</h2>
+              <p class="app-superadmin-section-description">
+                Consulta de medicamentos, lotes, vencimientos, movimientos y transferencias autorizadas del inventario principal de Farmacia.
+              </p>
+            </div>
+          </header>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Búsqueda y filtros del inventario mayor">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Buscar y filtrar medicamentos</h3>
+                <p>Consulta registros del inventario principal por nombre, código, lote, presentación y vencimiento.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="busqueda-medicamento-mayor">Nombre o descripción</label>
+                <input id="busqueda-medicamento-mayor" type="search" placeholder="Buscar medicamento" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-codigo-mayor">Código</label>
+                <input id="filtro-codigo-mayor" type="text" placeholder="Código" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-lote-mayor">Número de lote</label>
+                <input id="filtro-lote-mayor" type="text" placeholder="Lote" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-estado-mayor">Estado del lote</label>
+                <select id="filtro-estado-mayor">
+                  <option value="">Todos</option>
+                  <option value="activo">Activo</option>
+                  <option value="vencido">Vencido</option>
+                  <option value="agotado">Agotado</option>
+                  <option value="bajo">Bajo</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-vencimiento-mayor">Fecha de vencimiento</label>
+                <input id="filtro-vencimiento-mayor" type="date" />
+              </div>
+
+              <div class="app-superadmin-field app-superadmin-field-actions">
+                <label class="app-superadmin-visually-hidden" for="btn-buscar-mayor">Buscar</label>
+                <div class="app-superadmin-actions-row">
+                  <button type="button" class="btn btn-primary" id="btn-buscar-mayor">Buscar</button>
+                  <button type="button" class="btn btn-secondary" id="btn-limpiar-filtros-mayor">Limpiar</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-respaldos-resumen" aria-label="Tarjetas de resumen del inventario mayor">
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Medicamentos registrados</span>
+              <strong id="mayor-total-medicamentos" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Existencias disponibles</span>
+              <strong id="mayor-existencia-total" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Total de lotes</span>
+              <strong id="mayor-total-lotes" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Lotes con existencia</span>
+              <strong id="mayor-lotes-disponibles" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Próximos a vencer</span>
+              <strong id="mayor-proximos-vencer" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Medicamentos vencidos</span>
+              <strong id="mayor-medicamentos-vencidos" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Existencias bajas</span>
+              <strong id="mayor-stock-bajo" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Medicamentos agotados</span>
+              <strong id="mayor-agotados" class="app-superadmin-stat-value">0</strong>
+            </article>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Tabla principal de medicamentos">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Medicamentos en Inventario Mayor</h3>
+                <p>Resumen de stock por medicamento y cantidad de lotes asociados.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" id="tabla-medicamentos-mayor" aria-label="Medicamentos de Mayor">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Nombre</th>
+                    <th>Presentación</th>
+                    <th>Unidad</th>
+                    <th>Cantidad total</th>
+                    <th>Lotes</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8" class="app-superadmin-empty-state">No hay medicamentos registrados en el inventario principal.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Detalle de lotes del medicamento seleccionado">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Detalle de lotes</h3>
+                <p>Existencias, vencimientos y procedencias por lote. Cada registro conserva su cantidad individual.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" id="tabla-lotes-mayor" aria-label="Lotes de Inventario Mayor">
+                <thead>
+                  <tr>
+                    <th>Lote</th>
+                    <th>Fecha entrada</th>
+                    <th>Vencimiento</th>
+                    <th>Cantidad recibida</th>
+                    <th>Disponible</th>
+                    <th>Procedencia</th>
+                    <th>Documento</th>
+                    <th>Código de barras</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="10" class="app-superadmin-empty-state">Seleccione un medicamento para consultar sus lotes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Movimientos del inventario mayor">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Movimientos recientes</h3>
+                <p>Entradas, recepciones, donaciones, transferencias, correcciones y anulaciones relacionadas con Mayor.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" id="tabla-movimientos-mayor" aria-label="Movimientos del inventario Mayor">
+                <thead>
+                  <tr>
+                    <th>Fecha efectiva</th>
+                    <th>Tipo</th>
+                    <th>Medicamento</th>
+                    <th>Lote</th>
+                    <th>Cantidad</th>
+                    <th>Responsable</th>
+                    <th>Documento</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="8" class="app-superadmin-empty-state">No hay movimientos recientes disponibles.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Acciones de inventario mayor">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Acciones autorizadas</h3>
+                <p>Consulta de Kardex, transferencias y etiquetas disponibles para usuarios autorizados.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-grid-actions">
+              <button type="button" class="btn btn-primary" id="btn-transferir-a-detal">Transferir a Detal</button>
+              <button type="button" class="btn btn-secondary" id="btn-consultar-kardex">Consultar Kardex</button>
+              <button type="button" class="btn btn-secondary" id="btn-imprimir-etiqueta">Imprimir etiqueta</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="mayor.js"></script>
+  </body>
+</html>

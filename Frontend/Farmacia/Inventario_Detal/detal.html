@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Inventario Detal de Farmacia. Consulta de medicamentos, lotes, transferencias recibidas, movimientos, códigos de barras y reportes."
+    />
+    <title>Farmacia / Inventario Detal</title>
+    <link rel="stylesheet" href="../../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/tablas.css" />
+    <link rel="stylesheet" href="detal.css" />
+  </head>
+  <body>
+    <div class="app-farmacia-detal-pagina">
+      <div class="app-farmacia-detal-contenido">
+        <!-- Encabezado -->
+        <header class="app-farmacia-detal-encabezado" aria-label="Encabezado de Inventario Detal">
+          <div class="app-farmacia-detal-encabezado-texto">
+            <div class="app-farmacia-detal-identidad">
+              <span class="app-farmacia-detal-identidad-icono" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  <path d="M8 7h8"></path>
+                  <path d="M8 11h8"></path>
+                  <path d="M8 15h6"></path>
+                </svg>
+              </span>
+              <div class="app-farmacia-detal-identidad-copia">
+                <p class="app-farmacia-detal-modulo">Farmacia</p>
+                <h1 class="app-farmacia-detal-titulo">Inventario Detal</h1>
+                <p class="app-farmacia-detal-descripcion">
+                  Consulta de medicamentos recibidos desde Inventario Mayor, con control de lotes, existencias, vencimientos y movimientos en Detal.
+                </p>
+                <p class="app-farmacia-detal-dependencia">
+                  <span class="app-farmacia-detal-dependencia-modulo">Farmacia</span>
+                  <span class="app-farmacia-detal-dependencia-separador">/</span>
+                  <span class="app-farmacia-detal-dependencia-vista">Inventario Detal</span>
+                  <span class="app-farmacia-detal-dependencia-nota">Inventario independiente</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="app-farmacia-detal-encabezado-acciones">
+            <button type="button" class="app-btn app-btn--secundario" id="btn-consultar-mayor">Consultar Mayor</button>
+            <button type="button" class="app-btn app-btn--secundario" id="btn-consultar-transferencias">Transferencias</button>
+            <button type="button" class="app-btn app-btn--primario" id="btn-consultar-kardex">Consultar Kardex</button>
+            <a class="app-btn app-btn--imprimir" href="#" id="btn-acceder-reportes" role="button" aria-label="Acceder a reportes de Inventario Detal">Reportes</a>
+          </div>
+        </header>
+
+        <div class="app-farmacia-detal-ambito" role="status">
+          <span class="app-farmacia-detal-ambito-icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+          </span>
+          <p class="app-farmacia-detal-ambito-texto">
+            <strong class="app-farmacia-detal-ambito-etiqueta">Ámbito Detal:</strong>
+            el abastecimiento se realiza mediante transferencias autorizadas desde Inventario Mayor. Los lotes conservan su número y código de barras original.
+          </p>
+        </div>
+
+        <!-- Tarjetas de resumen -->
+        <section class="app-farmacia-detal-resumen" aria-labelledby="titulo-resumen-detal">
+          <div class="app-farmacia-detal-resumen-cabecera">
+            <div>
+              <h2 id="titulo-resumen-detal" class="app-farmacia-detal-resumen-titulo">Resumen de Inventario Detal</h2>
+              <p class="app-farmacia-detal-resumen-nota">Indicadores consolidados del inventario Detal. Las cantidades provienen del sistema.</p>
+            </div>
+            <p class="app-farmacia-detal-resumen-actualizado" id="detal-resumen-actualizado">Sin datos cargados</p>
+          </div>
+
+          <div class="app-farmacia-detal-estadisticas" role="list" aria-label="Tarjetas de resumen">
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--medicamentos" role="listitem">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Medicamentos registrados en Detal</p>
+                  <p class="app-card__valor" id="detal-total-medicamentos">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Catálogo disponible en Detal</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--existencias" role="listitem">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Existencia total de Detal</p>
+                  <p class="app-card__valor" id="detal-existencia-total">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Suma de lotes en Detal</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--lotes" role="listitem">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Cantidad de lotes</p>
+                  <p class="app-card__valor" id="detal-total-lotes">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Lotes registrados en Detal</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--disponibles" role="listitem">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Lotes con existencia disponible</p>
+                  <p class="app-card__valor" id="detal-lotes-disponibles">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Con cantidad mayor a cero</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--transferencias" role="listitem">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Medicamentos recibidos desde Mayor</p>
+                  <p class="app-card__valor" id="detal-transferencias-periodo">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Transferencias recibidas en el período</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--cantidades" role="listitem">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Cantidad total transferida desde Mayor</p>
+                  <p class="app-card__valor" id="detal-cantidad-transferida">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Unidades en el período consultado</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--por-vencer" role="listitem" id="tarjeta-detal-proximos-vencer">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Alertas de vencimiento</p>
+                  <p class="app-card__valor" id="detal-proximos-vencer">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Medicamentos próximos a vencer</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--vencidos" role="listitem" id="tarjeta-detal-vencidos">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Medicamentos vencidos</p>
+                  <p class="app-card__valor" id="detal-vencidos">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Lotes vencidos en Detal</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--bajo" role="listitem" id="tarjeta-detal-stock-bajo" data-app-rol-permitido="jefe-farmacia,superadmin">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Stock bajo</p>
+                  <p class="app-card__valor" id="detal-stock-bajo">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Visible para Jefe de Farmacia y SuperAdmin</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                </span>
+              </div>
+            </article>
+
+            <article class="app-card app-card--estadistica app-farmacia-detal-tarjeta app-farmacia-detal-tarjeta--agotados" role="listitem" id="tarjeta-detal-agotados" data-app-rol-permitido="jefe-farmacia,superadmin">
+              <div class="app-card__cuerpo">
+                <div>
+                  <p class="app-card__etiqueta">Medicamentos agotados</p>
+                  <p class="app-card__valor" id="detal-agotados">0</p>
+                  <p class="app-farmacia-detal-tarjeta-detalle">Visible para Jefe de Farmacia y SuperAdmin</p>
+                </div>
+                <span class="app-card__icono" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="15"></line><line x1="15" y1="9" x2="9" y2="15"></line></svg>
+                </span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Búsqueda y filtros -->
+        <section class="app-farmacia-detal-seccion" aria-labelledby="titulo-busqueda-detal">
+          <div class="app-farmacia-detal-seccion-cabecera">
+            <div class="app-farmacia-detal-seccion-texto">
+              <h2 id="titulo-busqueda-detal" class="app-farmacia-detal-seccion-titulo">Búsqueda y filtros</h2>
+              <p class="app-farmacia-detal-seccion-descripcion">Consulte medicamentos y lotes reales de Detal por nombre, código, presentación o número de lote.</p>
+            </div>
+          </div>
+          <div class="app-farmacia-detal-seccion-cuerpo">
+            <form id="formulario-busqueda-detal" class="app-formulario app-formulario--plano" novalidate>
+              <div class="app-farmacia-detal-herramientas">
+                <div class="app-farmacia-detal-buscador">
+                  <label class="app-campo" for="busqueda-medicamento-detal">
+                    <span class="app-campo__etiqueta">Buscar medicamento</span>
+                    <span class="app-campo__busqueda">
+                      <span class="app-campo__busqueda-icono" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                      </span>
+                      <input
+                        type="search"
+                        id="busqueda-medicamento-detal"
+                        name="busqueda"
+                        class="app-campo__control"
+                        placeholder="Nombre, código o presentación"
+                        autocomplete="off"
+                      />
+                    </span>
+                    <span class="app-campo__ayuda">La búsqueda consulta registros reales del sistema.</span>
+                  </label>
+                </div>
+                <div class="app-farmacia-detal-herramientas-acciones">
+                  <button type="submit" class="app-btn app-btn--buscar" id="btn-buscar-detal">Buscar</button>
+                  <button type="reset" class="app-btn app-btn--secundario" id="btn-limpiar-filtros-detal">Limpiar</button>
+                </div>
+              </div>
+
+              <div class="app-farmacia-detal-filtros" role="group" aria-label="Filtros de consulta">
+                <div class="app-campo app-farmacia-detal-filtros-campo">
+                  <label class="app-campo__etiqueta" for="filtro-lote-detal">Número de lote</label>
+                  <input type="text" id="filtro-lote-detal" name="numeroLote" class="app-campo__control" placeholder="Ej.: lote o código" autocomplete="off" />
+                </div>
+
+                <div class="app-campo app-farmacia-detal-filtros-campo">
+                  <label class="app-campo__etiqueta" for="filtro-estado-detal">Estado del lote</label>
+                  <select id="filtro-estado-detal" name="estadoLote" class="app-campo__control app-campo__control--select">
+                    <option value="">Todos</option>
+                    <option value="disponible">Disponible</option>
+                    <option value="bajo">Stock bajo</option>
+                    <option value="agotado">Agotado</option>
+                    <option value="por-vencer">Próximo a vencer</option>
+                    <option value="vencido">Vencido</option>
+                  </select>
+                </div>
+
+                <div class="app-campo app-farmacia-detal-filtros-campo">
+                  <label class="app-campo__etiqueta" for="filtro-fecha-detal">Fecha de vencimiento</label>
+                  <input type="date" id="filtro-fecha-detal" name="fechaVencimiento" class="app-campo__control" />
+                </div>
+
+                <div class="app-campo app-farmacia-detal-filtros-campo">
+                  <label class="app-campo__etiqueta" for="filtro-fecha-recepcion-detal">Fecha de recepción o transferencia</label>
+                  <input type="date" id="filtro-fecha-recepcion-detal" name="fechaRecepcionTransferencia" class="app-campo__control" />
+                </div>
+
+                <div class="app-campo app-farmacia-detal-filtros-campo">
+                  <label class="app-campo__etiqueta" for="filtro-disponibilidad-detal">Disponibilidad</label>
+                  <select id="filtro-disponibilidad-detal" name="disponibilidad" class="app-campo__control app-campo__control--select">
+                    <option value="">Todas</option>
+                    <option value="con-existencia">Con existencia</option>
+                    <option value="sin-existencia">Sin existencia</option>
+                    <option value="disponible">Disponible</option>
+                    <option value="no-disponible">No disponible</option>
+                  </select>
+                </div>
+
+                <div class="app-farmacia-detal-filtros-acciones">
+                  <button type="submit" class="app-btn app-btn--primario">Aplicar filtros</button>
+                  <button type="button" class="app-btn app-btn--cancelar" id="btn-restablecer-filtros-detal">Restablecer</button>
+                </div>
+              </div>
+
+              <div class="app-formulario__seccion" aria-label="Período de consulta de transferencias y movimientos">
+                <div class="app-formulario__seccion-encabezado">
+                  <h3 class="app-formulario__seccion-titulo">Período de consulta</h3>
+                  <p class="app-formulario__seccion-descripcion">Permite consultar transferencias y movimientos por rango de fechas. Se incluyen el primer y último día del período.</p>
+                </div>
+                <div class="app-formulario__fila app-formulario__fila--2">
+                  <div class="app-campo">
+                    <label class="app-campo__etiqueta" for="filtro-fecha-inicial-detal">Fecha inicial</label>
+                    <input type="date" id="filtro-fecha-inicial-detal" name="fechaInicial" class="app-campo__control" />
+                  </div>
+                  <div class="app-campo">
+                    <label class="app-campo__etiqueta" for="filtro-fecha-final-detal">Fecha final</label>
+                    <input type="date" id="filtro-fecha-final-detal" name="fechaFinal" class="app-campo__control" />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <div class="app-farmacia-detal-cuerpo">
+          <div class="app-farmacia-detal-principal">
+            <!-- Tabla de medicamentos -->
+            <section class="app-farmacia-detal-seccion" aria-labelledby="titulo-medicamentos-detal">
+              <div class="app-farmacia-detal-seccion-cabecera">
+                <div class="app-farmacia-detal-seccion-texto">
+                  <h2 id="titulo-medicamentos-detal" class="app-farmacia-detal-seccion-titulo">Medicamentos en Detal</h2>
+                  <p class="app-farmacia-detal-seccion-descripcion">Existencias consolidadas por medicamento en Inventario Detal. La cantidad total representa la suma de sus lotes en Detal.</p>
+                </div>
+                <div class="app-farmacia-detal-seccion-acciones">
+                  <button type="button" class="app-btn app-btn--sm app-btn--secundario" id="btn-actualizar-medicamentos-detal">Actualizar</button>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-cuerpo app-farmacia-detal-seccion-cuerpo--sin-relleno">
+                <div class="app-farmacia-detal-tabla-marco" tabindex="0" aria-label="Tabla de medicamentos con desplazamiento horizontal">
+                  <table class="app-tabla app-tabla--inventario app-tabla--amplia app-farmacia-detal-tabla app-farmacia-detal-tabla--medicamentos" id="tabla-medicamentos-detal">
+                    <caption class="app-tabla__titulo app-tabla__titulo--oculto">Medicamentos registrados en Inventario Detal</caption>
+                    <thead class="app-tabla__encabezado">
+                      <tr class="app-tabla__fila">
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Código</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-medicamento">Nombre</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Presentación</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Unidad</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero app-farmacia-detal-celda-cantidad">Cantidad total disponible</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad de lotes</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-estado">Estado</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-acciones">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody class="app-tabla__cuerpo">
+                      <tr class="app-tabla__fila">
+                        <td colspan="8" class="app-tabla__celda app-tabla__celda--estado">
+                          <div class="app-tabla__estado-vacio">
+                            <p class="app-tabla__estado-vacio-titulo">No hay medicamentos para mostrar</p>
+                            <p class="app-tabla__estado-vacio-texto">Use la búsqueda o los filtros para consultar registros reales de Inventario Detal.</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="app-farmacia-detal-tabla-desplazamiento">
+                  <span class="app-farmacia-detal-tabla-desplazamiento-icono" aria-hidden="true">↔</span>
+                  Desplácese horizontalmente para ver todas las columnas.
+                </p>
+              </div>
+            </section>
+
+            <!-- Tabla de lotes -->
+            <section class="app-farmacia-detal-seccion" aria-labelledby="titulo-lotes-detal">
+              <div class="app-farmacia-detal-seccion-cabecera">
+                <div class="app-farmacia-detal-seccion-texto">
+                  <h2 id="titulo-lotes-detal" class="app-farmacia-detal-seccion-titulo">Lotes de Detal</h2>
+                  <p class="app-farmacia-detal-seccion-descripcion">Cada lote se muestra de forma independiente y conserva su identificación original recibida desde Mayor.</p>
+                </div>
+                <div class="app-farmacia-detal-seccion-acciones">
+                  <button type="button" class="app-btn app-btn--sm app-btn--imprimir" id="btn-imprimir-etiqueta-lote-detal">Imprimir etiqueta</button>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-cuerpo app-farmacia-detal-seccion-cuerpo--sin-relleno">
+                <div class="app-farmacia-detal-tabla-marco" tabindex="0" aria-label="Tabla de lotes con desplazamiento horizontal">
+                  <table class="app-tabla app-tabla--lotes app-tabla--amplia app-farmacia-detal-tabla app-farmacia-detal-tabla--lotes" id="tabla-lotes-detal">
+                    <caption class="app-tabla__titulo app-tabla__titulo--oculto">Lotes del medicamento seleccionado en Inventario Detal</caption>
+                    <thead class="app-tabla__encabezado">
+                      <tr class="app-tabla__fila">
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-lote">Número de lote</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-medicamento">Medicamento</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad recibida desde Mayor</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad disponible</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-fecha">Fecha de transferencia</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-fecha">Fecha de vencimiento</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Código de barras</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-estado">Estado</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-farmacia-detal-celda-acciones">Acciones autorizadas</th>
+                      </tr>
+                    </thead>
+                    <tbody class="app-tabla__cuerpo">
+                      <tr class="app-tabla__fila">
+                        <td colspan="9" class="app-tabla__celda app-tabla__celda--estado">
+                          <div class="app-tabla__estado-vacio">
+                            <p class="app-tabla__estado-vacio-titulo">Seleccione un medicamento</p>
+                            <p class="app-tabla__estado-vacio-texto">Los lotes de Detal se mostrarán aquí de manera independiente.</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="app-farmacia-detal-tabla-desplazamiento">
+                  <span class="app-farmacia-detal-tabla-desplazamiento-icono" aria-hidden="true">↔</span>
+                  Desplácese horizontalmente para ver todas las columnas.
+                </p>
+              </div>
+              <div class="app-farmacia-detal-seccion-pie">
+                <p class="app-farmacia-detal-seccion-nota">
+                  <span class="app-farmacia-detal-seccion-nota-icono" aria-hidden="true">i</span>
+                  Los lotes transferidos conservan su número y código de barras original. No se crean lotes nuevos por cambio de módulo.
+                </p>
+              </div>
+            </section>
+
+            <!-- Historial de transferencias recibidas -->
+            <section class="app-farmacia-detal-seccion" id="seccion-transferencias-recibidas-detal" aria-labelledby="titulo-transferencias-detal">
+              <div class="app-farmacia-detal-seccion-cabecera">
+                <div class="app-farmacia-detal-seccion-texto">
+                  <h2 id="titulo-transferencias-detal" class="app-farmacia-detal-seccion-titulo">Transferencias recibidas desde Mayor</h2>
+                  <p class="app-farmacia-detal-seccion-descripcion">Movimientos internos de Farmacia. No corresponden a entradas externas.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-cuerpo app-farmacia-detal-seccion-cuerpo--sin-relleno">
+                <div class="app-farmacia-detal-tabla-marco" tabindex="0" aria-label="Tabla de transferencias recibidas con desplazamiento horizontal">
+                  <table class="app-tabla app-tabla--amplia app-farmacia-detal-tabla" id="tabla-transferencias-recibidas">
+                    <caption class="app-tabla__titulo app-tabla__titulo--oculto">Transferencias recibidas desde Inventario Mayor</caption>
+                    <thead class="app-tabla__encabezado">
+                      <tr class="app-tabla__fila">
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Identificador de transferencia</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Medicamento</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Lote</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad recibida</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha efectiva de transferencia</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha y hora real de registro</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Usuario responsable</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Estado</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody class="app-tabla__cuerpo">
+                      <tr class="app-tabla__fila">
+                        <td colspan="9" class="app-tabla__celda app-tabla__celda--estado">
+                          <div class="app-tabla__estado-vacio">
+                            <p class="app-tabla__estado-vacio-titulo">No hay transferencias para mostrar</p>
+                            <p class="app-tabla__estado-vacio-texto">Consulte por período para ver transferencias recibidas desde Inventario Mayor.</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <!-- Historial de movimientos -->
+            <section class="app-farmacia-detal-seccion" aria-labelledby="titulo-movimientos-detal">
+              <div class="app-farmacia-detal-seccion-cabecera">
+                <div class="app-farmacia-detal-seccion-texto">
+                  <h2 id="titulo-movimientos-detal" class="app-farmacia-detal-seccion-titulo">Historial de movimientos</h2>
+                  <p class="app-farmacia-detal-seccion-descripcion">Transferencias recibidas, salidas, correcciones autorizadas y anulaciones registradas en Detal.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-cuerpo app-farmacia-detal-seccion-cuerpo--sin-relleno">
+                <div class="app-farmacia-detal-tabla-marco" tabindex="0" aria-label="Tabla de movimientos con desplazamiento horizontal">
+                  <table class="app-tabla app-tabla--amplia app-farmacia-detal-tabla app-farmacia-detal-tabla--historial" id="tabla-movimientos-detal">
+                    <caption class="app-tabla__titulo app-tabla__titulo--oculto">Movimientos correspondientes a Inventario Detal</caption>
+                    <thead class="app-tabla__encabezado">
+                      <tr class="app-tabla__fila">
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha efectiva</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Tipo de movimiento</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Medicamento</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Lote</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Responsable</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Documento / referencia</th>
+                        <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody class="app-tabla__cuerpo">
+                      <tr class="app-tabla__fila">
+                        <td colspan="8" class="app-tabla__celda app-tabla__celda--estado">
+                          <div class="app-tabla__estado-vacio">
+                            <p class="app-tabla__estado-vacio-titulo">No hay movimientos para mostrar</p>
+                            <p class="app-tabla__estado-vacio-texto">Seleccione un período o medicamento para consultar movimientos reales de Detal.</p>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-pie">
+                <p class="app-farmacia-detal-seccion-nota">
+                  <span class="app-farmacia-detal-seccion-nota-icono" aria-hidden="true">!</span>
+                  Las operaciones confirmadas no se alteran directamente desde esta consulta. Cada movimiento muestra su lote asociado.
+                </p>
+              </div>
+            </section>
+          </div>
+
+          <aside class="app-farmacia-detal-lateral" aria-label="Panel lateral de Detal">
+            <!-- Detalle de lote -->
+            <section class="app-farmacia-detal-detalle" id="detalle-lote-detal" aria-labelledby="titulo-detalle-lote-detal">
+              <div class="app-farmacia-detal-detalle-cabecera">
+                <div>
+                  <h2 id="titulo-detalle-lote-detal" class="app-farmacia-detal-detalle-titulo">Detalle de lote</h2>
+                  <p class="app-farmacia-detal-detalle-subtitulo">Seleccione un lote para ver su información</p>
+                </div>
+                <span class="app-badge app-badge--neutro" id="detalle-lote-detal-estado">Sin selección</span>
+              </div>
+
+              <div class="app-farmacia-detal-detalle-cuerpo">
+                <div class="app-farmacia-detal-detalle-codigo">
+                  <div class="app-farmacia-detal-detalle-codigo-datos">
+                    <span class="app-farmacia-detal-detalle-codigo-etiqueta">Número de lote</span>
+                    <span class="app-farmacia-detal-detalle-codigo-valor" id="detalle-lote-detal-numero">—</span>
+                  </div>
+                  <span class="app-badge app-badge--info" id="detalle-lote-detal-procedencia">Mayor → Detal</span>
+                </div>
+
+                <div class="app-farmacia-detal-detalle-medicamento">
+                  <p class="app-farmacia-detal-detalle-medicamento-nombre" id="detalle-lote-detal-medicamento">—</p>
+                  <p class="app-farmacia-detal-detalle-medicamento-presentacion" id="detalle-lote-detal-presentacion">—</p>
+                </div>
+
+                <div class="app-farmacia-detal-detalle-rejilla" aria-label="Datos del lote">
+                  <div class="app-farmacia-detal-detalle-dato">
+                    <span class="app-farmacia-detal-detalle-etiqueta">Código de barras</span>
+                    <span class="app-farmacia-detal-detalle-valor" id="detalle-lote-detal-codigo-barras">—</span>
+                  </div>
+                  <div class="app-farmacia-detal-detalle-dato">
+                    <span class="app-farmacia-detal-detalle-etiqueta">Fecha de transferencia</span>
+                    <span class="app-farmacia-detal-detalle-valor" id="detalle-lote-detal-fecha-transferencia">—</span>
+                  </div>
+                  <div class="app-farmacia-detal-detalle-dato">
+                    <span class="app-farmacia-detal-detalle-etiqueta">Fecha de vencimiento</span>
+                    <span class="app-farmacia-detal-detalle-valor" id="detalle-lote-detal-fecha-vencimiento">—</span>
+                  </div>
+                  <div class="app-farmacia-detal-detalle-dato">
+                    <span class="app-farmacia-detal-detalle-etiqueta">Estado</span>
+                    <span class="app-farmacia-detal-detalle-valor" id="detalle-lote-detal-estado-texto">—</span>
+                  </div>
+                </div>
+
+                <div class="app-farmacia-detal-detalle-cantidades">
+                  <div class="app-farmacia-detal-detalle-cantidad">
+                    <span class="app-farmacia-detal-detalle-cantidad-etiqueta">Cantidad recibida desde Mayor</span>
+                    <span class="app-farmacia-detal-detalle-cantidad-valor" id="detalle-lote-detal-cantidad-recibida">0</span>
+                  </div>
+                  <div class="app-farmacia-detal-detalle-cantidad app-farmacia-detal-detalle-cantidad--disponible">
+                    <span class="app-farmacia-detal-detalle-cantidad-etiqueta">Cantidad disponible</span>
+                    <span class="app-farmacia-detal-detalle-cantidad-valor" id="detalle-lote-detal-cantidad-disponible">0</span>
+                  </div>
+                </div>
+
+                <div class="app-farmacia-detal-detalle-independiente" role="note">
+                  <span class="app-farmacia-detal-detalle-independiente-icono" aria-hidden="true">i</span>
+                  <p class="app-farmacia-detal-detalle-independiente-texto">
+                    Cada lote es un registro independiente en Detal y conserva su identificación original recibida desde Inventario Mayor.
+                  </p>
+                </div>
+
+                <div class="app-codigo-barras" id="detalle-lote-detal-codigo-barras-visual" aria-label="Visualización de código de barras del lote">
+                  <div class="app-codigo-barras__imagen-envoltura">
+                    <span class="app-codigo-barras__imagen" id="detalle-lote-detal-codigo-barras-imagen" aria-hidden="true">—</span>
+                  </div>
+                  <div class="app-codigo-barras__datos">
+                    <span class="app-codigo-barras__etiqueta">Código del lote</span>
+                    <span class="app-codigo-barras__numero" id="detalle-lote-detal-codigo-barras-texto">—</span>
+                    <span class="app-codigo-barras__lote" id="detalle-lote-detal-codigo-barras-lote">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="app-farmacia-detal-detalle-pie">
+                <div class="app-farmacia-detal-detalle-acciones">
+                  <button type="button" class="app-btn app-btn--imprimir" id="btn-imprimir-etiqueta-detalle-detal">Imprimir etiqueta existente</button>
+                </div>
+              </div>
+            </section>
+
+            <!-- Acciones y accesos -->
+            <section class="app-farmacia-detal-seccion" aria-labelledby="titulo-acciones-detal">
+              <div class="app-farmacia-detal-seccion-cabecera">
+                <div class="app-farmacia-detal-seccion-texto">
+                  <h2 id="titulo-acciones-detal" class="app-farmacia-detal-seccion-titulo">Acciones y accesos</h2>
+                  <p class="app-farmacia-detal-seccion-descripcion">Consultas, Kardex, etiquetas y reportes disponibles según permisos del usuario.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-cuerpo">
+                <div class="app-formulario__acciones app-formulario__acciones--inicio" role="group" aria-label="Acciones disponibles">
+                  <button type="button" class="app-btn app-btn--secundario" id="btn-consultar-medicamentos-detal">Consultar medicamentos</button>
+                  <button type="button" class="app-btn app-btn--secundario" id="btn-consultar-lotes-detal">Consultar lotes</button>
+                  <button type="button" class="app-btn app-btn--secundario" id="btn-consultar-transferencias-recibidas-detal">Consultar transferencias recibidas</button>
+                  <a class="app-btn app-btn--secundario" href="#" id="btn-acceso-reportes-detal" role="button">Acceder a reportes</a>
+                </div>
+                <p class="app-formulario__nota-pie">
+                  El abastecimiento normal de Detal se realiza mediante transferencias autorizadas desde Inventario Mayor. No se crean entradas independientes que aumenten existencias sin una operación autorizada.
+                </p>
+              </div>
+            </section>
+
+            <!-- Alertas (visibilidad administrativa) -->
+            <section class="app-farmacia-detal-seccion" id="seccion-alertas-detal" aria-labelledby="titulo-alertas-detal" data-app-rol-permitido="jefe-farmacia,superadmin">
+              <div class="app-farmacia-detal-seccion-cabecera">
+                <div class="app-farmacia-detal-seccion-texto">
+                  <h2 id="titulo-alertas-detal" class="app-farmacia-detal-seccion-titulo">Alertas administrativas</h2>
+                  <p class="app-farmacia-detal-seccion-descripcion">Disponibles para Jefe de Farmacia y SuperAdmin. Los estados se consultan en el sistema.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-detal-seccion-cuerpo">
+                <div class="app-grid app-grid--resumen" role="list" aria-label="Alertas de inventario">
+                  <article class="app-card" role="listitem">
+                    <div class="app-card__cuerpo">
+                      <p class="app-card__etiqueta">Próximos a vencer</p>
+                      <p class="app-card__valor" id="alerta-detal-proximos-vencer">0</p>
+                    </div>
+                  </article>
+                  <article class="app-card" role="listitem">
+                    <div class="app-card__cuerpo">
+                      <p class="app-card__etiqueta">Vencidos</p>
+                      <p class="app-card__valor" id="alerta-detal-vencidos">0</p>
+                    </div>
+                  </article>
+                  <article class="app-card" role="listitem">
+                    <div class="app-card__cuerpo">
+                      <p class="app-card__etiqueta">Stock bajo</p>
+                      <p class="app-card__valor" id="alerta-detal-stock-bajo">0</p>
+                    </div>
+                  </article>
+                  <article class="app-card" role="listitem">
+                    <div class="app-card__cuerpo">
+                      <p class="app-card__etiqueta">Agotados</p>
+                      <p class="app-card__valor" id="alerta-detal-agotados">0</p>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <!-- Paginación -->
+        <nav class="app-farmacia-detal-paginacion" aria-label="Paginación de resultados de Inventario Detal">
+          <p class="app-farmacia-detal-paginacion-resumen">
+            Mostrando <span class="app-farmacia-detal-paginacion-resumen-cantidad" id="detal-paginacion-desde">0</span>–<span class="app-farmacia-detal-paginacion-resumen-cantidad" id="detal-paginacion-hasta">0</span> de <span class="app-farmacia-detal-paginacion-resumen-cantidad" id="detal-paginacion-total">0</span>
+          </p>
+          <label class="app-farmacia-detal-paginacion-tamano" for="detal-paginacion-tamano">
+            Registros por página
+            <span class="app-campo">
+              <select id="detal-paginacion-tamano" class="app-campo__control app-campo__control--select app-campo__control--sm">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </span>
+          </label>
+          <div class="app-paginacion" aria-label="Controles de paginación">
+            <ul class="app-paginacion__lista">
+              <li><button type="button" class="app-paginacion__enlace" id="detal-paginacion-anterior" disabled>Anterior</button></li>
+              <li><button type="button" class="app-paginacion__enlace app-paginacion__enlace--activo" id="detal-paginacion-actual" aria-current="page">1</button></li>
+              <li><button type="button" class="app-paginacion__enlace" id="detal-paginacion-siguiente" disabled>Siguiente</button></li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <script type="module" src="detal.js"></script>
+  </body>
+</html>

@@ -1,0 +1,1176 @@
+/**
+ * ============================================================================
+ * SISTEMA INSTITUCIONAL DE INVENTARIO HOSPITALARIO
+ * Archivo: Frontend/Farmacia/Transferencias/transferencias.css
+ * ----------------------------------------------------------------------------
+ * Estilos específicos de la pantalla de transferencias de Inventario Mayor
+ * hacia Inventario Detal de Farmacia.
+ *
+ * Esta hoja NO redefine la identidad institucional ni la paleta general.
+ * Trabaja sobre los tokens de ../../Compartidos/CSS/base.css y reutiliza los
+ * componentes de componentes.css, formularios.css y tablas.css.
+ *
+ * CONTENIDO
+ *   1. Alcance y estructura de la pantalla
+ *   2. Encabezado, ruta y descripción
+ *   3. Mensajes y validaciones visuales
+ *   4. Secciones, tarjetas y disposición
+ *   5. Formulario y secciones del formulario
+ *   6. Selectores buscables y botón Agregar nuevo
+ *   7. Campos de cantidad, fecha y observaciones
+ *   8. Identificación de origen (Mayor) y destino (Detal)
+ *   9. Resúmenes de existencia e información del lote
+ *  10. Vista previa de la transferencia
+ *  11. Filtros e historial de transferencias
+ *  12. Ventana modal de confirmación y estados de operación
+ *  13. Estados visuales (selección, existencias, validación, proceso)
+ *  14. Ajustes adaptables (responsive)
+ *  15. Accesibilidad, foco, contraste y movimiento reducido
+ *
+ * NOMENCLATURA
+ *   Todas las clases propias de esta pantalla comienzan con el prefijo
+ *   app-farmacia-transferencias- y se aplican dentro de un contenedor con
+ *   ese prefijo. No se usan selectores globales.
+ * ============================================================================
+ */
+
+/* ============================================================================
+   1. ALCANCE Y ESTRUCTURA DE LA PANTALLA
+   ============================================================================ */
+
+.app-farmacia-transferencias-pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-5);
+  min-width: 0;
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+}
+
+.app-farmacia-transferencias-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-5);
+  width: 100%;
+  max-width: var(--ancho-contenedor);
+  min-width: 0;
+  margin-inline: auto;
+  padding: var(--espacio-pagina);
+}
+
+.app-farmacia-transferencias-disposicion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--espacio-5);
+  align-items: start;
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-principal,
+.app-farmacia-transferencias-lateral {
+  display: grid;
+  gap: var(--espacio-5);
+  align-content: start;
+  min-width: 0;
+}
+
+/* ============================================================================
+   2. ENCABEZADO, RUTA Y DESCRIPCIÓN
+   ============================================================================ */
+
+.app-farmacia-transferencias-encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-5);
+  min-width: 0;
+  padding: clamp(var(--espacio-4), 3vw, var(--espacio-6));
+  background:
+    linear-gradient(135deg, var(--color-info-fondo) 0%, transparent 55%),
+    var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-inline-start: 4px solid var(--color-info);
+  border-radius: var(--radio-xl);
+  box-shadow: var(--sombra-sm);
+}
+
+.app-farmacia-transferencias-encabezado-texto {
+  flex: 1 1 32rem;
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-ruta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin: 0 0 var(--espacio-2);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-negrita);
+  line-height: 1.4;
+  color: var(--color-info-texto);
+  text-transform: uppercase;
+  letter-spacing: var(--espaciado-letras-amplio);
+}
+
+.app-farmacia-transferencias-ruta::before {
+  content: "⇄";
+  display: inline-grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  font-size: 0.8rem;
+  color: var(--color-texto-inverso);
+  background-color: var(--color-info);
+  border-radius: var(--radio-completo);
+}
+
+.app-farmacia-transferencias-titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: var(--texto-h2);
+  font-weight: var(--peso-negrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+  letter-spacing: var(--espaciado-letras-titulos);
+  overflow-wrap: anywhere;
+}
+
+.app-farmacia-transferencias-descripcion {
+  max-width: var(--ancho-lectura);
+  margin: var(--espacio-2) 0 0;
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto-secundario);
+}
+
+.app-farmacia-transferencias-encabezado-acciones {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacio-2);
+}
+
+/* ============================================================================
+   3. MENSAJES Y VALIDACIONES VISUALES
+   ============================================================================ */
+
+.app-farmacia-transferencias-mensajes {
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-mensaje-contenedor {
+  display: grid;
+  gap: var(--espacio-2);
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-mensaje-contenedor:empty {
+  display: none;
+}
+
+/* Contenedores de mensajes inyectados por JS (clases preparadas) */
+.app-farmacia-transferencias-mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+  border: 1px solid var(--color-borde);
+  border-inline-start-width: 4px;
+  border-radius: var(--radio-md);
+}
+
+.app-farmacia-transferencias-mensaje__icono {
+  flex: 0 0 auto;
+  font-weight: var(--peso-negrita);
+  line-height: 1.2;
+}
+
+.app-farmacia-transferencias-mensaje__contenido {
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-mensaje--exito {
+  color: var(--color-exito-texto);
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+  border-inline-start-color: var(--color-exito);
+}
+
+.app-farmacia-transferencias-mensaje--error,
+.app-farmacia-transferencias-mensaje--fallida,
+.app-farmacia-transferencias-mensaje--no-autorizada {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error-borde);
+  border-inline-start-color: var(--color-error);
+}
+
+.app-farmacia-transferencias-mensaje--advertencia {
+  color: var(--color-advertencia-texto);
+  background-color: var(--color-advertencia-fondo);
+  border-color: var(--color-advertencia-borde);
+  border-inline-start-color: var(--color-advertencia);
+}
+
+.app-farmacia-transferencias-mensaje--info,
+.app-farmacia-transferencias-mensaje--proceso {
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border-color: var(--color-info-borde);
+  border-inline-start-color: var(--color-info);
+}
+
+/* ============================================================================
+   4. SECCIONES, TARJETAS Y DISPOSICIÓN
+   ============================================================================ */
+
+.app-farmacia-transferencias-seccion {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-xl);
+  box-shadow: var(--sombra-sm);
+}
+
+.app-farmacia-transferencias-seccion-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4) var(--espacio-5);
+  background-color: var(--color-fondo-secundario);
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+.app-farmacia-transferencias-seccion-texto {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-seccion-titulo {
+  margin: 0;
+  font-size: var(--texto-h4);
+  font-weight: var(--peso-seminegrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+}
+
+.app-farmacia-transferencias-seccion-descripcion {
+  max-width: var(--ancho-lectura);
+  margin: var(--espacio-1) 0 0;
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto-secundario);
+}
+
+.app-farmacia-transferencias-seccion-cuerpo {
+  display: grid;
+  gap: var(--espacio-4);
+  min-width: 0;
+  padding: var(--espacio-5);
+}
+
+.app-farmacia-transferencias-seccion-cuerpo--sin-relleno {
+  gap: var(--espacio-2);
+  padding: 0;
+}
+
+/* ============================================================================
+   5. FORMULARIO Y SECCIONES DEL FORMULARIO
+   ============================================================================ */
+
+.app-farmacia-transferencias-pagina .app-formulario__seccion {
+  padding: var(--espacio-4);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+}
+
+.app-farmacia-transferencias-pagina .app-formulario__acciones {
+  justify-content: flex-end;
+  padding-block-start: var(--espacio-2);
+}
+
+/* ============================================================================
+   6. SELECTORES BUSCABLES Y BOTÓN AGREGAR NUEVO
+   ============================================================================ */
+
+.app-farmacia-transferencias-lista-buscable {
+  position: relative;
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__wrapper {
+  margin: 0;
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__fila {
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__input {
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__lista {
+  z-index: var(--z-menu);
+  max-height: 18rem;
+  overflow-y: auto;
+  margin-block-start: var(--espacio-1);
+  padding: var(--espacio-1);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-md);
+}
+
+/* Espacio suficiente para mostrar número de lote, vencimiento y existencia
+   en los elementos generados por el componente de listas buscables. */
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__item,
+.app-farmacia-transferencias-lista-buscable [data-app-lista-item] {
+  display: grid;
+  gap: 0.2rem;
+  min-height: 3rem;
+  padding: var(--espacio-2) var(--espacio-3);
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__item:hover,
+.app-farmacia-transferencias-lista-buscable [data-app-lista-item]:hover,
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__item.is-focus,
+.app-farmacia-transferencias-lista-buscable [data-app-lista-item].is-focus {
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__item.is-selected,
+.app-farmacia-transferencias-lista-buscable [data-app-lista-item].is-selected {
+  background-color: var(--color-primario-suave);
+  outline: 1px solid var(--color-primario-borde);
+}
+
+.app-farmacia-transferencias-lista-buscable .app-lista-buscable__estado {
+  margin-block-start: var(--espacio-1);
+}
+
+/* Botón "+ Agregar nuevo" al lado del selector de medicamento */
+.app-farmacia-transferencias-pagina .app-campo__con-accion {
+  align-items: stretch;
+}
+
+.app-farmacia-transferencias-pagina #btn-agregar-medicamento-transferencia {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   7. CAMPOS DE CANTIDAD, FECHA Y OBSERVACIONES
+   ============================================================================ */
+
+.app-farmacia-transferencias-pagina #campo-cantidad-transferencia {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-farmacia-transferencias-pagina #existencia-disponible-lote-transferencia {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-1);
+  margin-block-start: var(--espacio-1);
+  padding: 0.2rem 0.55rem;
+  font-weight: var(--peso-medio);
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border: 1px solid var(--color-info-borde);
+  border-radius: var(--radio-completo);
+}
+
+.app-farmacia-transferencias-pagina #existencia-lote-seleccionado-transferencia {
+  font-variant-numeric: tabular-nums;
+}
+
+.app-farmacia-transferencias-pagina #campo-fecha-transferencia {
+  min-height: 2.75rem;
+}
+
+.app-farmacia-transferencias-pagina #campo-observaciones-transferencia {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+/* ============================================================================
+   8. IDENTIFICACIÓN DE ORIGEN (MAYOR) Y DESTINO (DETAL)
+   ============================================================================ */
+
+.app-farmacia-transferencias-pagina #transferencia-origen,
+.app-farmacia-transferencias-pagina #transferencia-destino {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  min-height: 2.75rem;
+  font-weight: var(--peso-seminegrita);
+  border-width: 1px;
+  border-inline-start-width: 4px;
+  cursor: default;
+  user-select: text;
+}
+
+.app-farmacia-transferencias-pagina #transferencia-origen {
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border-color: var(--color-info-borde);
+  border-inline-start-color: var(--color-info);
+}
+
+.app-farmacia-transferencias-pagina #transferencia-origen::before {
+  content: "Origen · Mayor";
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-negrita);
+  line-height: 1.2;
+  color: var(--color-texto-inverso);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background-color: var(--color-info);
+  border-radius: var(--radio-completo);
+}
+
+.app-farmacia-transferencias-pagina #transferencia-destino {
+  color: var(--color-exito-texto);
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+  border-inline-start-color: var(--color-exito);
+}
+
+.app-farmacia-transferencias-pagina #transferencia-destino::before {
+  content: "Destino · Detal";
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.45rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-negrita);
+  line-height: 1.2;
+  color: var(--color-texto-inverso);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  background-color: var(--color-exito);
+  border-radius: var(--radio-completo);
+}
+
+/* Indicador textual adicional de traslado interno (no solo color) */
+.app-farmacia-transferencias-pagina #transferencia-origen::after {
+  content: "Salida interna";
+  margin-inline-start: auto;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  color: var(--color-info-texto);
+  opacity: 0.9;
+}
+
+.app-farmacia-transferencias-pagina #transferencia-destino::after {
+  content: "Ingreso interno";
+  margin-inline-start: auto;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  color: var(--color-exito-texto);
+  opacity: 0.9;
+}
+
+/* ============================================================================
+   9. RESÚMENES DE EXISTENCIA E INFORMACIÓN DEL LOTE
+   ============================================================================ */
+
+.app-farmacia-transferencias-resumen-lista {
+  display: grid;
+  gap: var(--espacio-2);
+  margin: 0;
+}
+
+.app-farmacia-transferencias-resumen-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--espacio-3);
+  padding: var(--espacio-2) 0;
+  border-block-end: 1px dashed var(--color-borde-suave);
+}
+
+.app-farmacia-transferencias-resumen-item:last-child {
+  border-block-end: 0;
+}
+
+.app-farmacia-transferencias-resumen-item dt {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+}
+
+.app-farmacia-transferencias-resumen-item dd {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.45;
+  color: var(--color-texto);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.app-farmacia-transferencias-resumen-item dd:empty::before {
+  content: "—";
+  color: var(--color-texto-tenue);
+  font-weight: var(--peso-normal);
+}
+
+/* ============================================================================
+   10. VISTA PREVIA DE LA TRANSFERENCIA
+   ============================================================================ */
+
+.app-farmacia-transferencias-vista-previa {
+  display: grid;
+  gap: var(--espacio-4);
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-vista-previa-bloque {
+  display: grid;
+  gap: var(--espacio-2);
+  padding: var(--espacio-4);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+}
+
+.app-farmacia-transferencias-vista-previa-subtitulo {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin: 0 0 var(--espacio-1);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-negrita);
+  line-height: 1.4;
+  color: var(--color-texto);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.app-farmacia-transferencias-vista-previa-subtitulo::before {
+  content: "";
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: var(--radio-completo);
+  background-color: var(--color-texto-tenue);
+}
+
+/* Comparación clara Mayor vs Detal (traslado interno) */
+.app-farmacia-transferencias-vista-previa-bloque--mayor {
+  background-color: var(--color-info-fondo);
+  border-color: var(--color-info-borde);
+  border-inline-start: 4px solid var(--color-info);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--mayor .app-farmacia-transferencias-vista-previa-subtitulo {
+  color: var(--color-info-texto);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--mayor .app-farmacia-transferencias-vista-previa-subtitulo::before {
+  background-color: var(--color-info);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--mayor .app-farmacia-transferencias-vista-previa-subtitulo::after {
+  content: "Origen (sale)";
+  margin-inline-start: auto;
+  padding: 0.1rem 0.45rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-info-texto);
+  text-transform: none;
+  letter-spacing: normal;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-info-borde);
+  border-radius: var(--radio-completo);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--detal {
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+  border-inline-start: 4px solid var(--color-exito);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--detal .app-farmacia-transferencias-vista-previa-subtitulo {
+  color: var(--color-exito-texto);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--detal .app-farmacia-transferencias-vista-previa-subtitulo::before {
+  background-color: var(--color-exito);
+}
+
+.app-farmacia-transferencias-vista-previa-bloque--detal .app-farmacia-transferencias-vista-previa-subtitulo::after {
+  content: "Destino (ingresa)";
+  margin-inline-start: auto;
+  padding: 0.1rem 0.45rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-exito-texto);
+  text-transform: none;
+  letter-spacing: normal;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-exito-borde);
+  border-radius: var(--radio-completo);
+}
+
+/* Valores resultantes destacados para comparar antes/después */
+.app-farmacia-transferencias-vista-previa-bloque dd[id$="-resultante"] {
+  font-size: var(--texto-base);
+  font-weight: var(--peso-negrita);
+}
+
+.app-farmacia-transferencias-vista-previa-aviso {
+  display: grid;
+  gap: var(--espacio-2);
+  padding: var(--espacio-3) var(--espacio-4);
+  color: var(--color-texto-secundario);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-inline-start: 4px solid var(--color-primario);
+  border-radius: var(--radio-md);
+}
+
+.app-farmacia-transferencias-vista-previa-aviso p {
+  margin: 0;
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+}
+
+.app-farmacia-transferencias-vista-previa-validacion {
+  font-weight: var(--peso-medio);
+  color: var(--color-texto);
+}
+
+/* Ayuda a detectar transferencias superiores al saldo disponible */
+.app-farmacia-transferencias-vista-previa.app-farmacia-transferencias--saldo-insuficiente .app-farmacia-transferencias-vista-previa-bloque--mayor,
+.app-farmacia-transferencias-vista-previa-bloque--mayor.app-farmacia-transferencias--saldo-insuficiente {
+  border-color: var(--color-error-borde);
+  border-inline-start-color: var(--color-error);
+  box-shadow: inset 0 0 0 1px var(--color-error-borde);
+}
+
+.app-farmacia-transferencias-vista-previa.app-farmacia-transferencias--saldo-insuficiente #resumen-previa-existencia-mayor-resultante,
+.app-farmacia-transferencias--saldo-insuficiente #resumen-previa-existencia-mayor-resultante,
+.app-farmacia-transferencias--saldo-insuficiente #modal-resumen-mayor-resultante {
+  color: var(--color-error-texto);
+}
+
+.app-farmacia-transferencias-vista-previa.app-farmacia-transferencias--saldo-insuficiente #resumen-previa-existencia-mayor-resultante::before,
+.app-farmacia-transferencias--saldo-insuficiente #resumen-previa-existencia-mayor-resultante::before {
+  content: "⚠ ";
+  font-weight: var(--peso-negrita);
+}
+
+/* ============================================================================
+   11. FILTROS E HISTORIAL DE TRANSFERENCIAS
+   ============================================================================ */
+
+.app-farmacia-transferencias-filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--espacio-4);
+  align-items: end;
+  min-width: 0;
+}
+
+.app-farmacia-transferencias-filtro-busqueda {
+  grid-column: 1 / -1;
+}
+
+.app-farmacia-transferencias-filtro-fechas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: var(--espacio-3);
+  align-items: end;
+  min-width: 0;
+  padding: var(--espacio-3);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-farmacia-transferencias-filtro-fechas > .app-campo__ayuda {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.app-farmacia-transferencias-filtros-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+  justify-content: flex-start;
+}
+
+.app-farmacia-transferencias-tabla-marco {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-farmacia-transferencias-tabla {
+  min-width: 72rem;
+}
+
+.app-farmacia-transferencias-tabla .app-tabla__celda {
+  vertical-align: middle;
+}
+
+.app-farmacia-transferencias-tabla-desplazamiento {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: var(--espacio-2) var(--espacio-5) var(--espacio-4);
+  font-size: var(--texto-xs);
+  color: var(--color-texto-tenue);
+}
+
+/* ============================================================================
+   12. VENTANA MODAL DE CONFIRMACIÓN Y ESTADOS DE OPERACIÓN
+   ============================================================================ */
+
+.app-farmacia-transferencias-pagina + #modal-confirmar-transferencia,
+#modal-confirmar-transferencia.app-farmacia-transferencias-modal {
+  /* compatibilidad si se traslada; estilos base en componentes.css */
+}
+
+#modal-confirmar-transferencia .app-modal__cuerpo {
+  text-align: start;
+}
+
+.app-farmacia-transferencias-modal-resumen {
+  width: 100%;
+  margin-block-start: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+  text-align: start;
+}
+
+.app-farmacia-transferencias-modal-resumen .app-farmacia-transferencias-resumen-item dt {
+  font-size: var(--texto-xs);
+}
+
+.app-farmacia-transferencias-modal-resumen .app-farmacia-transferencias-resumen-item dd {
+  font-size: var(--texto-sm);
+}
+
+.app-farmacia-transferencias-modal-estado {
+  min-height: 1.5rem;
+  margin: var(--espacio-3) 0 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+.app-farmacia-transferencias-modal-estado:empty {
+  display: none;
+}
+
+/* Estados de operación en modal (clases preparadas para JS) */
+.app-farmacia-transferencias-modal-estado--cargando {
+  color: var(--color-info-texto);
+}
+
+.app-farmacia-transferencias-modal-estado--cargando::before {
+  content: "⏳ ";
+}
+
+.app-farmacia-transferencias-modal-estado--exito,
+.app-farmacia-transferencias-modal-estado--completada {
+  color: var(--color-exito-texto);
+}
+
+.app-farmacia-transferencias-modal-estado--exito::before,
+.app-farmacia-transferencias-modal-estado--completada::before {
+  content: "✔ ";
+  font-weight: var(--peso-negrita);
+}
+
+.app-farmacia-transferencias-modal-estado--error,
+.app-farmacia-transferencias-modal-estado--fallida {
+  color: var(--color-error-texto);
+}
+
+.app-farmacia-transferencias-modal-estado--error::before,
+.app-farmacia-transferencias-modal-estado--fallida::before {
+  content: "✖ ";
+  font-weight: var(--peso-negrita);
+}
+
+/* Indicación visual de carga/procesamiento en modal */
+#modal-confirmar-transferencia.app-farmacia-transferencias--en-proceso .app-modal__dialogo {
+  border-color: var(--color-info-borde);
+  box-shadow: 0 0 0 2px var(--color-info-fondo), var(--sombra-xl);
+}
+
+#modal-confirmar-transferencia.app-farmacia-transferencias--en-proceso .app-modal__icono {
+  color: var(--color-info);
+  background-color: var(--color-info-fondo);
+}
+
+#modal-confirmar-transferencia.app-farmacia-transferencias--completada .app-modal__icono {
+  color: var(--color-exito);
+  background-color: var(--color-exito-fondo);
+}
+
+#modal-confirmar-transferencia.app-farmacia-transferencias--fallida .app-modal__icono {
+  color: var(--color-error);
+  background-color: var(--color-error-fondo);
+}
+
+/* ============================================================================
+   13. ESTADOS VISUALES (selección, existencias, validación, proceso)
+   ============================================================================ */
+
+/* Selección pendiente */
+.app-farmacia-transferencias--seleccion-pendiente,
+.app-farmacia-transferencias-valor--pendiente {
+  color: var(--color-texto-tenue);
+  font-style: italic;
+}
+
+.app-farmacia-transferencias-valor--pendiente::after {
+  content: " (pendiente)";
+  font-size: var(--texto-xs);
+  font-style: normal;
+  font-weight: var(--peso-medio);
+}
+
+/* Existencia suficiente */
+.app-farmacia-transferencias--existencia-suficiente,
+.app-farmacia-transferencias-estado--suficiente {
+  color: var(--color-exito-texto);
+}
+
+.app-farmacia-transferencias-estado--suficiente::before {
+  content: "✔ ";
+  font-weight: var(--peso-negrita);
+}
+
+/* Existencia insuficiente (no depender solo del color) */
+.app-farmacia-transferencias--existencia-insuficiente,
+.app-farmacia-transferencias-estado--insuficiente {
+  color: var(--color-error-texto);
+  font-weight: var(--peso-seminegrita);
+}
+
+.app-farmacia-transferencias-estado--insuficiente::before {
+  content: "⚠ Insuficiente: ";
+  font-weight: var(--peso-negrita);
+}
+
+/* Cantidad inválida */
+.app-farmacia-transferencias--cantidad-invalida,
+.app-farmacia-transferencias-estado--invalida {
+  color: var(--color-error-texto);
+}
+
+.app-farmacia-transferencias-estado--invalida::before {
+  content: "✖ Inválida: ";
+  font-weight: var(--peso-negrita);
+}
+
+.app-farmacia-transferencias-pagina .app-campo--error .app-campo__control,
+.app-farmacia-transferencias-pagina .app-campo__control[aria-invalid="true"] {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 1px var(--color-error-borde);
+}
+
+/* Transferencia en proceso */
+.app-farmacia-transferencias--en-proceso,
+.app-farmacia-transferencias-estado--proceso {
+  color: var(--color-info-texto);
+  font-weight: var(--peso-medio);
+}
+
+.app-farmacia-transferencias-estado--proceso::before {
+  content: "↻ En proceso: ";
+  font-weight: var(--peso-negrita);
+}
+
+/* Transferencia completada */
+.app-farmacia-transferencias--completada,
+.app-farmacia-transferencias-estado--completada {
+  color: var(--color-exito-texto);
+  font-weight: var(--peso-seminegrita);
+}
+
+.app-farmacia-transferencias-estado--completada::before {
+  content: "✔ Completada";
+  font-weight: var(--peso-negrita);
+}
+
+/* Transferencia fallida */
+.app-farmacia-transferencias--fallida,
+.app-farmacia-transferencias-estado--fallida {
+  color: var(--color-error-texto);
+  font-weight: var(--peso-seminegrita);
+}
+
+.app-farmacia-transferencias-estado--fallida::before {
+  content: "✖ Fallida";
+  font-weight: var(--peso-negrita);
+}
+
+/* Badges/indicadores de estado para filas o valores (preparado para JS) */
+.app-farmacia-transferencias-badge-estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.55rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.3;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-completo);
+  white-space: nowrap;
+}
+
+.app-farmacia-transferencias-badge-estado::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: var(--radio-completo);
+  background-color: currentColor;
+}
+
+.app-farmacia-transferencias-badge-estado--confirmada,
+.app-farmacia-transferencias-badge-estado--completada {
+  color: var(--color-exito-texto);
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+}
+
+.app-farmacia-transferencias-badge-estado--pendiente,
+.app-farmacia-transferencias-badge-estado--proceso {
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border-color: var(--color-info-borde);
+}
+
+.app-farmacia-transferencias-badge-estado--anulada,
+.app-farmacia-transferencias-badge-estado--rechazada,
+.app-farmacia-transferencias-badge-estado--no-autorizada,
+.app-farmacia-transferencias-badge-estado--fallida {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error-borde);
+}
+
+.app-farmacia-transferencias-badge-estado--pendiente::before {
+  border-radius: 2px;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
+/* Deshabilitados */
+.app-farmacia-transferencias-pagina .app-btn:disabled,
+.app-farmacia-transferencias-pagina .app-btn[aria-disabled="true"],
+.app-farmacia-transferencias-pagina .app-campo__control:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================================================
+   14. AJUSTES ADAPTABLES (RESPONSIVE)
+   ============================================================================ */
+
+@media (min-width: 64rem) {
+  .app-farmacia-transferencias-disposicion {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+
+  .app-farmacia-transferencias-filtro-busqueda {
+    grid-column: span 2;
+  }
+
+  .app-farmacia-transferencias-filtros-acciones {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 63.99rem) {
+  .app-farmacia-transferencias-encabezado {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-farmacia-transferencias-encabezado-acciones {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .app-farmacia-transferencias-contenido {
+    gap: var(--espacio-4);
+  }
+
+  .app-farmacia-transferencias-seccion-cabecera,
+  .app-farmacia-transferencias-seccion-cuerpo {
+    padding: var(--espacio-4);
+  }
+
+  .app-farmacia-transferencias-seccion-cuerpo--sin-relleno {
+    padding: 0;
+  }
+
+  .app-farmacia-transferencias-pagina .app-formulario__seccion {
+    padding: var(--espacio-3);
+  }
+
+  .app-farmacia-transferencias-resumen-item {
+    grid-template-columns: 1fr;
+    gap: var(--espacio-1);
+  }
+
+  .app-farmacia-transferencias-resumen-item dd {
+    text-align: start;
+  }
+
+  .app-farmacia-transferencias-pagina #transferencia-origen::after,
+  .app-farmacia-transferencias-pagina #transferencia-destino::after {
+    display: none;
+  }
+
+  .app-farmacia-transferencias-vista-previa-bloque--mayor .app-farmacia-transferencias-vista-previa-subtitulo::after,
+  .app-farmacia-transferencias-vista-previa-bloque--detal .app-farmacia-transferencias-vista-previa-subtitulo::after {
+    margin-inline-start: 0;
+  }
+
+  .app-farmacia-transferencias-filtros {
+    grid-template-columns: 1fr;
+  }
+
+  .app-farmacia-transferencias-filtro-fechas {
+    grid-template-columns: 1fr;
+  }
+
+  .app-farmacia-transferencias-filtros-acciones,
+  .app-farmacia-transferencias-pagina .app-formulario__acciones,
+  .app-farmacia-transferencias-encabezado-acciones {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-farmacia-transferencias-filtros-acciones .app-btn,
+  .app-farmacia-transferencias-pagina .app-formulario__acciones .app-btn,
+  .app-farmacia-transferencias-encabezado-acciones .app-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .app-farmacia-transferencias-pagina .app-campo__con-accion {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-farmacia-transferencias-pagina #btn-agregar-medicamento-transferencia {
+    width: 100%;
+  }
+
+  .app-farmacia-transferencias-tabla {
+    min-width: 56rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .app-farmacia-transferencias-contenido {
+    padding: var(--espacio-3);
+  }
+
+  .app-farmacia-transferencias-encabezado {
+    padding: var(--espacio-4);
+  }
+
+  .app-farmacia-transferencias-titulo {
+    font-size: clamp(1.35rem, 6vw, var(--texto-h2));
+  }
+
+  .app-farmacia-transferencias-vista-previa-bloque {
+    padding: var(--espacio-3);
+  }
+}
+
+/* ============================================================================
+   15. ACCESIBILIDAD, FOCO, CONTRASTE Y MOVIMIENTO REDUCIDO
+   ============================================================================ */
+
+.app-farmacia-transferencias-pagina a:focus-visible,
+.app-farmacia-transferencias-pagina button:focus-visible,
+.app-farmacia-transferencias-pagina input:focus-visible,
+.app-farmacia-transferencias-pagina select:focus-visible,
+.app-farmacia-transferencias-pagina textarea:focus-visible,
+.app-farmacia-transferencias-pagina [tabindex]:focus-visible,
+#modal-confirmar-transferencia a:focus-visible,
+#modal-confirmar-transferencia button:focus-visible {
+  outline: 3px solid var(--color-foco, var(--color-primario));
+  outline-offset: 2px;
+}
+
+.app-farmacia-transferencias-tabla-marco:focus-visible {
+  outline: 3px solid var(--color-foco, var(--color-primario));
+  outline-offset: 2px;
+  border-radius: var(--radio-md);
+}
+
+.app-farmacia-transferencias-pagina [hidden] {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-farmacia-transferencias-pagina *,
+  .app-farmacia-transferencias-pagina *::before,
+  .app-farmacia-transferencias-pagina *::after,
+  #modal-confirmar-transferencia *,
+  #modal-confirmar-transferencia *::before,
+  #modal-confirmar-transferencia *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .app-farmacia-transferencias-seccion,
+  .app-farmacia-transferencias-vista-previa-bloque,
+  .app-farmacia-transferencias-modal-resumen,
+  .app-farmacia-transferencias-mensaje,
+  .app-farmacia-transferencias-pagina #transferencia-origen,
+  .app-farmacia-transferencias-pagina #transferencia-destino {
+    border: 1px solid CanvasText;
+  }
+
+  .app-farmacia-transferencias-badge-estado,
+  .app-farmacia-transferencias-ruta::before {
+    forced-color-adjust: none;
+  }
+}

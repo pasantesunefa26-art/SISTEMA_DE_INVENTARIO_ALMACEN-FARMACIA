@@ -1,0 +1,472 @@
+:root {
+  --app-farmacia-mayor-sidebar-bg: #123b73;
+  --app-farmacia-mayor-sidebar-strong: #0d2d57;
+  --app-farmacia-mayor-accent: #2563eb;
+  --app-farmacia-mayor-success: #1f9d66;
+  --app-farmacia-mayor-warning: #d97706;
+  --app-farmacia-mayor-danger: #c62828;
+  --app-farmacia-mayor-soft: #f4f7fb;
+  --app-farmacia-mayor-surface: #ffffff;
+  --app-farmacia-mayor-text: #1f2937;
+  --app-farmacia-mayor-muted: #6b7280;
+  --app-farmacia-mayor-border: #dfe7f2;
+  --app-farmacia-mayor-shadow: 0 10px 28px rgba(17, 24, 39, 0.08);
+}
+
+body.app-superadmin-page {
+  background: var(--app-farmacia-mayor-soft);
+  color: var(--app-farmacia-mayor-text);
+}
+
+.app-superadmin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-superadmin-sidebar {
+  width: 280px;
+  background: linear-gradient(180deg, var(--app-farmacia-mayor-sidebar-bg) 0%, var(--app-farmacia-mayor-sidebar-strong) 100%);
+  color: #fff;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.app-superadmin-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.5rem 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.app-superadmin-brand-mark {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.14);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.app-superadmin-brand-copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.app-superadmin-brand-copy strong {
+  font-size: 1.05rem;
+}
+
+.app-superadmin-kicker {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.app-superadmin-nav-item {
+  width: 100%;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: left;
+  padding: 0.8rem 0.9rem;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.app-superadmin-nav-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.app-superadmin-nav-item.is-active {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.app-superadmin-nav-item-danger {
+  margin-top: 0.8rem;
+  color: #ffd9d9;
+}
+
+.app-superadmin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-superadmin-topbar {
+  background: var(--app-farmacia-mayor-surface);
+  border-bottom: 1px solid var(--app-farmacia-mayor-border);
+  padding: 1.15rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  box-shadow: 0 6px 18px rgba(17, 24, 39, 0.03);
+}
+
+.app-superadmin-topbar-label {
+  margin: 0 0 0.2rem;
+  color: var(--app-farmacia-mayor-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-topbar h1 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+}
+
+.app-superadmin-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  flex-wrap: wrap;
+}
+
+.app-superadmin-user-mini {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--app-farmacia-mayor-border);
+  border-radius: 10px;
+  background: var(--app-farmacia-mayor-soft);
+}
+
+.app-superadmin-user-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.app-superadmin-user-meta {
+  font-size: 0.7rem;
+  color: var(--app-farmacia-mayor-muted);
+}
+
+.app-superadmin-user-mini-compact {
+  min-width: 130px;
+}
+
+.app-superadmin-notification-btn {
+  background: var(--app-farmacia-mayor-soft);
+  border: 1px solid var(--app-farmacia-mayor-border);
+  border-radius: 10px;
+  padding: 0.72rem 0.9rem;
+  color: var(--app-farmacia-mayor-text);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--app-farmacia-mayor-warning);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.app-superadmin-content {
+  padding: 1.4rem 1.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.app-superadmin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.app-superadmin-section-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+}
+
+.app-superadmin-section-description {
+  margin: 0.45rem 0 0;
+  color: var(--app-farmacia-mayor-muted);
+  font-size: 0.92rem;
+}
+
+.app-superadmin-card,
+.app-superadmin-configuracion-panel {
+  background: var(--app-farmacia-mayor-surface);
+  border: 1px solid var(--app-farmacia-mayor-border);
+  border-radius: 18px;
+  box-shadow: var(--app-farmacia-mayor-shadow);
+}
+
+.app-superadmin-configuracion-panel {
+  padding: 1.15rem 1.2rem;
+}
+
+.app-superadmin-configuracion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.app-superadmin-configuracion-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.app-superadmin-configuracion-header p {
+  margin: 0.35rem 0 0;
+  color: var(--app-farmacia-mayor-muted);
+  font-size: 0.86rem;
+}
+
+.app-superadmin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1rem;
+}
+
+.app-superadmin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.app-superadmin-field label {
+  color: var(--app-farmacia-mayor-text);
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.app-superadmin-field input,
+.app-superadmin-field select,
+.app-superadmin-field textarea {
+  width: 100%;
+  border: 1px solid var(--app-farmacia-mayor-border);
+  border-radius: 10px;
+  background: #fff;
+  padding: 0.72rem 0.8rem;
+  font: inherit;
+  color: var(--app-farmacia-mayor-text);
+}
+
+.app-superadmin-field input:focus,
+.app-superadmin-field select:focus,
+.app-superadmin-field textarea:focus,
+.btn:focus-visible,
+.app-superadmin-nav-item:focus-visible,
+.app-superadmin-notification-btn:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 2px;
+}
+
+.app-superadmin-field-actions {
+  justify-content: end;
+}
+
+.app-superadmin-actions-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: end;
+  flex-wrap: wrap;
+  min-height: 46px;
+}
+
+.app-superadmin-respaldos-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.app-superadmin-stat-card {
+  padding: 1.1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.7rem;
+  min-height: 120px;
+  position: relative;
+  overflow: hidden;
+}
+
+.app-superadmin-stat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--app-farmacia-mayor-accent), #7db0ff);
+}
+
+.app-superadmin-stat-label {
+  color: var(--app-farmacia-mayor-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-stat-value {
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  line-height: 1.2;
+}
+
+.app-superadmin-grid-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.8rem;
+}
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0.8rem 1rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--app-farmacia-mayor-accent);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
+}
+
+.btn-secondary {
+  background: var(--app-farmacia-mayor-soft);
+  border-color: var(--app-farmacia-mayor-border);
+  color: var(--app-farmacia-mayor-text);
+}
+
+.app-superadmin-table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--app-farmacia-mayor-border);
+}
+
+.app-superadmin-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+.app-superadmin-table thead th {
+  background: #edf3ff;
+  color: var(--app-farmacia-mayor-text);
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  padding: 0.8rem 0.9rem;
+  text-align: left;
+  border-bottom: 1px solid var(--app-farmacia-mayor-border);
+}
+
+.app-superadmin-table tbody td {
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid var(--app-farmacia-mayor-border);
+  vertical-align: top;
+}
+
+.app-superadmin-table tbody tr:hover {
+  background: #f7faff;
+}
+
+.app-superadmin-empty-state {
+  text-align: center;
+  color: var(--app-farmacia-mayor-muted);
+  font-style: italic;
+}
+
+.app-superadmin-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .app-superadmin-layout {
+    display: block;
+  }
+
+  .app-superadmin-sidebar {
+    width: 100%;
+    padding-bottom: 0.75rem;
+  }
+
+  .app-superadmin-nav ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .app-superadmin-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-superadmin-content {
+    padding: 1rem;
+  }
+
+  .app-superadmin-configuracion-panel,
+  .app-superadmin-topbar {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .app-superadmin-topbar-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .app-superadmin-grid-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

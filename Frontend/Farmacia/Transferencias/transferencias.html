@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Transferencias de Inventario Mayor a Inventario Detal de Farmacia. Traslado interno de medicamentos por lote con conservación de identidad y control de existencias."
+    />
+    <title>Farmacia / Transferencias Mayor → Detal</title>
+    <link rel="stylesheet" href="../../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="../../Compartidos/CSS/tablas.css" />
+    <link rel="stylesheet" href="transferencias.css" />
+  </head>
+  <body>
+    <div class="app-farmacia-transferencias-pagina">
+      <div class="app-farmacia-transferencias-contenido">
+        <!-- Encabezado -->
+        <header class="app-farmacia-transferencias-encabezado" aria-label="Encabezado de transferencias de Farmacia">
+          <div class="app-farmacia-transferencias-encabezado-texto">
+            <p class="app-farmacia-transferencias-ruta" aria-label="Ruta del módulo">Farmacia / Transferencias Mayor → Detal</p>
+            <h1 class="app-farmacia-transferencias-titulo">Transferencias de Inventario Mayor a Inventario Detal</h1>
+            <p class="app-farmacia-transferencias-descripcion">
+              Operación interna de Farmacia para trasladar cantidades específicas de medicamentos desde Inventario Mayor hacia Inventario Detal.
+              La transferencia conserva la identidad del medicamento y del lote original, descuenta la cantidad en Mayor e incorpora la misma cantidad en Detal
+              sin generar una nueva entrada externa, sin crear donaciones y sin duplicar la existencia global de Farmacia.
+            </p>
+          </div>
+          <div class="app-farmacia-transferencias-encabezado-acciones" aria-label="Accesos relacionados">
+            <a class="app-btn app-btn--secundario" href="../Inventario_Mayor/mayor.html" id="acceso-inventario-mayor-transferencias">Acceso a Mayor</a>
+            <a class="app-btn app-btn--secundario" href="../Inventario_Detal/detal.html" id="acceso-inventario-detal-transferencias">Acceso a Detal</a>
+          </div>
+        </header>
+
+        <!-- Mensajes y validaciones visuales -->
+        <section class="app-farmacia-transferencias-mensajes" aria-label="Mensajes de la transferencia">
+          <div id="mensaje-transferencia" class="app-farmacia-transferencias-mensaje-contenedor" role="status" aria-live="polite" aria-atomic="true"></div>
+        </section>
+
+        <div class="app-farmacia-transferencias-disposicion">
+          <main class="app-farmacia-transferencias-principal">
+            <!-- Formulario de transferencia -->
+            <section class="app-farmacia-transferencias-seccion" aria-labelledby="titulo-formulario-transferencia">
+              <div class="app-farmacia-transferencias-seccion-cabecera">
+                <div class="app-farmacia-transferencias-seccion-texto">
+                  <h2 id="titulo-formulario-transferencia" class="app-farmacia-transferencias-seccion-titulo">Formulario de transferencia</h2>
+                  <p class="app-farmacia-transferencias-seccion-descripcion">
+                    Seleccione manualmente el medicamento y el lote de Mayor. La cantidad, la fecha y las existencias se validarán nuevamente en el backend antes de confirmar.
+                  </p>
+                </div>
+              </div>
+              <div class="app-farmacia-transferencias-seccion-cuerpo">
+                <form id="form-transferencia" class="app-formulario" novalidate autocomplete="off">
+                  <div class="app-formulario__seccion">
+                    <div class="app-formulario__seccion-encabezado">
+                      <h3 class="app-formulario__seccion-titulo">Datos de la transferencia</h3>
+                      <p class="app-formulario__seccion-descripcion">Los medicamentos y lotes se consultan desde registros reales. No se utilizan catálogos estáticos ni selección automática de lotes.</p>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <div class="app-campo" id="grupo-medicamento-transferencia">
+                        <label class="app-campo__etiqueta" for="campo-medicamento-transferencia">Medicamento <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <div class="app-campo__con-accion">
+                          <div
+                            id="campo-medicamento-transferencia"
+                            class="app-lista-buscable app-farmacia-transferencias-lista-buscable"
+                            data-app-lista-tipo="medicamento"
+                            data-requerido="true"
+                            aria-label="Medicamento para transferencia"
+                          ></div>
+                          <button
+                            type="button"
+                            id="btn-agregar-medicamento-transferencia"
+                            class="app-btn app-btn--secundario app-campo__accion"
+                            hidden
+                            aria-hidden="true"
+                          >+ Agregar nuevo</button>
+                        </div>
+                        <p class="app-campo__ayuda">Busque por nombre o código. Solo se muestran medicamentos existentes registrados en el sistema.</p>
+                        <p class="app-campo__mensaje" id="error-medicamento-transferencia" role="alert" aria-live="polite"></p>
+                      </div>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <div class="app-campo" id="grupo-lote-transferencia">
+                        <label class="app-campo__etiqueta" for="campo-lote-transferencia">Lote de Mayor <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <div
+                          id="campo-lote-transferencia"
+                          class="app-lista-buscable app-farmacia-transferencias-lista-buscable"
+                          data-app-lista-tipo="lote-mayor"
+                          data-requerido="true"
+                          aria-label="Lote de Inventario Mayor para transferencia"
+                        ></div>
+                        <p class="app-campo__ayuda">
+                          Solo se muestran lotes del medicamento seleccionado con número de lote, vencimiento, existencia disponible en Mayor y estado/procedencia cuando estén disponibles.
+                          Se excluyen lotes no utilizables según el backend. La selección es manual: no se aplica FEFO ni selección automática.
+                        </p>
+                        <p class="app-campo__mensaje" id="error-lote-transferencia" role="alert" aria-live="polite"></p>
+                      </div>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--2">
+                      <div class="app-campo" id="grupo-cantidad-transferencia">
+                        <label class="app-campo__etiqueta" for="campo-cantidad-transferencia">Cantidad a transferir <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <input
+                          type="number"
+                          id="campo-cantidad-transferencia"
+                          name="cantidad"
+                          class="app-campo__control"
+                          min="1"
+                          step="1"
+                          inputmode="numeric"
+                          placeholder="Ingrese la cantidad"
+                          aria-describedby="ayuda-cantidad-transferencia existencia-disponible-lote-transferencia"
+                        />
+                        <p class="app-campo__ayuda" id="ayuda-cantidad-transferencia">La cantidad no puede superar la existencia disponible del lote seleccionado en Mayor. La validación definitiva la realiza el backend.</p>
+                        <p class="app-campo__ayuda" id="existencia-disponible-lote-transferencia">Existencia disponible del lote seleccionado: <strong id="existencia-lote-seleccionado-transferencia">—</strong></p>
+                        <p class="app-campo__mensaje" id="error-cantidad-transferencia" role="alert" aria-live="polite"></p>
+                      </div>
+
+                      <div class="app-campo" id="grupo-fecha-transferencia">
+                        <label class="app-campo__etiqueta" for="campo-fecha-transferencia">Fecha de transferencia (fecha efectiva) <span class="app-campo__obligatorio" aria-hidden="true">*</span></label>
+                        <input
+                          type="date"
+                          id="campo-fecha-transferencia"
+                          name="fechaEfectiva"
+                          class="app-campo__control"
+                          aria-describedby="ayuda-fecha-transferencia"
+                        />
+                        <p class="app-campo__ayuda" id="ayuda-fecha-transferencia">
+                          Puede seleccionar desde el calendario o introducir manualmente la fecha. Se permiten fechas anteriores como fecha efectiva del movimiento.
+                          El backend guardará por separado la fecha y hora reales de registro sin reemplazar la fecha ingresada.
+                        </p>
+                        <p class="app-campo__mensaje" id="error-fecha-transferencia" role="alert" aria-live="polite"></p>
+                      </div>
+                    </div>
+
+                    <div class="app-formulario__fila app-formulario__fila--1">
+                      <div class="app-campo" id="grupo-observaciones-transferencia">
+                        <label class="app-campo__etiqueta" for="campo-observaciones-transferencia">Observaciones <span class="app-campo__opcional">(opcional)</span></label>
+                        <textarea
+                          id="campo-observaciones-transferencia"
+                          name="observaciones"
+                          class="app-campo__control app-campo__control--textarea"
+                          rows="3"
+                          placeholder="Describa el motivo o detalle de la transferencia"
+                        ></textarea>
+                        <p class="app-campo__ayuda">Use este campo para registrar una descripción o motivo de la transferencia.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="app-formulario__seccion">
+                    <div class="app-formulario__seccion-encabezado">
+                      <h3 class="app-formulario__seccion-titulo">Origen y destino</h3>
+                      <p class="app-formulario__seccion-descripcion">Este formulario está diseñado exclusivamente para transferencias internas de Mayor a Detal. El destino no es editable.</p>
+                    </div>
+                    <div class="app-formulario__fila app-formulario__fila--2">
+                      <div class="app-campo">
+                        <span class="app-campo__etiqueta">Origen</span>
+                        <div id="transferencia-origen" class="app-campo__control app-campo__control--solo-lectura" aria-readonly="true">Inventario Mayor</div>
+                      </div>
+                      <div class="app-campo">
+                        <span class="app-campo__etiqueta">Destino</span>
+                        <div id="transferencia-destino" class="app-campo__control app-campo__control--solo-lectura" aria-readonly="true">Inventario Detal</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="app-formulario__acciones" role="group" aria-label="Acciones del formulario de transferencia">
+                    <button type="button" id="btn-cancelar-transferencia" class="app-btn app-btn--secundario">Cancelar</button>
+                    <button type="submit" id="btn-confirmar-transferencia" class="app-btn app-btn--primario">Confirmar transferencia</button>
+                  </div>
+                  <p class="app-formulario__nota-pie">
+                    Al confirmar se mostrará un resumen de la operación y se solicitará confirmación antes de enviar. No se presentará la transferencia como completada hasta recibir confirmación del backend.
+                  </p>
+                </form>
+              </div>
+            </section>
+          </main>
+
+          <aside class="app-farmacia-transferencias-lateral" aria-label="Información de existencia y vista previa">
+            <!-- Resumen de existencia en Mayor -->
+            <section class="app-farmacia-transferencias-seccion" aria-labelledby="titulo-existencia-mayor-transferencia">
+              <div class="app-farmacia-transferencias-seccion-cabecera">
+                <div class="app-farmacia-transferencias-seccion-texto">
+                  <h2 id="titulo-existencia-mayor-transferencia" class="app-farmacia-transferencias-seccion-titulo">Resumen de existencia en Mayor</h2>
+                  <p class="app-farmacia-transferencias-seccion-descripcion">Existencias actuales del medicamento y lote seleccionados en Inventario Mayor.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-transferencias-seccion-cuerpo">
+                <dl class="app-farmacia-transferencias-resumen-lista">
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Medicamento seleccionado</dt>
+                    <dd id="resumen-mayor-medicamento">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Lote seleccionado</dt>
+                    <dd id="resumen-mayor-lote">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Existencia disponible en Mayor (lote)</dt>
+                    <dd id="existencia-mayor-transferencia">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Existencia actual en Detal (lote)</dt>
+                    <dd id="existencia-detal-transferencia">—</dd>
+                  </div>
+                </dl>
+                <p class="app-campo__ayuda">Los saldos mostrados corresponden a los registros consultados en el sistema y pueden actualizarse al cambiar la selección.</p>
+              </div>
+            </section>
+
+            <!-- Información del lote seleccionado -->
+            <section class="app-farmacia-transferencias-seccion" aria-labelledby="titulo-info-lote-transferencia">
+              <div class="app-farmacia-transferencias-seccion-cabecera">
+                <div class="app-farmacia-transferencias-seccion-texto">
+                  <h2 id="titulo-info-lote-transferencia" class="app-farmacia-transferencias-seccion-titulo">Información del lote seleccionado</h2>
+                  <p class="app-farmacia-transferencias-seccion-descripcion">Detalle del lote de Mayor elegido manualmente para la transferencia.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-transferencias-seccion-cuerpo">
+                <dl class="app-farmacia-transferencias-resumen-lista" aria-label="Datos del lote seleccionado">
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Número de lote</dt>
+                    <dd id="info-lote-numero">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Fecha de vencimiento</dt>
+                    <dd id="info-lote-vencimiento">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Existencia disponible en Mayor</dt>
+                    <dd id="info-lote-existencia-mayor">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Procedencia</dt>
+                    <dd id="info-lote-procedencia">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Estado</dt>
+                    <dd id="info-lote-estado">—</dd>
+                  </div>
+                  <div class="app-farmacia-transferencias-resumen-item">
+                    <dt>Código de barras</dt>
+                    <dd id="info-lote-codigo-barras">—</dd>
+                  </div>
+                </dl>
+                <p class="app-formulario__nota-pie">El lote mantiene su identidad y su código de barras original al trasladarse a Detal. No se crea un lote nuevo por cambio de módulo.</p>
+              </div>
+            </section>
+
+            <!-- Vista previa de la transferencia -->
+            <section class="app-farmacia-transferencias-seccion" aria-labelledby="titulo-resumen-transferencia">
+              <div class="app-farmacia-transferencias-seccion-cabecera">
+                <div class="app-farmacia-transferencias-seccion-texto">
+                  <h2 id="titulo-resumen-transferencia" class="app-farmacia-transferencias-seccion-titulo">Vista previa de la transferencia</h2>
+                  <p class="app-farmacia-transferencias-seccion-descripcion">Revise los saldos de Mayor y Detal antes de confirmar. Los cálculos definitivos proceden del backend.</p>
+                </div>
+              </div>
+              <div class="app-farmacia-transferencias-seccion-cuerpo">
+                <div id="resumen-transferencia" class="app-farmacia-transferencias-vista-previa" aria-live="polite">
+                  <div class="app-farmacia-transferencias-vista-previa-bloque">
+                    <h3 class="app-farmacia-transferencias-vista-previa-subtitulo">Datos generales</h3>
+                    <dl class="app-farmacia-transferencias-resumen-lista">
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Medicamento</dt>
+                        <dd id="resumen-previa-medicamento">—</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Lote</dt>
+                        <dd id="resumen-previa-lote">—</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Cantidad que se transferirá</dt>
+                        <dd id="resumen-previa-cantidad">—</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Fecha efectiva</dt>
+                        <dd id="resumen-previa-fecha">—</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Origen</dt>
+                        <dd id="resumen-previa-origen">Inventario Mayor</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Destino</dt>
+                        <dd id="resumen-previa-destino">Inventario Detal</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div class="app-farmacia-transferencias-vista-previa-bloque app-farmacia-transferencias-vista-previa-bloque--mayor" aria-label="Saldos de Inventario Mayor">
+                    <h3 class="app-farmacia-transferencias-vista-previa-subtitulo">Inventario Mayor</h3>
+                    <dl class="app-farmacia-transferencias-resumen-lista">
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Existencia actual en Mayor</dt>
+                        <dd id="resumen-previa-existencia-mayor-actual">—</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Existencia resultante en Mayor</dt>
+                        <dd id="resumen-previa-existencia-mayor-resultante">—</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div class="app-farmacia-transferencias-vista-previa-bloque app-farmacia-transferencias-vista-previa-bloque--detal" aria-label="Saldos de Inventario Detal">
+                    <h3 class="app-farmacia-transferencias-vista-previa-subtitulo">Inventario Detal</h3>
+                    <dl class="app-farmacia-transferencias-resumen-lista">
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Cantidad actual en Detal para ese lote</dt>
+                        <dd id="resumen-previa-existencia-detal-actual">—</dd>
+                      </div>
+                      <div class="app-farmacia-transferencias-resumen-item">
+                        <dt>Existencia resultante en Detal</dt>
+                        <dd id="resumen-previa-existencia-detal-resultante">—</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <div class="app-farmacia-transferencias-vista-previa-aviso" role="note">
+                    <p>Mayor y Detal son inventarios independientes dentro de Farmacia. La transferencia descuenta de Mayor e incorpora en Detal la misma cantidad del mismo lote, sin alterar la existencia global consolidada por una nueva entrada externa.</p>
+                    <p id="resumen-previa-validacion" class="app-farmacia-transferencias-vista-previa-validacion" aria-live="polite">Complete los datos obligatorios y verifique que la cantidad no supere la existencia disponible para habilitar la confirmación.</p>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </aside>
+        </div>
+
+        <!-- Historial de transferencias -->
+        <section class="app-farmacia-transferencias-seccion" aria-labelledby="titulo-historial-transferencias">
+          <div class="app-farmacia-transferencias-seccion-cabecera">
+            <div class="app-farmacia-transferencias-seccion-texto">
+              <h2 id="titulo-historial-transferencias" class="app-farmacia-transferencias-seccion-titulo">Historial de transferencias</h2>
+              <p class="app-farmacia-transferencias-seccion-descripcion">Consulte transferencias registradas de Mayor a Detal, incluyendo su fecha efectiva, registro real, responsable y estado.</p>
+            </div>
+          </div>
+
+          <div class="app-farmacia-transferencias-seccion-cuerpo">
+            <form id="form-filtros-transferencias" class="app-formulario app-formulario--plano" novalidate>
+              <div class="app-farmacia-transferencias-filtros" role="group" aria-label="Búsqueda y filtros del historial de transferencias">
+                <div class="app-campo app-farmacia-transferencias-filtro-busqueda">
+                  <label class="app-campo__etiqueta" for="busqueda-transferencias">Buscar en historial</label>
+                  <span class="app-campo__busqueda">
+                    <span class="app-campo__busqueda-icono" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                    <input
+                      type="search"
+                      id="busqueda-transferencias"
+                      name="busqueda"
+                      class="app-campo__control"
+                      placeholder="Medicamento, código, número de lote o usuario"
+                      autocomplete="off"
+                    />
+                  </span>
+                  <p class="app-campo__ayuda">La búsqueda se realiza sobre registros consultados en el sistema.</p>
+                </div>
+
+                <div id="filtro-fecha-transferencia" class="app-farmacia-transferencias-filtro-fechas" role="group" aria-label="Filtro por rango de fechas">
+                  <div class="app-campo">
+                    <label class="app-campo__etiqueta" for="filtro-fecha-inicial-transferencias">Fecha inicial</label>
+                    <input type="date" id="filtro-fecha-inicial-transferencias" name="fechaInicial" class="app-campo__control" />
+                  </div>
+                  <div class="app-campo">
+                    <label class="app-campo__etiqueta" for="filtro-fecha-final-transferencias">Fecha final</label>
+                    <input type="date" id="filtro-fecha-final-transferencias" name="fechaFinal" class="app-campo__control" />
+                  </div>
+                  <p class="app-campo__ayuda">Se permiten seleccionar fechas anteriores para consultar transferencias pasadas.</p>
+                </div>
+
+                <div class="app-campo">
+                  <label class="app-campo__etiqueta" for="filtro-estado-transferencia">Estado</label>
+                  <select id="filtro-estado-transferencia" name="estado" class="app-campo__control app-campo__control--select">
+                    <option value="">Todos</option>
+                    <option value="confirmada">Confirmada</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="anulada">Anulada</option>
+                    <option value="rechazada">Rechazada</option>
+                    <option value="no-autorizada">No autorizada</option>
+                  </select>
+                </div>
+
+                <div class="app-farmacia-transferencias-filtros-acciones">
+                  <button type="submit" id="btn-buscar-transferencias" class="app-btn app-btn--primario">Buscar</button>
+                  <button type="reset" id="btn-limpiar-filtros-transferencias" class="app-btn app-btn--secundario">Limpiar filtros</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="app-farmacia-transferencias-seccion-cuerpo app-farmacia-transferencias-seccion-cuerpo--sin-relleno">
+            <div class="app-farmacia-transferencias-tabla-marco" tabindex="0" aria-label="Tabla de historial de transferencias con desplazamiento horizontal">
+              <table class="app-tabla app-tabla--amplia app-farmacia-transferencias-tabla" id="tabla-historial-transferencias">
+                <caption class="app-tabla__titulo app-tabla__titulo--oculto">Historial de transferencias de Inventario Mayor a Inventario Detal</caption>
+                <thead class="app-tabla__encabezado">
+                  <tr class="app-tabla__fila">
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Identificador</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha efectiva de transferencia</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Fecha y hora real de registro</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Medicamento</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Lote</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--numero">Cantidad</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Origen</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Destino</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Usuario responsable</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Documento o referencia</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado">Estado</th>
+                    <th scope="col" class="app-tabla__celda app-tabla__celda--encabezado app-tabla__celda--acciones">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody class="app-tabla__cuerpo">
+                  <tr class="app-tabla__fila">
+                    <td colspan="12" class="app-tabla__celda app-tabla__celda--estado">
+                      <div class="app-tabla__estado-vacio">
+                        <p class="app-tabla__estado-vacio-titulo">No hay transferencias para mostrar</p>
+                        <p class="app-tabla__estado-vacio-texto">Use la búsqueda y los filtros para consultar el historial de transferencias registradas en el sistema.</p>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="app-farmacia-transferencias-tabla-desplazamiento">
+              <span aria-hidden="true">↔</span> Desplácese horizontalmente para ver todas las columnas del historial.
+            </p>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Modal de confirmación de transferencia -->
+    <div id="modal-confirmar-transferencia" class="app-modal app-modal--confirmacion" hidden aria-hidden="true">
+      <div class="app-modal__dialogo" role="dialog" aria-modal="true" aria-labelledby="modal-confirmar-transferencia-titulo" aria-describedby="modal-confirmar-transferencia-descripcion">
+        <div class="app-modal__encabezado">
+          <div>
+            <h2 id="modal-confirmar-transferencia-titulo" class="app-modal__titulo">Confirmar transferencia</h2>
+            <p id="modal-confirmar-transferencia-descripcion" class="app-modal__descripcion">Revise el resumen de la operación antes de confirmar. La transferencia no se considerará completada hasta recibir confirmación del backend.</p>
+          </div>
+          <button type="button" class="app-modal__cerrar" id="modal-confirmar-transferencia-cerrar" aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          </button>
+        </div>
+        <div class="app-modal__cuerpo">
+          <div class="app-modal__icono app-modal__icono--info" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          </div>
+          <div id="modal-confirmar-transferencia-resumen" class="app-farmacia-transferencias-modal-resumen">
+            <dl class="app-farmacia-transferencias-resumen-lista">
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Medicamento</dt><dd id="modal-resumen-medicamento">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Lote</dt><dd id="modal-resumen-lote">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Cantidad a transferir</dt><dd id="modal-resumen-cantidad">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Existencia actual en Mayor</dt><dd id="modal-resumen-mayor-actual">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Existencia resultante en Mayor</dt><dd id="modal-resumen-mayor-resultante">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Cantidad actual en Detal para ese lote</dt><dd id="modal-resumen-detal-actual">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Existencia resultante en Detal</dt><dd id="modal-resumen-detal-resultante">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Fecha efectiva</dt><dd id="modal-resumen-fecha">—</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Origen</dt><dd id="modal-resumen-origen">Inventario Mayor</dd></div>
+              <div class="app-farmacia-transferencias-resumen-item"><dt>Destino</dt><dd id="modal-resumen-destino">Inventario Detal</dd></div>
+            </dl>
+          </div>
+          <p id="modal-confirmar-transferencia-estado" class="app-farmacia-transferencias-modal-estado" role="status" aria-live="polite"></p>
+        </div>
+        <div class="app-modal__pie">
+          <div class="app-modal__acciones">
+            <button type="button" id="modal-confirmar-transferencia-cancelar" class="app-btn app-btn--secundario">Volver</button>
+            <button type="button" id="modal-confirmar-transferencia-aceptar" class="app-btn app-btn--primario">Confirmar y enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="transferencias.js"></script>
+  </body>
+</html>
