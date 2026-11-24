@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Administración de usuarios del Sistema Institucional de Inventario Hospitalario para SuperAdmin."
+    />
+    <title>Usuarios | SuperAdmin</title>
+    <link rel="stylesheet" href="../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/tablas.css" />
+    <link rel="stylesheet" href="usuarios.css" />
+    <style>
+      :root {
+        --usuarios-sidebar: #0f1f34;
+        --usuarios-sidebar-alt: #17375d;
+        --usuarios-surface: #ffffff;
+        --usuarios-surface-alt: #f4f8fd;
+        --usuarios-border: #dfeaf5;
+        --usuarios-muted: #5d6d7f;
+        --usuarios-text: #1d2a36;
+        --usuarios-shadow: 0 12px 30px rgba(13, 29, 51, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--color-fondo);
+        color: var(--usuarios-text);
+      }
+
+      .app-superadmin-layout {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .app-superadmin-sidebar {
+        width: 260px;
+        background: linear-gradient(180deg, var(--usuarios-sidebar) 0%, #10263f 100%);
+        color: var(--color-texto-inverso);
+        padding: 1.25rem 1rem 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .app-superadmin-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        padding: 0.8rem 0.6rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+      }
+
+      .app-superadmin-brand-mark {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.12);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+      }
+
+      .app-superadmin-brand-copy {
+        display: grid;
+        gap: 0.1rem;
+      }
+
+      .app-superadmin-kicker {
+        font-size: 0.68rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .app-superadmin-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .app-superadmin-nav-item {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.82);
+        text-align: left;
+        padding: 0.78rem 0.9rem;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 600;
+      }
+
+      .app-superadmin-nav-item.is-active,
+      .app-superadmin-nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: #ffffff;
+      }
+
+      .app-superadmin-nav-item-danger {
+        color: #ffc7c7;
+      }
+
+      .app-superadmin-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .app-superadmin-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.3rem 2rem;
+        background: var(--usuarios-surface);
+        border-bottom: 1px solid var(--usuarios-border);
+      }
+
+      .app-superadmin-topbar-label {
+        margin: 0 0 0.2rem;
+        color: var(--usuarios-muted);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-size: 0.68rem;
+      }
+
+      .app-superadmin-topbar h1 {
+        margin: 0;
+        font-size: clamp(1.6rem, 2vw, 2.2rem);
+      }
+
+      .app-superadmin-topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .app-superadmin-user-mini {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        color: var(--usuarios-text);
+      }
+
+      .app-superadmin-user-name {
+        font-weight: 700;
+      }
+
+      .app-superadmin-user-meta {
+        color: var(--usuarios-muted);
+        font-size: 0.8rem;
+      }
+
+      .app-superadmin-notification-btn,
+      .app-btn,
+      .btn {
+        min-height: 42px;
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+        border: 1px solid var(--color-borde);
+        background: white;
+        color: var(--usuarios-text);
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .app-superadmin-notification-btn {
+        background: var(--usuarios-surface-alt);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1.2rem;
+        height: 1.2rem;
+        padding: 0 0.3rem;
+        border-radius: 999px;
+        background: var(--color-error);
+        color: white;
+        font-size: 0.7rem;
+        margin-left: 0.3rem;
+      }
+
+      .app-superadmin-content {
+        padding: 1.5rem 2rem 2rem;
+      }
+
+      .app-superadmin-header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .app-superadmin-section-title {
+        margin: 0;
+        font-size: clamp(1.5rem, 1.9vw, 2rem);
+      }
+
+      .app-superadmin-section-description {
+        margin: 0.45rem 0 0;
+        color: var(--usuarios-muted);
+        max-width: 68ch;
+      }
+
+      .app-superadmin-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .app-superadmin-card {
+        background: var(--usuarios-surface);
+        border: 1px solid var(--usuarios-border);
+        border-radius: 16px;
+        box-shadow: var(--usuarios-shadow);
+      }
+
+      .stat-card {
+        padding: 1rem 1.15rem 0.95rem;
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .stat-card-label {
+        color: var(--usuarios-muted);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .stat-card-value {
+        font-size: clamp(1.5rem, 2vw, 2rem);
+        font-weight: 700;
+        color: var(--color-primario);
+      }
+
+      .stat-card small {
+        color: var(--usuarios-muted);
+      }
+
+      .app-superadmin-panel {
+        padding: 1.25rem;
+      }
+
+      .app-superadmin-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .app-superadmin-panel-title {
+        margin: 0;
+        font-size: 1.15rem;
+      }
+
+      .app-superadmin-filtros {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.9rem;
+        align-items: end;
+        padding: 0.9rem 1rem;
+        background: var(--usuarios-surface-alt);
+        border: 1px solid var(--usuarios-border);
+        border-radius: 14px;
+        margin-bottom: 1rem;
+      }
+
+      .app-superadmin-field {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .app-superadmin-field label {
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: var(--usuarios-muted);
+      }
+
+      .app-superadmin-input,
+      .app-superadmin-select {
+        width: 100%;
+        min-height: 42px;
+        border: 1px solid var(--usuarios-border);
+        border-radius: 10px;
+        padding: 0.7rem 0.8rem;
+        background: var(--usuarios-surface);
+        color: var(--usuarios-text);
+      }
+
+      .app-superadmin-input:focus,
+      .app-superadmin-select:focus,
+      select:focus,
+      input:focus,
+      textarea:focus {
+        outline: 3px solid rgba(47, 118, 185, 0.18);
+        border-color: var(--color-primario);
+      }
+
+      .app-superadmin-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .app-superadmin-resultados {
+        color: var(--usuarios-muted);
+        font-size: 0.85rem;
+      }
+
+      .app-superadmin-table-wrap {
+        overflow: auto;
+        border: 1px solid var(--usuarios-border);
+        border-radius: 14px;
+        background: var(--usuarios-surface);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 960px;
+      }
+
+      th,
+      td {
+        padding: 0.9rem 0.9rem;
+        border-bottom: 1px solid var(--usuarios-border);
+        text-align: left;
+        font-size: 0.92rem;
+        vertical-align: middle;
+      }
+
+      thead th {
+        background: var(--usuarios-surface-alt);
+        color: var(--usuarios-text);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      tbody tr:hover {
+        background: rgba(47, 118, 185, 0.03);
+      }
+
+      .estado-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 0.35rem 0.7rem;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .estado-activo {
+        background: #eaf7f0;
+        color: #11613e;
+      }
+
+      .estado-inactivo {
+        background: #fbe7e7;
+        color: #912018;
+      }
+
+      .rol-chip {
+        display: inline-block;
+        padding: 0.32rem 0.65rem;
+        border-radius: 999px;
+        background: #edf4ff;
+        color: #133d74;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .tabla-acciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.45rem;
+      }
+
+      .mini-btn {
+        border: 1px solid var(--usuarios-border);
+        border-radius: 8px;
+        background: white;
+        color: var(--usuarios-text);
+        padding: 0.38rem 0.6rem;
+        font-size: 0.76rem;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .mini-btn.primary {
+        border-color: rgba(47, 118, 185, 0.3);
+        background: #edf5ff;
+        color: var(--color-primario);
+      }
+
+      .mini-btn.danger {
+        border-color: rgba(217, 45, 32, 0.25);
+        background: #fff0ef;
+        color: #b42318;
+      }
+
+      .mini-btn.success {
+        border-color: rgba(31, 143, 95, 0.3);
+        background: #edf9f3;
+        color: #11613e;
+      }
+
+      .app-modal {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: rgba(17, 26, 35, 0.5);
+        padding: 1rem;
+        z-index: 2000;
+      }
+
+      .app-modal.is-open {
+        display: flex;
+      }
+
+      .app-modal-card {
+        width: min(720px, 100%);
+        max-height: 85vh;
+        overflow: auto;
+        background: white;
+        border-radius: 18px;
+        border: 1px solid var(--usuarios-border);
+        box-shadow: var(--usuarios-shadow);
+      }
+
+      .app-modal-header,
+      .app-modal-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.1rem 1.2rem;
+        border-bottom: 1px solid var(--usuarios-border);
+      }
+
+      .app-modal-footer {
+        border-top: 1px solid var(--usuarios-border);
+        border-bottom: none;
+        justify-content: flex-end;
+      }
+
+      .app-modal-header h3 {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      .app-modal-body {
+        padding: 1.2rem;
+      }
+
+      .usuario-form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .usuario-form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+      }
+
+      .form-note {
+        color: var(--usuarios-muted);
+        font-size: 0.82rem;
+        margin-top: 0.2rem;
+      }
+
+      .mensaje-usuarios {
+        min-height: 22px;
+        font-size: 0.9rem;
+        color: var(--color-texto-secundario);
+      }
+
+      .mensaje-usuarios.error {
+        color: var(--color-error);
+      }
+
+      .mensaje-usuarios.success {
+        color: var(--color-exito);
+      }
+
+      .campo-error {
+        display: none;
+        font-size: 0.76rem;
+        color: var(--color-error);
+        margin-top: 0.25rem;
+      }
+
+      .has-error .campo-error {
+        display: block;
+      }
+
+      .has-error .app-superadmin-input,
+      .has-error .app-superadmin-select {
+        border-color: var(--color-error);
+        background: #fff8f8;
+      }
+
+      .empty-row td {
+        text-align: center;
+        color: var(--usuarios-muted);
+        padding: 2rem 0.75rem;
+      }
+
+      @media (max-width: 920px) {
+        .app-superadmin-layout {
+          flex-direction: column;
+        }
+
+        .app-superadmin-sidebar {
+          width: 100%;
+        }
+
+        .app-superadmin-topbar,
+        .app-superadmin-content {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral administrativo">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>SuperAdmin</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal">
+          <ul>
+            <li><button type="button" class="app-superadmin-nav-item">Panel principal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Farmacia</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Almacén</button></li>
+            <li><button type="button" class="app-superadmin-nav-item is-active" aria-current="page">Usuarios</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Catálogos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Bitácora</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Respaldos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Configuración</button></li>
+            <li><button type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger">Cerrar sesión</button></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>SuperAdmin</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span class="app-superadmin-user-name">Usuario principal</span>
+              <span class="app-superadmin-user-meta">SuperAdmin</span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <header class="app-superadmin-header">
+            <div>
+              <h2 class="app-superadmin-section-title">Administración de usuarios</h2>
+              <p class="app-superadmin-section-description">
+                Gestiona las cuentas del personal autorizado, controla el acceso por rol y departamento,
+                y mantiene la trazabilidad de las operaciones del sistema.
+              </p>
+            </div>
+            <button id="btn-nuevo-usuario" type="button" class="btn btn-primary" aria-haspopup="dialog">
+              + Nuevo usuario
+            </button>
+          </header>
+
+          <section class="app-superadmin-summary" aria-label="Resumen de usuarios">
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Total de usuarios</span>
+              <strong id="total-usuarios" class="stat-card-value">—</strong>
+              <small>Registros del sistema</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Usuarios activos</span>
+              <strong id="usuarios-activos" class="stat-card-value">—</strong>
+              <small>Con acceso habilitado</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Usuarios inactivos</span>
+              <strong id="usuarios-inactivos" class="stat-card-value">—</strong>
+              <small>Sin acceso vigente</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Jefes de departamento</span>
+              <strong id="jefes-departamento" class="stat-card-value">—</strong>
+              <small>Roles de liderazgo</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Trabajadores</span>
+              <strong id="trabajadores" class="stat-card-value">—</strong>
+              <small>Usuarios operativos</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">SuperAdministradores</span>
+              <strong id="superadmins" class="stat-card-value">—</strong>
+              <small>Si el acceso está autorizado</small>
+            </article>
+          </section>
+
+          <section class="app-superadmin-card app-superadmin-panel" aria-labelledby="titulo-busqueda">
+            <div class="app-superadmin-panel-header">
+              <h3 id="titulo-busqueda" class="app-superadmin-panel-title">Búsqueda y filtros</h3>
+            </div>
+
+            <form id="form-busqueda-usuarios" class="app-superadmin-filtros" novalidate>
+              <div class="app-superadmin-field">
+                <label for="busqueda-usuarios">Nombre</label>
+                <input id="busqueda-usuarios" class="app-superadmin-input" type="text" placeholder="Buscar por nombre" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-usuario">Nombre de usuario</label>
+                <input id="filtro-usuario" class="app-superadmin-input" type="text" placeholder="Buscar usuario" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-rol">Rol</label>
+                <select id="filtro-rol" class="app-superadmin-select">
+                  <option value="">Todos</option>
+                  <option value="SuperAdmin">SuperAdmin</option>
+                  <option value="Jefe de Farmacia">Jefe de Farmacia</option>
+                  <option value="Jefe de Almacén">Jefe de Almacén</option>
+                  <option value="Trabajador de Farmacia">Trabajador de Farmacia</option>
+                  <option value="Trabajador de Almacén">Trabajador de Almacén</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-departamento">Departamento</label>
+                <select id="filtro-departamento" class="app-superadmin-select">
+                  <option value="">Todos</option>
+                  <option value="Farmacia">Farmacia</option>
+                  <option value="Almacén">Almacén</option>
+                  <option value="Sistemas">Sistemas</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-estado">Estado</label>
+                <select id="filtro-estado" class="app-superadmin-select">
+                  <option value="">Todos</option>
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="app-superadmin-panel app-superadmin-card" aria-labelledby="titulo-tabla-usuarios">
+            <div class="app-superadmin-panel-header">
+              <h3 id="titulo-tabla-usuarios" class="app-superadmin-panel-title">Usuarios del sistema</h3>
+            </div>
+
+            <div class="app-superadmin-toolbar">
+              <div id="mensaje-usuarios" class="mensaje-usuarios" aria-live="polite"></div>
+              <div class="app-superadmin-resultados">Mostrando 0 registros</div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table id="tabla-usuarios" aria-label="Tabla de usuarios del sistema">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nombre completo</th>
+                    <th>Nombre de usuario</th>
+                    <th>Rol</th>
+                    <th>Departamento</th>
+                    <th>Estado</th>
+                    <th>Último acceso</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="tabla-usuarios-body">
+                  <tr class="empty-row">
+                    <td colspan="8">No hay usuarios registrados para los filtros actuales.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="modal-usuario" class="app-modal" aria-hidden="true">
+      <div class="app-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-usuario-titulo">
+        <div class="app-modal-header">
+          <h3 id="modal-usuario-titulo">Crear usuario</h3>
+          <button type="button" class="mini-btn" data-close-modal="usuario">Cerrar</button>
+        </div>
+
+        <div class="app-modal-body">
+          <form id="form-usuario" class="usuario-form" novalidate>
+            <input type="hidden" id="campo-id-usuario" name="idUsuario" />
+
+            <div class="usuario-form-grid">
+              <div class="app-superadmin-field">
+                <label for="campo-nombre">Nombre completo</label>
+                <input id="campo-nombre" class="app-superadmin-input" name="nombreCompleto" type="text" maxlength="120" required />
+                <span class="campo-error">Ingrese el nombre completo.</span>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-usuario">Nombre de usuario</label>
+                <input id="campo-usuario" class="app-superadmin-input" name="usuario" type="text" maxlength="50" required />
+                <span class="campo-error">El nombre de usuario es obligatorio.</span>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-correo">Correo electrónico</label>
+                <input id="campo-correo" class="app-superadmin-input" name="correo" type="email" maxlength="120" />
+                <span class="campo-error">Ingrese un correo válido.</span>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-rol">Rol</label>
+                <select id="campo-rol" class="app-superadmin-select" name="rol" required>
+                  <option value="">Seleccione un rol</option>
+                  <option value="SuperAdmin">SuperAdmin</option>
+                  <option value="Jefe de Farmacia">Jefe de Farmacia</option>
+                  <option value="Jefe de Almacén">Jefe de Almacén</option>
+                  <option value="Trabajador de Farmacia">Trabajador de Farmacia</option>
+                  <option value="Trabajador de Almacén">Trabajador de Almacén</option>
+                </select>
+                <span class="campo-error">Seleccione un rol válido.</span>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-departamento">Departamento</label>
+                <select id="campo-departamento" class="app-superadmin-select" name="departamento" required>
+                  <option value="">Seleccione un departamento</option>
+                  <option value="Farmacia">Farmacia</option>
+                  <option value="Almacén">Almacén</option>
+                  <option value="Sistemas">Sistemas</option>
+                </select>
+                <span class="campo-error">Seleccione un departamento válido.</span>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-estado">Estado inicial</label>
+                <select id="campo-estado" class="app-superadmin-select" name="estado" required>
+                  <option value="activo">Activo</option>
+                  <option value="inactivo">Inactivo</option>
+                </select>
+                <span class="campo-error">Seleccione un estado autorizado.</span>
+              </div>
+            </div>
+
+            <div class="app-superadmin-field">
+              <label for="campo-password">Contraseña temporal o mecanismo seguro</label>
+              <input id="campo-password" class="app-superadmin-input" name="password" type="password" maxlength="128" placeholder="Secreto temporal o enlace de activación" />
+              <div class="form-note">
+                Según la política de seguridad del backend, no se muestran contraseñas existentes ni se reutiliza un valor previo.
+              </div>
+            </div>
+
+            <div id="mensaje-usuarios-form" class="mensaje-usuarios" aria-live="polite"></div>
+          </form>
+        </div>
+
+        <div class="app-modal-footer">
+          <button type="button" class="btn btn-secondary" data-close-modal="usuario">Cancelar</button>
+          <button type="submit" form="form-usuario" class="btn btn-primary">Guardar usuario</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="../../conexiones/frontend/superadmin.conexion.js"></script>
+    <script type="module" src="usuarios.js"></script>
+    <script type="module">
+      const modal = document.getElementById('modal-usuario');
+      const openBtn = document.getElementById('btn-nuevo-usuario');
+      const closeButtons = document.querySelectorAll('[data-close-modal="usuario"]');
+
+      const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+
+      openBtn?.addEventListener('click', openModal);
+      closeButtons.forEach((button) => button.addEventListener('click', closeModal));
+      modal?.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+      });
+    </script>
+  </body>
+</html>

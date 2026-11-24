@@ -1,0 +1,848 @@
+/**
+ * ============================================================================
+ * SISTEMA INSTITUCIONAL DE INVENTARIO HOSPITALARIO
+ * Archivo: Frontend/Compartidos/CSS/base.css
+ * ----------------------------------------------------------------------------
+ * Hoja de estilos base y sistema visual compartido por todos los módulos:
+ * Login, Farmacia, Almacén, SuperAdmin, Jefes de Departamento y Trabajadores.
+ *
+ * CONTENIDO
+ *   1. Tokens de diseño (colores, tipografía, espaciados, etc.)
+ *   2. Reinicio y normalización
+ *   3. Documento y tipografía general
+ *   4. Enlaces
+ *   5. Elementos de contenido
+ *   6. Estructura y contenedores
+ *   7. Accesibilidad y foco
+ *   8. Ajustes adaptables (responsive)
+ *   9. Preferencias del usuario
+ *  10. Impresión
+ *
+ * NOTA: Los estilos particulares de formularios, botones, tarjetas, tablas,
+ * menús, modales y demás componentes pertenecen a sus propios archivos CSS.
+ * Este archivo solamente define la base visual y los tokens reutilizables.
+ * ============================================================================
+ */
+
+/* ============================================================================
+   1. TOKENS DE DISEÑO
+   ============================================================================ */
+
+:root {
+  color-scheme: light;
+
+  /* --------------------------------------------------------------------------
+     1.1 Paleta institucional
+     Azul institucional, azul profundo de navegación, grises neutros y colores
+     reservados para estados. No usar estas escalas directamente en componentes
+     cuando exista un token semántico equivalente.
+     -------------------------------------------------------------------------- */
+
+  /* Azul institucional */
+  --azul-50: #eef5fc;
+  --azul-100: #dceaf8;
+  --azul-200: #b9d5f0;
+  --azul-300: #8bb8e4;
+  --azul-400: #5796d2;
+  --azul-500: #2f76b9;
+  --azul-600: #1a5c9e;
+  --azul-700: #154a80;
+  --azul-800: #123c68;
+  --azul-900: #0e2d4e;
+  --azul-950: #081d33;
+
+  /* Grises institucionales */
+  --gris-0: #ffffff;
+  --gris-50: #f6f8fb;
+  --gris-100: #eef2f7;
+  --gris-200: #e1e8f0;
+  --gris-300: #cfdae5;
+  --gris-400: #a3b2c3;
+  --gris-500: #5b6e82;
+  --gris-600: #4a5b6d;
+  --gris-700: #3a4859;
+  --gris-800: #2a3644;
+  --gris-900: #1a242f;
+  --gris-950: #111a23;
+
+  /* Verde: operaciones exitosas */
+  --verde-50: #e9f7f0;
+  --verde-100: #d1efe0;
+  --verde-500: #1f8f5f;
+  --verde-600: #167a4e;
+  --verde-700: #11613e;
+
+  /* Ámbar: advertencias y atención */
+  --ambar-50: #fff6e6;
+  --ambar-100: #ffe9c2;
+  --ambar-500: #d97706;
+  --ambar-600: #b45309;
+  --ambar-700: #92400e;
+
+  /* Rojo: errores y situaciones críticas */
+  --rojo-50: #fdecea;
+  --rojo-100: #fad7d3;
+  --rojo-500: #d92d20;
+  --rojo-600: #b42318;
+  --rojo-700: #912018;
+
+  /* --------------------------------------------------------------------------
+     1.2 Colores semánticos
+     -------------------------------------------------------------------------- */
+
+  /* Marca y acciones principales */
+  --color-primario: var(--azul-600);
+  --color-primario-hover: var(--azul-700);
+  --color-primario-activo: var(--azul-800);
+  --color-primario-suave: var(--azul-50);
+  --color-primario-borde: var(--azul-200);
+
+  /* Estructuras de navegación */
+  --color-secundario: var(--azul-900);
+  --color-secundario-hover: var(--azul-800);
+  --color-secundario-activo: var(--azul-950);
+  --color-navegacion: var(--azul-900);
+  --color-navegacion-hover: var(--azul-800);
+  --color-navegacion-activo: var(--azul-600);
+  --color-navegacion-texto: var(--gris-0);
+  --color-navegacion-texto-tenue: var(--azul-200);
+  --color-navegacion-borde: rgba(255, 255, 255, 0.14);
+
+  /* Fondos y superficies */
+  --color-fondo: var(--gris-50);
+  --color-fondo-secundario: var(--gris-100);
+  --color-fondo-terciario: var(--gris-200);
+  --color-superficie: var(--gris-0);
+  --color-superficie-alterna: var(--gris-50);
+
+  /* Texto */
+  --color-texto: var(--gris-900);
+  --color-texto-secundario: var(--gris-600);
+  --color-texto-tenue: var(--gris-500);
+  --color-texto-inverso: var(--gris-0);
+  --color-texto-inverso-tenue: var(--gris-300);
+
+  /* Bordes y separadores */
+  --color-borde-suave: #e4ebf2;
+  --color-borde: var(--gris-300);
+  --color-borde-fuerte: #7d90a4;
+
+  /* Enlaces */
+  --color-enlace: var(--azul-600);
+  --color-enlace-hover: var(--azul-700);
+  --color-enlace-activo: var(--azul-800);
+
+  /* Estado: éxito */
+  --color-exito: var(--verde-600);
+  --color-exito-hover: var(--verde-700);
+  --color-exito-fondo: var(--verde-50);
+  --color-exito-borde: #a7dcc2;
+  --color-exito-texto: #0e5538;
+
+  /* Estado: advertencia */
+  --color-advertencia: var(--ambar-600);
+  --color-advertencia-hover: var(--ambar-700);
+  --color-advertencia-fondo: var(--ambar-50);
+  --color-advertencia-borde: #f3cf8a;
+  --color-advertencia-texto: #7a3a06;
+
+  /* Estado: error */
+  --color-error: var(--rojo-600);
+  --color-error-hover: var(--rojo-700);
+  --color-error-fondo: var(--rojo-50);
+  --color-error-borde: #f3b6b0;
+  --color-error-texto: #7a1a12;
+
+  /* Estado: información */
+  --color-info: var(--azul-600);
+  --color-info-hover: var(--azul-700);
+  --color-info-fondo: var(--azul-50);
+  --color-info-borde: var(--azul-200);
+  --color-info-texto: var(--azul-800);
+
+  /* Estado: deshabilitado (los controles aplican estos tokens en forms.css) */
+  --color-deshabilitado-fondo: var(--gris-100);
+  --color-deshabilitado-texto: var(--gris-500);
+  --color-deshabilitado-borde: var(--gris-200);
+
+  /* Superposición para menús, cajones y modales */
+  --color-superposicion: rgba(8, 29, 51, 0.55);
+
+  /* Foco visible */
+  --color-foco: var(--azul-500);
+  --color-foco-inverso: #fbbf24;
+  --grosor-foco: 3px;
+  --desplazamiento-foco: 2px;
+
+  /* --------------------------------------------------------------------------
+     1.3 Tipografía
+     -------------------------------------------------------------------------- */
+
+  --fuente-base: "Segoe UI", "Noto Sans", "Helvetica Neue", Arial, system-ui,
+    sans-serif;
+  --fuente-titulos: var(--fuente-base);
+  --fuente-monoespaciada: "SFMono-Regular", Consolas, "Liberation Mono", Menlo,
+    monospace;
+
+  --peso-normal: 400;
+  --peso-medio: 500;
+  --peso-seminegrita: 600;
+  --peso-negrita: 700;
+
+  /* Escala tipográfica. El mínimo es 0.75rem (12 px) por legibilidad. */
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.875rem;
+  --texto-base: 1rem;
+  --texto-lg: 1.125rem;
+  --texto-xl: 1.25rem;
+  --texto-2xl: 1.5rem;
+  --texto-3xl: clamp(1.75rem, 1.55rem + 0.9vw, 2.25rem);
+  --texto-4xl: clamp(2rem, 1.7rem + 1.4vw, 2.75rem);
+
+  /* Tamaños fluidos para encabezados */
+  --texto-h1: var(--texto-4xl);
+  --texto-h2: clamp(1.5rem, 1.35rem + 0.75vw, 2rem);
+  --texto-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.5rem);
+  --texto-h4: var(--texto-lg);
+  --texto-h5: var(--texto-base);
+  --texto-h6: var(--texto-sm);
+
+  --interlineado-compacto: 1.15;
+  --interlineado-titulos: 1.22;
+  --interlineado-normal: 1.6;
+  --interlineado-lectura: 1.65;
+
+  --espaciado-letras-titulos: -0.012em;
+  --espaciado-letras-normal: 0;
+  --espaciado-letras-amplio: 0.04em;
+
+  /* --------------------------------------------------------------------------
+     1.4 Espaciados
+     Escala basada en 4 px. Utilizar estos tokens en lugar de valores sueltos.
+     -------------------------------------------------------------------------- */
+
+  --espacio-0: 0;
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-5: 1.25rem;
+  --espacio-6: 1.5rem;
+  --espacio-8: 2rem;
+  --espacio-10: 2.5rem;
+  --espacio-12: 3rem;
+  --espacio-16: 4rem;
+  --espacio-20: 5rem;
+  --espacio-24: 6rem;
+  --espacio-32: 8rem;
+
+  --espacio-seccion: clamp(1.5rem, 1rem + 2vw, 3rem);
+  --espacio-pagina: clamp(1rem, 0.5rem + 2vw, 2rem);
+
+  /* --------------------------------------------------------------------------
+     1.5 Tamaños, alturas y anchos comunes
+     -------------------------------------------------------------------------- */
+
+  --ancho-contenedor: 90rem;
+  --ancho-contenido: 72rem;
+  --ancho-lectura: 72ch;
+  --ancho-barra-lateral: 17.5rem;
+  --ancho-barra-lateral-compacta: 4.5rem;
+  --ancho-panel: 24rem;
+
+  --altura-encabezado: 4rem;
+  --altura-control: 2.75rem;
+  --altura-control-compacto: 2.25rem;
+  --altura-control-amplio: 3.25rem;
+
+  --tamano-icono-xs: 0.875rem;
+  --tamano-icono-sm: 1rem;
+  --tamano-icono: 1.25rem;
+  --tamano-icono-lg: 1.5rem;
+  --tamano-icono-xl: 2rem;
+
+  /* --------------------------------------------------------------------------
+     1.6 Radios de borde
+     -------------------------------------------------------------------------- */
+
+  --radio-xs: 0.25rem;
+  --radio-sm: 0.375rem;
+  --radio-md: 0.5rem;
+  --radio-lg: 0.75rem;
+  --radio-xl: 1rem;
+  --radio-2xl: 1.5rem;
+  --radio-completo: 9999px;
+
+  /* --------------------------------------------------------------------------
+     1.7 Sombras
+     Sombras discretas, orientadas a separar superficies sin recargar la vista.
+     -------------------------------------------------------------------------- */
+
+  --sombra-xs: 0 1px 2px rgba(8, 29, 51, 0.06);
+  --sombra-sm: 0 2px 6px rgba(8, 29, 51, 0.08);
+  --sombra-md: 0 8px 20px rgba(8, 29, 51, 0.1);
+  --sombra-lg: 0 16px 36px rgba(8, 29, 51, 0.14);
+  --sombra-xl: 0 28px 60px rgba(8, 29, 51, 0.18);
+  --sombra-interna: inset 0 1px 2px rgba(8, 29, 51, 0.06);
+  --sombra-foco: 0 0 0 4px rgba(47, 118, 185, 0.2);
+
+  /* --------------------------------------------------------------------------
+     1.8 Transiciones
+     -------------------------------------------------------------------------- */
+
+  --duracion-instantanea: 80ms;
+  --duracion-rapida: 150ms;
+  --duracion-normal: 220ms;
+  --duracion-lenta: 350ms;
+
+  --curva-suave: cubic-bezier(0.2, 0, 0, 1);
+  --curva-salida: cubic-bezier(0.4, 0, 1, 1);
+
+  --transicion-rapida: var(--duracion-rapida) var(--curva-suave);
+  --transicion-normal: var(--duracion-normal) var(--curva-suave);
+  --transicion-lenta: var(--duracion-lenta) var(--curva-suave);
+
+  /* --------------------------------------------------------------------------
+     1.9 Niveles de superposición (z-index)
+     Respetar esta escala para evitar conflictos entre encabezados, menús,
+     superposiciones, modales y notificaciones.
+     -------------------------------------------------------------------------- */
+
+  --z-fondo: -1;
+  --z-base: 0;
+  --z-contenido: 1;
+  --z-pegajoso: 100;
+  --z-encabezado: 200;
+  --z-barra-lateral: 300;
+  --z-menu: 400;
+  --z-superposicion: 900;
+  --z-modal: 1000;
+  --z-notificacion: 1100;
+  --z-maximo: 9999;
+}
+
+/* ============================================================================
+   2. REINICIO Y NORMALIZACIÓN
+   ============================================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/**
+ * Se utiliza :where() para que estos reinicios tengan especificidad cero y los
+ * archivos de cada módulo puedan sobrescribirlos sin dificultad.
+ */
+:where(
+  body,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  figcaption,
+  blockquote,
+  dl,
+  dt,
+  dd,
+  ul,
+  ol
+) {
+  margin: 0;
+}
+
+:where(ul, ol) {
+  padding-inline-start: 1.5em;
+}
+
+:where(main, header, footer, nav, aside, section, article, figure, figcaption) {
+  display: block;
+}
+
+:where(img, picture, video, canvas) {
+  display: block;
+  max-width: 100%;
+}
+
+:where(img, video) {
+  height: auto;
+}
+
+:where(svg) {
+  max-width: 100%;
+}
+
+:where(iframe) {
+  max-width: 100%;
+  border: 0;
+}
+
+/**
+ * Normalización neutra de controles: solamente heredan tipografía y color.
+ * La apariencia visual (fondo, borde, altura, estados) se define en el archivo
+ * CSS de formularios correspondiente.
+ */
+:where(button, input, optgroup, select, textarea) {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+
+:where([hidden]) {
+  display: none !important;
+}
+
+:where(template) {
+  display: none;
+}
+
+/**
+ * Las tablas de datos, formularios, botones, tarjetas y demás componentes se
+ * estilizan en sus propios archivos para no imponer una apariencia desde la base.
+ */
+
+/* ============================================================================
+   3. DOCUMENTO Y TIPOGRAFÍA GENERAL
+   ============================================================================ */
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-block-start: calc(var(--altura-encabezado) + var(--espacio-4));
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  font-family: var(--fuente-base);
+  font-size: var(--texto-base);
+  font-weight: var(--peso-normal);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto);
+  background-color: var(--color-fondo);
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--fuente-titulos);
+  font-weight: var(--peso-seminegrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+  letter-spacing: var(--espaciado-letras-titulos);
+  text-wrap: balance;
+  margin-block-end: var(--espacio-2);
+}
+
+h1,
+h2 {
+  font-weight: var(--peso-negrita);
+  line-height: var(--interlineado-compacto);
+}
+
+h1,
+h2,
+h3 {
+  margin-block-end: var(--espacio-3);
+}
+
+h1 {
+  font-size: var(--texto-h1);
+}
+
+h2 {
+  font-size: var(--texto-h2);
+}
+
+h3 {
+  font-size: var(--texto-h3);
+}
+
+h4 {
+  font-size: var(--texto-h4);
+}
+
+h5 {
+  font-size: var(--texto-h5);
+}
+
+h6 {
+  font-size: var(--texto-h6);
+}
+
+p {
+  max-width: var(--ancho-lectura);
+  margin-block-end: var(--espacio-4);
+  line-height: var(--interlineado-lectura);
+  text-wrap: pretty;
+}
+
+:where(ul, ol) {
+  margin-block-end: var(--espacio-4);
+}
+
+:where(dt) {
+  font-weight: var(--peso-seminegrita);
+}
+
+:where(dd) {
+  margin-inline-start: 0;
+}
+
+:where(dl) {
+  margin-block-end: var(--espacio-4);
+}
+
+:where(figcaption) {
+  margin-block-start: var(--espacio-2);
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto-secundario);
+}
+
+:where(address) {
+  font-style: normal;
+}
+
+/* Texto seleccionado */
+::selection {
+  color: var(--azul-950);
+  background-color: var(--azul-200);
+}
+
+/* ============================================================================
+   4. ENLACES
+   ============================================================================ */
+
+a {
+  color: var(--color-enlace);
+  text-decoration: underline;
+  text-decoration-thickness: max(1px, 0.0625em);
+  text-underline-offset: 0.18em;
+  transition: color var(--transicion-rapida);
+}
+
+a:hover {
+  color: var(--color-enlace-hover);
+}
+
+a:active {
+  color: var(--color-enlace-activo);
+}
+
+/* ============================================================================
+   5. ELEMENTOS DE CONTENIDO
+   ============================================================================ */
+
+:where(strong, b) {
+  font-weight: var(--peso-seminegrita);
+}
+
+:where(em, i) {
+  font-style: italic;
+}
+
+:where(small) {
+  font-size: var(--texto-sm);
+}
+
+:where(mark) {
+  padding-inline: 0.15em;
+  color: var(--color-texto);
+  background-color: var(--ambar-100);
+  border-radius: var(--radio-xs);
+}
+
+:where(abbr[title]) {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+:where(sub, sup) {
+  position: relative;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+:where(sub) {
+  bottom: -0.25em;
+}
+
+:where(sup) {
+  top: -0.5em;
+}
+
+:where(code, kbd, samp, pre) {
+  font-family: var(--fuente-monoespaciada);
+  font-size: 0.9em;
+}
+
+:where(pre) {
+  max-width: 100%;
+  margin-block-end: var(--espacio-4);
+  padding: var(--espacio-4);
+  overflow-x: auto;
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+:where(pre code) {
+  padding: 0;
+  font-size: inherit;
+  background: none;
+  border: 0;
+}
+
+:where(blockquote) {
+  margin-block: var(--espacio-6);
+  padding-inline-start: var(--espacio-5);
+  color: var(--color-texto-secundario);
+  border-inline-start: 3px solid var(--color-primario-borde);
+}
+
+:where(blockquote p:last-child) {
+  margin-block-end: 0;
+}
+
+:where(hr) {
+  height: 0;
+  margin-block: var(--espacio-6);
+  border: 0;
+  border-block-start: 1px solid var(--color-borde);
+}
+
+:where(figure) {
+  max-width: 100%;
+}
+
+/* Los saltos de ancla no quedan ocultos bajo encabezados fijos. */
+:target {
+  scroll-margin-block-start: calc(
+    var(--altura-encabezado) + var(--espacio-4)
+  );
+}
+
+/* ============================================================================
+   6. ESTRUCTURA Y CONTENEDORES
+   ============================================================================ */
+
+/**
+ * Contenedor genérico para el contenido de una página. No define tarjetas ni
+ * columnas de módulos: solamente centra y limita el ancho del contenido.
+ */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho-contenedor);
+  margin-inline: auto;
+  padding-inline: var(--espacio-4);
+}
+
+.contenedor--lectura {
+  max-width: var(--ancho-lectura);
+}
+
+/* ============================================================================
+   7. ACCESIBILIDAD Y FOCO
+   ============================================================================ */
+
+/**
+ * Indicador de foco visible para navegación por teclado. No se elimina el
+ * contorno en :focus, de modo que ningún elemento quede sin señal de foco.
+ * Sobre superficies oscuras puede utilizarse --color-foco-inverso.
+ */
+:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: var(--desplazamiento-foco);
+}
+
+/**
+ * Oculta contenido visualmente, pero lo mantiene disponible para lectores de
+ * pantalla. Útil para etiquetas y textos de apoyo.
+ */
+.visualmente-oculto {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ============================================================================
+   8. AJUSTES ADAPTABLES (RESPONSIVE)
+   ----------------------------------------------------------------------------
+   Puntos de quiebre de referencia:
+     - Escritorio amplio: >= 1440 px
+     - Portátil:          1024 px – 1439 px
+     - Tablet:             768 px – 1023 px
+     - Móvil:              < 768 px
+   Los tamaños de texto usan clamp() y el contenedor usa max-width, por lo que
+   no se requieren anchos fijos ni desplazamientos horizontales.
+   ============================================================================ */
+
+@media (min-width: 768px) {
+  .contenedor {
+    padding-inline: var(--espacio-6);
+  }
+}
+
+@media (min-width: 1200px) {
+  .contenedor {
+    padding-inline: var(--espacio-8);
+  }
+}
+
+@media (min-width: 1440px) {
+  .contenedor {
+    padding-inline: var(--espacio-10);
+  }
+}
+
+@media (max-width: 1023px) {
+  :root {
+    --altura-encabezado: 3.75rem;
+    --ancho-barra-lateral: 16rem;
+  }
+}
+
+@media (max-width: 767px) {
+  :root {
+    --altura-encabezado: 3.5rem;
+    --ancho-barra-lateral: 100%;
+    --ancho-panel: 100%;
+  }
+}
+
+@media (max-width: 479px) {
+  :root {
+    --espacio-seccion: 1.25rem;
+  }
+
+  .contenedor {
+    padding-inline: var(--espacio-3);
+  }
+}
+
+/* ============================================================================
+   9. PREFERENCIAS DEL USUARIO
+   ============================================================================ */
+
+/* Mayor contraste cuando el sistema operativo lo solicita. */
+@media (prefers-contrast: more) {
+  :root {
+    --color-borde: #8fa2b5;
+    --color-borde-fuerte: #5f7285;
+    --color-texto-secundario: var(--gris-800);
+    --color-texto-tenue: var(--gris-700);
+  }
+}
+
+/**
+ * Movimiento reducido: se desactivan animaciones, transiciones y desplazamiento
+ * suave. Se conserva la funcionalidad, pero sin movimiento no esencial.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Modo de colores forzados (alto contraste de Windows). */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline: 3px solid CanvasText;
+  }
+
+  :where(mark) {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* ============================================================================
+   10. IMPRESIÓN
+   ============================================================================ */
+
+@media print {
+  :root {
+    --color-texto: #000000;
+    --color-texto-secundario: #000000;
+    --color-texto-tenue: #333333;
+    --color-fondo: #ffffff;
+    --color-fondo-secundario: #ffffff;
+    --color-superficie: #ffffff;
+    --color-borde: #999999;
+    --color-borde-suave: #cccccc;
+  }
+
+  html {
+    font-size: 12pt;
+    scroll-behavior: auto;
+  }
+
+  body {
+    color: #000000;
+    background-color: #ffffff;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  img,
+  svg,
+  figure,
+  table,
+  pre,
+  blockquote {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+
+  p,
+  li {
+    orphans: 3;
+    widows: 3;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}

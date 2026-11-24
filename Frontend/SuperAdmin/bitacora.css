@@ -1,0 +1,499 @@
+:root {
+  --app-superadmin-bitacora-bg: var(--color-fondo, #f3f6fa);
+  --app-superadmin-bitacora-surface: var(--color-superficie, #ffffff);
+  --app-superadmin-bitacora-surface-alt: var(--color-superficie-alterna, #f7f9fc);
+  --app-superadmin-bitacora-border: var(--color-borde-suave, #e4ebf2);
+  --app-superadmin-bitacora-text: var(--color-texto, #1f2a37);
+  --app-superadmin-bitacora-text-soft: var(--color-texto-secundario, #5a6878);
+  --app-superadmin-bitacora-primary: var(--color-primario, #0b5ed7);
+  --app-superadmin-bitacora-primary-dark: var(--color-primario-oscuro, #0a3f8c);
+  --app-superadmin-bitacora-success: var(--color-exito, #198754);
+  --app-superadmin-bitacora-success-soft: #eaf7f0;
+  --app-superadmin-bitacora-warning: var(--color-advertencia, #d97706);
+  --app-superadmin-bitacora-warning-soft: #fff8e8;
+  --app-superadmin-bitacora-danger: var(--color-error, #dc3545);
+  --app-superadmin-bitacora-danger-soft: #fff0ef;
+  --app-superadmin-bitacora-info: var(--color-info, #2563eb);
+  --app-superadmin-bitacora-info-soft: #ebf4ff;
+  --app-superadmin-bitacora-shadow: 0 16px 34px rgba(12, 25, 43, 0.08);
+  --app-superadmin-bitacora-radius-lg: 18px;
+  --app-superadmin-bitacora-radius-md: 14px;
+  --app-superadmin-bitacora-radius-sm: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.app-superadmin-page {
+  background: var(--app-superadmin-bitacora-bg);
+  color: var(--app-superadmin-bitacora-text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgba(11, 94, 215, 0.2);
+  outline-offset: 2px;
+}
+
+.app-superadmin-bitacora-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.app-superadmin-card {
+  background: var(--app-superadmin-bitacora-surface);
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  border-radius: var(--app-superadmin-bitacora-radius-lg);
+  box-shadow: var(--app-superadmin-bitacora-shadow);
+}
+
+.app-superadmin-stat-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  padding: 1rem 1.1rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+}
+
+.app-superadmin-stat-label {
+  color: var(--app-superadmin-bitacora-text-soft);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-stat-value {
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.2;
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.app-superadmin-bitacora-panel {
+  padding: 1rem 1.1rem;
+  margin-bottom: 1.2rem;
+}
+
+.app-superadmin-bitacora-filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.9rem;
+  align-items: end;
+}
+
+.app-superadmin-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.app-superadmin-field label {
+  color: var(--app-superadmin-bitacora-text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.app-superadmin-field input,
+.app-superadmin-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  border-radius: var(--app-superadmin-bitacora-radius-sm);
+  padding: 0.68rem 0.8rem;
+  background: var(--app-superadmin-bitacora-surface);
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.app-superadmin-field input::placeholder {
+  color: #8a98ab;
+}
+
+.app-superadmin-field input:hover,
+.app-superadmin-field select:hover {
+  border-color: rgba(11, 94, 215, 0.3);
+}
+
+.app-superadmin-field input:focus,
+.app-superadmin-field select:focus {
+  border-color: var(--app-superadmin-bitacora-primary);
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+  outline: none;
+}
+
+.app-superadmin-field-actions {
+  align-self: stretch;
+}
+
+.app-superadmin-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.btn,
+.app-superadmin-page-btn,
+.mini-btn {
+  border-radius: var(--app-superadmin-bitacora-radius-sm);
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.btn {
+  min-height: 42px;
+  padding: 0.7rem 1rem;
+}
+
+.btn-primary,
+.app-superadmin-page-btn.is-primary {
+  background: linear-gradient(180deg, var(--app-superadmin-bitacora-primary) 0%, var(--app-superadmin-bitacora-primary-dark) 100%);
+  border-color: var(--app-superadmin-bitacora-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(11, 94, 215, 0.18);
+}
+
+.btn-secondary {
+  background: var(--app-superadmin-bitacora-surface);
+  border-color: var(--app-superadmin-bitacora-border);
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.btn:hover,
+.app-superadmin-page-btn:hover,
+.mini-btn:hover {
+  transform: translateY(-1px);
+}
+
+.app-superadmin-filtros-estado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--app-superadmin-bitacora-border);
+  color: var(--app-superadmin-bitacora-text-soft);
+  font-size: 0.82rem;
+}
+
+.app-superadmin-filtro-indicador {
+  font-weight: 700;
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.app-superadmin-bitacora-tabla-wrap {
+  overflow: hidden;
+}
+
+.app-superadmin-tabla-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem 0.7rem;
+}
+
+.app-superadmin-tabla-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.app-superadmin-solo-lectura {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 32px;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  background: var(--app-superadmin-bitacora-info-soft);
+  color: var(--app-superadmin-bitacora-primary-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-tabla-scroll {
+  overflow: auto;
+  border-top: 1px solid var(--app-superadmin-bitacora-border);
+  border-bottom: 1px solid var(--app-superadmin-bitacora-border);
+}
+
+.app-superadmin-tabla-scroll table {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: collapse;
+  background: var(--app-superadmin-bitacora-surface);
+}
+
+.app-superadmin-tabla-scroll thead th {
+  background: #f5f9ff;
+  color: var(--app-superadmin-bitacora-text-soft);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.85rem 0.9rem;
+  border-bottom: 1px solid var(--app-superadmin-bitacora-border);
+  white-space: nowrap;
+}
+
+.app-superadmin-tabla-scroll tbody td {
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid var(--app-superadmin-bitacora-border);
+  vertical-align: top;
+  color: var(--app-superadmin-bitacora-text);
+  max-width: 220px;
+}
+
+.app-superadmin-tabla-scroll tbody tr:hover {
+  background: rgba(11, 94, 215, 0.02);
+}
+
+.app-superadmin-estado,
+.app-superadmin-resultado-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.app-superadmin-estado.success,
+.app-superadmin-resultado-chip.success {
+  background: var(--app-superadmin-bitacora-success-soft);
+  color: #11613e;
+}
+
+.app-superadmin-estado.warning,
+.app-superadmin-resultado-chip.warning {
+  background: var(--app-superadmin-bitacora-warning-soft);
+  color: #8b4d0c;
+}
+
+.app-superadmin-estado.error,
+.app-superadmin-resultado-chip.error {
+  background: var(--app-superadmin-bitacora-danger-soft);
+  color: #912018;
+}
+
+.app-superadmin-estado.info,
+.app-superadmin-resultado-chip.info {
+  background: var(--app-superadmin-bitacora-info-soft);
+  color: #1a4ea3;
+}
+
+.app-superadmin-boton-detalle {
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  background: var(--app-superadmin-bitacora-surface);
+  color: var(--app-superadmin-bitacora-primary);
+  border-radius: 8px;
+  padding: 0.42rem 0.7rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.app-superadmin-paginacion {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem 1.1rem;
+}
+
+.app-superadmin-page-btn {
+  min-height: 38px;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  background: var(--app-superadmin-bitacora-surface);
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.app-superadmin-page-info {
+  color: var(--app-superadmin-bitacora-text-soft);
+  font-weight: 700;
+}
+
+.app-superadmin-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 19, 33, 0.54);
+  padding: 1rem;
+  z-index: 2000;
+}
+
+.app-superadmin-modal.is-open {
+  display: flex;
+}
+
+.app-superadmin-modal-card {
+  width: min(800px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  background: var(--app-superadmin-bitacora-surface);
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  border-radius: var(--app-superadmin-bitacora-radius-lg);
+  box-shadow: var(--app-superadmin-bitacora-shadow);
+}
+
+.app-superadmin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  border-bottom: 1px solid var(--app-superadmin-bitacora-border);
+}
+
+.app-superadmin-modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.mini-btn {
+  min-height: 38px;
+  padding: 0.45rem 0.8rem;
+  background: var(--app-superadmin-bitacora-surface);
+  border-color: var(--app-superadmin-bitacora-border);
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.app-superadmin-modal-body {
+  padding: 1.1rem 1.2rem 1.25rem;
+}
+
+.app-superadmin-detalle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.85rem 1rem;
+}
+
+.app-superadmin-detalle-item {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.72rem 0.8rem;
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  border-radius: var(--app-superadmin-bitacora-radius-sm);
+  background: var(--app-superadmin-bitacora-surface-alt);
+}
+
+.app-superadmin-detalle-item small {
+  color: var(--app-superadmin-bitacora-text-soft);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-detalle-item strong,
+.app-superadmin-detalle-item span {
+  word-break: break-word;
+}
+
+.app-superadmin-detalle-seccion {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--app-superadmin-bitacora-border);
+}
+
+.app-superadmin-detalle-seccion h4 {
+  margin: 0 0 0.7rem;
+  font-size: 0.95rem;
+}
+
+.app-superadmin-comparacion {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+
+.app-superadmin-comparacion-card {
+  border: 1px solid var(--app-superadmin-bitacora-border);
+  border-radius: var(--app-superadmin-bitacora-radius-sm);
+  background: var(--app-superadmin-bitacora-surface-alt);
+  padding: 0.85rem;
+}
+
+.app-superadmin-comparacion-card h5 {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--app-superadmin-bitacora-text-soft);
+}
+
+.app-superadmin-comparacion-card pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--fuente-monoespaciada, "SFMono-Regular", Consolas, monospace);
+  font-size: 0.78rem;
+  color: var(--app-superadmin-bitacora-text);
+}
+
+.app-superadmin-empty-state {
+  color: var(--app-superadmin-bitacora-text-soft);
+  text-align: center;
+  padding: 1rem;
+}
+
+@media (max-width: 980px) {
+  .app-superadmin-bitacora-filtros {
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  }
+
+  .app-superadmin-tabla-scroll table {
+    min-width: 980px;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-superadmin-tabla-header,
+  .app-superadmin-filtros-estado,
+  .app-superadmin-modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-superadmin-paginacion {
+    justify-content: space-between;
+  }
+
+  .app-superadmin-actions-row {
+    width: 100%;
+  }
+
+  .app-superadmin-actions-row .btn {
+    flex: 1 1 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

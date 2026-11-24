@@ -1,0 +1,407 @@
+:root {
+  --app-superadmin-configuracion-bg: var(--color-fondo, #f3f6fa);
+  --app-superadmin-configuracion-surface: var(--color-superficie, #ffffff);
+  --app-superadmin-configuracion-surface-alt: var(--color-superficie-alterna, #f7f9fc);
+  --app-superadmin-configuracion-border: var(--color-borde-suave, #e4ebf2);
+  --app-superadmin-configuracion-text: var(--color-texto, #1f2a37);
+  --app-superadmin-configuracion-text-soft: var(--color-texto-secundario, #5a6878);
+  --app-superadmin-configuracion-primary: var(--color-primario, #0b5ed7);
+  --app-superadmin-configuracion-primary-dark: var(--color-primario-oscuro, #0a3f8c);
+  --app-superadmin-configuracion-success: var(--color-exito, #198754);
+  --app-superadmin-configuracion-success-soft: var(--color-exito-fondo, #e9f7f0);
+  --app-superadmin-configuracion-warning: var(--color-advertencia, #d97706);
+  --app-superadmin-configuracion-warning-soft: var(--color-advertencia-fondo, #fff6e6);
+  --app-superadmin-configuracion-danger: var(--color-error, #dc3545);
+  --app-superadmin-configuracion-danger-soft: var(--color-error-fondo, #fdecea);
+  --app-superadmin-configuracion-info: var(--color-info, #2563eb);
+  --app-superadmin-configuracion-info-soft: var(--color-info-fondo, #ebf4ff);
+  --app-superadmin-configuracion-shadow: 0 16px 34px rgba(12, 25, 43, 0.08);
+  --app-superadmin-configuracion-radius-lg: 18px;
+  --app-superadmin-configuracion-radius-md: 14px;
+  --app-superadmin-configuracion-radius-sm: 10px;
+}
+
+body.app-superadmin-page {
+  background: var(--app-superadmin-configuracion-bg);
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.app-superadmin-content {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.app-superadmin-card {
+  background: var(--app-superadmin-configuracion-surface);
+  border: 1px solid var(--app-superadmin-configuracion-border);
+  border-radius: var(--app-superadmin-configuracion-radius-lg);
+  box-shadow: var(--app-superadmin-configuracion-shadow);
+}
+
+.app-superadmin-configuracion-panel {
+  padding: 1rem 1.1rem;
+}
+
+.app-superadmin-configuracion-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.app-superadmin-configuracion-header h3 {
+  margin: 0;
+  color: var(--app-superadmin-configuracion-text);
+  font-size: 1.08rem;
+}
+
+.app-superadmin-configuracion-header p {
+  margin: 0.25rem 0 0;
+  color: var(--app-superadmin-configuracion-text-soft);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.app-superadmin-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  background: var(--app-superadmin-configuracion-info-soft);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: var(--app-superadmin-configuracion-primary-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.app-superadmin-pill-warning {
+  background: var(--app-superadmin-configuracion-warning-soft);
+  border-color: rgba(217, 119, 6, 0.2);
+  color: var(--app-superadmin-configuracion-warning);
+}
+
+.app-superadmin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.app-superadmin-field {
+  display: grid;
+  gap: 0.42rem;
+}
+
+.app-superadmin-field-full {
+  grid-column: 1 / -1;
+}
+
+.app-superadmin-field label {
+  color: var(--app-superadmin-configuracion-text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.app-superadmin-field input,
+.app-superadmin-field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--app-superadmin-configuracion-border);
+  border-radius: var(--app-superadmin-configuracion-radius-sm);
+  padding: 0.68rem 0.8rem;
+  background: var(--app-superadmin-configuracion-surface);
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.app-superadmin-field input[readonly] {
+  background: var(--app-superadmin-configuracion-surface-alt);
+  color: var(--app-superadmin-configuracion-text-soft);
+  cursor: not-allowed;
+}
+
+.app-superadmin-field input:focus,
+.app-superadmin-field select:focus {
+  border-color: var(--app-superadmin-configuracion-primary);
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+  outline: none;
+}
+
+.app-superadmin-field input:disabled,
+.app-superadmin-field select:disabled {
+  background: var(--app-superadmin-configuracion-surface-alt);
+  border-color: var(--app-superadmin-configuracion-border);
+  color: var(--app-superadmin-configuracion-text-soft);
+  cursor: not-allowed;
+}
+
+.app-superadmin-flag-box {
+  display: grid;
+  gap: 0.3rem;
+  min-height: 68px;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(11, 94, 215, 0.2);
+  border-radius: var(--app-superadmin-configuracion-radius-md);
+  background: var(--app-superadmin-configuracion-info-soft);
+  color: var(--app-superadmin-configuracion-primary-dark);
+}
+
+.app-superadmin-flag-box strong,
+.app-superadmin-flag-box span {
+  line-height: 1.45;
+}
+
+.app-superadmin-configuracion-extra {
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--app-superadmin-configuracion-border);
+}
+
+.app-superadmin-configuracion-extra h4 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.app-superadmin-tabla-scroll {
+  overflow: auto;
+  border: 1px solid var(--app-superadmin-configuracion-border);
+  border-radius: var(--app-superadmin-configuracion-radius-md);
+}
+
+.app-superadmin-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  background: var(--app-superadmin-configuracion-surface);
+}
+
+.app-superadmin-table th {
+  background: #f6f9ff;
+  color: var(--app-superadmin-configuracion-text-soft);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.82rem 0.9rem;
+  border-bottom: 1px solid var(--app-superadmin-configuracion-border);
+}
+
+.app-superadmin-table td {
+  padding: 0.8rem 0.9rem;
+  border-bottom: 1px solid var(--app-superadmin-configuracion-border);
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.app-superadmin-empty-state {
+  text-align: center;
+  color: var(--app-superadmin-configuracion-text-soft);
+  font-style: italic;
+}
+
+.app-superadmin-configuracion-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.app-superadmin-configuracion-message {
+  min-height: 1.5rem;
+  margin-top: 0.7rem;
+  color: var(--app-superadmin-configuracion-text-soft);
+  font-weight: 600;
+}
+
+.app-superadmin-configuracion-message.is-success {
+  color: var(--app-superadmin-configuracion-success);
+}
+
+.app-superadmin-configuracion-message.is-warning {
+  color: var(--app-superadmin-configuracion-warning);
+}
+
+.app-superadmin-configuracion-message.is-error {
+  color: var(--app-superadmin-configuracion-danger);
+}
+
+.app-superadmin-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  place-items: center;
+  background: rgba(8, 29, 51, 0.56);
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.app-superadmin-modal.is-open {
+  display: grid;
+}
+
+.app-superadmin-modal-card {
+  width: min(860px, calc(100vw - 2rem));
+  max-height: min(80vh, 760px);
+  overflow: auto;
+  border-radius: 20px;
+  background: var(--app-superadmin-configuracion-surface);
+  border: 1px solid var(--app-superadmin-configuracion-border);
+  box-shadow: 0 22px 50px rgba(12, 25, 43, 0.2);
+}
+
+.app-superadmin-modal-card-sm {
+  width: min(520px, calc(100vw - 2rem));
+}
+
+.app-superadmin-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 1rem 1.1rem 0.8rem;
+  border-bottom: 1px solid var(--app-superadmin-configuracion-border);
+}
+
+.app-superadmin-modal-header h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+
+.app-superadmin-modal-body {
+  padding: 1rem 1.1rem 1.2rem;
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.app-superadmin-configuracion-resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  margin: 1rem 0;
+}
+
+.app-superadmin-configuracion-resumen-item {
+  display: grid;
+  gap: 0.28rem;
+  padding: 0.8rem 0.85rem;
+  border: 1px solid var(--app-superadmin-configuracion-border);
+  border-radius: var(--app-superadmin-configuracion-radius-sm);
+  background: var(--app-superadmin-configuracion-surface-alt);
+}
+
+.app-superadmin-configuracion-resumen-item span {
+  color: var(--app-superadmin-configuracion-text-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.app-superadmin-configuracion-resumen-item strong {
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.app-superadmin-configuracion-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.btn,
+.mini-btn {
+  border-radius: var(--app-superadmin-configuracion-radius-sm);
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.btn {
+  min-height: 42px;
+  padding: 0.7rem 1rem;
+}
+
+.btn-primary {
+  background: linear-gradient(180deg, var(--app-superadmin-configuracion-primary) 0%, var(--app-superadmin-configuracion-primary-dark) 100%);
+  border-color: var(--app-superadmin-configuracion-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(11, 94, 215, 0.18);
+}
+
+.btn-secondary {
+  background: var(--app-superadmin-configuracion-surface);
+  border-color: var(--app-superadmin-configuracion-border);
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.mini-btn {
+  min-height: 34px;
+  padding: 0.45rem 0.75rem;
+  background: var(--app-superadmin-configuracion-surface-alt);
+  border-color: var(--app-superadmin-configuracion-border);
+  color: var(--app-superadmin-configuracion-text);
+}
+
+.btn:hover,
+.mini-btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible,
+.mini-btn:focus-visible,
+.app-superadmin-modal button:focus-visible {
+  outline: 3px solid rgba(11, 94, 215, 0.2);
+  outline-offset: 2px;
+}
+
+@media (max-width: 768px) {
+  .app-superadmin-configuracion-header,
+  .app-superadmin-modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .app-superadmin-configuracion-footer,
+  .app-superadmin-configuracion-confirm-actions {
+    justify-content: stretch;
+  }
+
+  .app-superadmin-configuracion-footer .btn,
+  .app-superadmin-configuracion-confirm-actions .btn {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .app-superadmin-configuracion-panel {
+    padding: 0.9rem;
+  }
+
+  .app-superadmin-form-grid,
+  .app-superadmin-configuracion-resumen {
+    grid-template-columns: 1fr;
+  }
+
+  .app-superadmin-card,
+  .app-superadmin-modal-card {
+    border-radius: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

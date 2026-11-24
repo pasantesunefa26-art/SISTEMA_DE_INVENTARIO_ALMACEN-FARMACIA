@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Configuración general del sistema institucional. Acceso exclusivo para SuperAdmin."
+    />
+    <title>Configuración del sistema | SuperAdmin</title>
+    <link rel="stylesheet" href="../compartidos/css/base.css" />
+    <link rel="stylesheet" href="../compartidos/css/componentes.css" />
+    <link rel="stylesheet" href="../compartidos/css/formularios.css" />
+    <link rel="stylesheet" href="../compartidos/css/tablas.css" />
+    <link rel="stylesheet" href="configuracion.css" />
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral administrativo">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>SuperAdmin</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal">
+          <ul>
+            <li><button type="button" class="app-superadmin-nav-item">Panel principal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Farmacia</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Almacén</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Usuarios</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Catálogos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Bitácora</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Respaldos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item is-active" aria-current="page">Configuración</button></li>
+            <li><button type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger">Cerrar sesión</button></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>SuperAdmin</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span class="app-superadmin-user-name">Usuario principal</span>
+              <span class="app-superadmin-user-meta">SuperAdmin</span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <header class="app-superadmin-header">
+            <div>
+              <h2 class="app-superadmin-section-title">Configuración del sistema</h2>
+              <p class="app-superadmin-section-description">
+                Consulta y administra los parámetros operativos del sistema con validación de permisos y registro
+                de cambios por parte del backend.
+              </p>
+            </div>
+            <div class="app-superadmin-header-actions">
+              <button type="button" class="btn btn-primary" id="btn-guardar-configuracion">Guardar cambios</button>
+            </div>
+          </header>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="configuracion-general">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Configuración general</h3>
+                <p>Parámetros institucionales y presentación del sistema.</p>
+              </div>
+              <span class="app-superadmin-pill">Consulta y edición</span>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="campo-nombre-institucional">Nombre institucional del sistema</label>
+                <input id="campo-nombre-institucional" name="nombreInstitucional" type="text" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-identificacion-institucional">Identificación institucional</label>
+                <input id="campo-identificacion-institucional" name="identificacionInstitucional" type="text" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-region">Preferencias regionales</label>
+                <select id="campo-region" name="region">
+                  <option value="">Seleccionar</option>
+                  <option value="ES">España</option>
+                  <option value="MX">México</option>
+                  <option value="LATAM">Latinoamérica</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-formato-fecha">Formato de presentación de fechas</label>
+                <select id="campo-formato-fecha" name="formatoFecha">
+                  <option value="">Seleccionar</option>
+                  <option value="dd/MM/yyyy">dd/MM/yyyy</option>
+                  <option value="yyyy-MM-dd">yyyy-MM-dd</option>
+                  <option value="dd/MM/yyyy HH:mm">dd/MM/yyyy HH:mm</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-zona-horaria">Zona horaria</label>
+                <input id="campo-zona-horaria" name="zonaHoraria" type="text" value="" placeholder="Ej. America/Mexico_City" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-visualizacion">Preferencias generales de visualización</label>
+                <select id="campo-visualizacion" name="visualizacion">
+                  <option value="">Seleccionar</option>
+                  <option value="modo-claro">Modo claro</option>
+                  <option value="modo-oscuro">Modo oscuro</option>
+                  <option value="predeterminado">Predeterminado</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="configuracion-alertas">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Alertas de inventario</h3>
+                <p>Umbrales, anticipaciones y parámetros de control para farmacia y almacén.</p>
+              </div>
+              <span class="app-superadmin-pill">Departamento</span>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="campo-anticipacion-vencimiento">Anticipación de alertas por vencimiento</label>
+                <input id="campo-anticipacion-vencimiento" name="anticipacionVencimiento" type="number" min="0" step="1" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-stock-minimo">Umbral mínimo de existencia por medicamento</label>
+                <input id="campo-stock-minimo" name="stockMinimoMedicamento" type="number" min="0" step="1" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-stock-minimo-insumo">Umbral mínimo de existencia por insumo</label>
+                <input id="campo-stock-minimo-insumo" name="stockMinimoInsumo" type="number" min="0" step="1" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-alerta-agotado">Parámetros de alertas para productos agotados</label>
+                <input id="campo-alerta-agotado" name="alertaAgotado" type="number" min="0" step="1" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-alerta-stock-bajo">Parámetros de stock bajo</label>
+                <input id="campo-alerta-stock-bajo" name="stockBajo" type="number" min="0" step="1" value="" />
+              </div>
+            </div>
+
+            <div class="app-superadmin-configuracion-extra">
+              <h4>Productos con mínimos específicos</h4>
+              <div class="app-superadmin-tabla-scroll">
+                <table class="app-superadmin-table" aria-label="Mínimos por producto">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <th>Tipo</th>
+                      <th>Mínimo</th>
+                      <th>Vencimiento</th>
+                      <th>Estado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="5" class="app-superadmin-empty-state">No hay productos con mínimos personalizados configurados.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="configuracion-seguridad">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Seguridad y sesiones</h3>
+                <p>Parámetros operativos de sesión y autenticación gestionados por el backend.</p>
+              </div>
+              <span class="app-superadmin-pill app-superadmin-pill-warning">Crítico</span>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="campo-inactividad-sesion">Tiempo máximo de inactividad</label>
+                <input id="campo-inactividad-sesion" name="inactividadSesion" type="number" min="1" step="1" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-bloqueo-intentos">Bloqueo temporal por intentos fallidos</label>
+                <input id="campo-bloqueo-intentos" name="bloqueoIntentos" type="number" min="0" step="1" value="" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-autenticacion-permitida">Autenticación permitida</label>
+                <select id="campo-autenticacion-permitida" name="autenticacionPermitida">
+                  <option value="">Seleccionar</option>
+                  <option value="usuario_contrasena">Usuario y contraseña</option>
+                  <option value="mfa_obligatoria">MFA obligatoria</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-proteccion-sesiones">Estado de protección de sesiones</label>
+                <select id="campo-proteccion-sesiones" name="proteccionSesiones">
+                  <option value="">Seleccionar</option>
+                  <option value="activa">Activa</option>
+                  <option value="inactiva">Inactiva</option>
+                  <option value="monitoreo">Monitoreo</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field app-superadmin-field-full">
+                <label>Autenticación de dos factores</label>
+                <div class="app-superadmin-flag-box" aria-live="polite">
+                  <strong>Obligatoria para SuperAdmin</strong>
+                  <span>No puede desactivarse desde esta pantalla.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="configuracion-modulos">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Configuración de módulos</h3>
+                <p>Parámetros generales de farmacia y almacén disponibles en el backend.</p>
+              </div>
+              <span class="app-superadmin-pill">Solo consulta</span>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="campo-modulo-farmacia">Farmacia</label>
+                <select id="campo-modulo-farmacia" name="moduloFarmacia">
+                  <option value="">Seleccionar</option>
+                  <option value="activa">Activa</option>
+                  <option value="mantenimiento">En mantenimiento</option>
+                  <option value="inactiva">Inactiva</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-modulo-almacen">Almacén</label>
+                <select id="campo-modulo-almacen" name="moduloAlmacen">
+                  <option value="">Seleccionar</option>
+                  <option value="activa">Activa</option>
+                  <option value="mantenimiento">En mantenimiento</option>
+                  <option value="inactiva">Inactiva</option>
+                </select>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="configuracion-informacion">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Información de configuración</h3>
+                <p>Estado y trazabilidad del conjunto actual de parámetros.</p>
+              </div>
+              <span class="app-superadmin-pill">Backend</span>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="campo-ultima-modificacion">Última modificación</label>
+                <input id="campo-ultima-modificacion" type="text" value="" readonly />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-usuario-responsable">Usuario responsable</label>
+                <input id="campo-usuario-responsable" type="text" value="" readonly />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-fecha-hora-config">Fecha y hora</label>
+                <input id="campo-fecha-hora-config" type="text" value="" readonly />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="campo-estado-configuracion">Estado de la configuración</label>
+                <input id="campo-estado-configuracion" type="text" value="" readonly />
+              </div>
+            </div>
+          </section>
+
+          <div class="app-superadmin-configuracion-footer">
+            <button type="button" class="btn btn-secondary" id="btn-cancelar-configuracion">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btn-guardar-configuracion-secundario">Guardar cambios</button>
+          </div>
+
+          <div id="mensaje-configuracion" class="app-superadmin-configuracion-message" aria-live="polite"></div>
+        </main>
+      </div>
+    </div>
+
+    <div id="modal-confirmacion-configuracion" class="app-superadmin-modal" aria-hidden="true">
+      <div class="app-superadmin-modal-card app-superadmin-modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="modal-confirmacion-configuracion-titulo">
+        <div class="app-superadmin-modal-header">
+          <h3 id="modal-confirmacion-configuracion-titulo">Confirmar cambios de configuración</h3>
+          <button type="button" class="mini-btn" data-close-modal="confirmacion-configuracion">Cerrar</button>
+        </div>
+
+        <div class="app-superadmin-modal-body">
+          <p>
+            Está a punto de guardar cambios que pueden afectar el comportamiento global del sistema. La operación
+            deberá ser validada por el backend y registrada en la bitácora.
+          </p>
+
+          <div class="app-superadmin-configuracion-resumen">
+            <div class="app-superadmin-configuracion-resumen-item">
+              <span>Sección</span>
+              <strong>Configuración general</strong>
+            </div>
+            <div class="app-superadmin-configuracion-resumen-item">
+              <span>Impacto</span>
+              <strong>Operativo general</strong>
+            </div>
+          </div>
+
+          <div class="app-superadmin-configuracion-confirm-actions">
+            <button type="button" class="btn btn-secondary" data-close-modal="confirmacion-configuracion">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btn-confirmar-configuracion">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="configuracion.js"></script>
+  </body>
+</html>

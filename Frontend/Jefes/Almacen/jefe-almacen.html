@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Panel principal del Jefe de Almacén. Supervisión del inventario general, entradas, salidas, despachos y alertas operativas."
+    />
+    <title>Jefe de Almacén</title>
+    <link rel="stylesheet" href="../../compartidos/css/base.css" />
+    <link rel="stylesheet" href="../../compartidos/css/componentes.css" />
+    <link rel="stylesheet" href="../../compartidos/css/formularios.css" />
+    <link rel="stylesheet" href="../../compartidos/css/tablas.css" />
+    <link rel="stylesheet" href="jefe-almacen.css" />
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral de Almacén">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>Almacén</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal de Almacén">
+          <ul>
+            <li><button type="button" class="app-superadmin-nav-item is-active" aria-current="page">Panel principal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Inventario general</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Entradas F-15</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Salidas F-15-6C</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Pedidos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Despachos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Distribución por servicios</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Salidas a pacientes</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Kardex</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Reportes</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Cierre mensual</button></li>
+            <li><button type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger" id="btn-cerrar-sesion">Cerrar sesión</button></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>Jefe de Almacén</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span id="jefe-almacen-nombre" class="app-superadmin-user-name">—</span>
+              <span id="jefe-almacen-rol" class="app-superadmin-user-meta">Rol</span>
+            </div>
+            <div class="app-superadmin-user-mini app-superadmin-user-mini-compact">
+              <span id="jefe-almacen-departamento" class="app-superadmin-user-name">Departamento</span>
+              <span class="app-superadmin-user-meta">Almacén</span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <header class="app-superadmin-header">
+            <div>
+              <h2 class="app-superadmin-section-title">Panel principal</h2>
+              <p class="app-superadmin-section-description">
+                Supervisión del inventario general, entradas, salidas, despachos, servicios y alertas del departamento de Almacén.
+              </p>
+            </div>
+          </header>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Filtros de período">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Resumen por período</h3>
+                <p>Consulta indicadores y actividades del departamento en un rango de fechas específico.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="fecha-inicio-resumen">Fecha inicial</label>
+                <input id="fecha-inicio-resumen" type="date" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="fecha-fin-resumen">Fecha final</label>
+                <input id="fecha-fin-resumen" type="date" />
+              </div>
+
+              <div class="app-superadmin-field app-superadmin-field-actions">
+                <label class="app-superadmin-visually-hidden" for="btn-aplicar-periodo">Aplicar período</label>
+                <div class="app-superadmin-actions-row">
+                  <button type="button" class="btn btn-primary" id="btn-aplicar-periodo">Aplicar</button>
+                  <button type="button" class="btn btn-secondary" id="btn-restablecer-periodo">Restablecer</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-respaldos-resumen" aria-label="Indicadores principales de Almacén">
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Insumos registrados</span>
+              <strong id="almacen-total-insumos" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Existencia total</span>
+              <strong id="almacen-existencia-total" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Total de lotes</span>
+              <strong id="almacen-total-lotes" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Lotes con existencia</span>
+              <strong id="almacen-lotes-disponibles" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Entradas registradas</span>
+              <strong id="almacen-total-entradas" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Salidas registradas</span>
+              <strong id="almacen-total-salidas" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Procedencia Ministerio</span>
+              <strong id="almacen-procedencia-ministerio" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Procedencia Donación</span>
+              <strong id="almacen-procedencia-donacion" class="app-superadmin-stat-value">0</strong>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Procedencia Compra</span>
+              <strong id="almacen-procedencia-compra" class="app-superadmin-stat-value">0</strong>
+            </article>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Accesos rápidos">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Accesos rápidos</h3>
+                <p>Atajos a módulos clave del departamento de Almacén.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-grid-actions">
+              <button type="button" class="btn btn-primary" id="btn-inventario-general">Inventario general</button>
+              <button type="button" class="btn btn-secondary" id="btn-entradas-f15">Entradas F-15</button>
+              <button type="button" class="btn btn-secondary" id="btn-salidas-f15-6c">Salidas F-15-6C</button>
+              <button type="button" class="btn btn-secondary" id="btn-despachos">Despachos</button>
+              <button type="button" class="btn btn-secondary" id="btn-distribucion">Distribución por servicios</button>
+              <button type="button" class="btn btn-secondary" id="btn-reportes-almacen">Reportes</button>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Resumen de entradas F-15">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Resumen de entradas F-15</h3>
+                <p>Documentos de entrada, cantidades, procedencias y responsables.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" aria-label="Entradas F-15">
+                <thead>
+                  <tr>
+                    <th>Documento</th>
+                    <th>Fecha</th>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Procedencia</th>
+                    <th>Lote</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7" class="app-superadmin-empty-state">No hay entradas registradas para el período consultado.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Resumen de salidas F-15-6C">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Resumen de salidas F-15-6C</h3>
+                <p>Movimientos de salida, servicio destinatario, lote y responsable.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" aria-label="Salidas F-15-6C">
+                <thead>
+                  <tr>
+                    <th>Documento</th>
+                    <th>Fecha</th>
+                    <th>Insumo</th>
+                    <th>Lote</th>
+                    <th>Cantidad</th>
+                    <th>Servicio</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7" class="app-superadmin-empty-state">No hay salidas confirmadas en el período consultado.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Distribución por servicios">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Distribución por servicios</h3>
+                <p>Resumen de cantidades suministradas por servicio y fecha.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" id="almacen-distribucion-servicios" aria-label="Distribución por servicios">
+                <thead>
+                  <tr>
+                    <th>Servicio</th>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5" class="app-superadmin-empty-state">No hay distribución registrada para mostrar.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Salidas a pacientes">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Salidas a pacientes</h3>
+                <p>Operaciones autorizadas con información limitada al contexto de la institución.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" id="almacen-salidas-pacientes" aria-label="Salidas a pacientes">
+                <thead>
+                  <tr>
+                    <th>Operación</th>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5" class="app-superadmin-empty-state">No hay salidas a pacientes registradas.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="almacen-alertas" aria-label="Alertas de inventario">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Alertas de inventario</h3>
+                <p>Próximos a vencer, vencidos, existencia baja, agotados y lotes con cantidades insuficientes.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" aria-label="Alertas de inventario">
+                <thead>
+                  <tr>
+                    <th>Insumo</th>
+                    <th>Código</th>
+                    <th>Lote</th>
+                    <th>Vencimiento</th>
+                    <th>Existencia</th>
+                    <th>Tipo</th>
+                    <th>Prioridad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7" class="app-superadmin-empty-state">No hay alertas activas reportadas por el backend.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" id="almacen-actividad-trabajadores" aria-label="Actividad reciente del personal de Almacén">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Actividad reciente de trabajadores</h3>
+                <p>Resumen operativo del personal del departamento y movimientos supervisados por el jefe.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-table-wrap">
+              <table class="app-superadmin-table" aria-label="Actividad reciente de trabajadores">
+                <thead>
+                  <tr>
+                    <th>Trabajador</th>
+                    <th>Operación</th>
+                    <th>Insumo</th>
+                    <th>Lote</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="7" class="app-superadmin-empty-state">No hay actividad reciente disponible.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-configuracion-panel app-superadmin-card" aria-label="Resumen mensual">
+            <div class="app-superadmin-configuracion-header">
+              <div>
+                <h3>Resumen mensual</h3>
+                <p>Indicadores del período activo con inventario inicial y existencia final validada por el backend.</p>
+              </div>
+            </div>
+
+            <div class="app-superadmin-form-grid">
+              <div class="app-superadmin-field">
+                <label for="almacen-inventario-inicial">Inventario inicial</label>
+                <input id="almacen-inventario-inicial" type="text" value="0" readonly />
+              </div>
+              <div class="app-superadmin-field">
+                <label for="almacen-total-entradas-mensual">Total de entradas</label>
+                <input id="almacen-total-entradas-mensual" type="text" value="0" readonly />
+              </div>
+              <div class="app-superadmin-field">
+                <label for="almacen-total-salidas-mensual">Total de salidas</label>
+                <input id="almacen-total-salidas-mensual" type="text" value="0" readonly />
+              </div>
+              <div class="app-superadmin-field">
+                <label for="almacen-ajustes-autorizados">Ajustes autorizados</label>
+                <input id="almacen-ajustes-autorizados" type="text" value="0" readonly />
+              </div>
+              <div class="app-superadmin-field">
+                <label for="almacen-existencia-final">Existencia final</label>
+                <input id="almacen-existencia-final" type="text" value="0" readonly />
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="jefe-almacen.js"></script>
+  </body>
+</html>

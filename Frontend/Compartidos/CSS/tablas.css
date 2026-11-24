@@ -1,0 +1,1459 @@
+/**
+ * ============================================================================
+ * SISTEMA INSTITUCIONAL DE INVENTARIO HOSPITALARIO
+ * Archivo: Frontend/Compartidos/CSS/tablas.css
+ * ----------------------------------------------------------------------------
+ * Estilos generales para las tablas de información de Farmacia, Almacén,
+ * SuperAdmin, Jefes de Departamento y Trabajadores. Depende de base.css y es
+ * coherente con componentes.css y formularios.css; no redefine sus estilos.
+ *
+ * CONTENIDO
+ *   1. Contenedor y estructura de tabla
+ *   2. Tabla base, encabezados, filas y celdas
+ *   3. Alineación, anchos y contenido especial
+ *   4. Variantes de tablas y tablas por módulo
+ *   5. Estados visuales de filas y existencias
+ *   6. Código de barras del lote
+ *   7. Tablas vacías, carga, barra de herramientas y pie
+ *   8. Ajustes adaptables
+ *   9. Accesibilidad y preferencias de movimiento
+ *
+ * Todas las clases usan el prefijo app-. Los filtros, la paginación funcional,
+ * los cálculos de inventario y la impresión se implementan fuera del CSS.
+ * ============================================================================
+ */
+
+/* ============================================================================
+   1. CONTENEDOR Y ESTRUCTURA DE TABLA
+   ============================================================================ */
+
+/* Envoltura obligatoria: aporta el desplazamiento horizontal y los bordes. */
+.app-tabla-contenedor {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-xs);
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-tabla-contenedor--sin-borde {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.app-tabla-contenedor--plano {
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Contenedor con altura limitada y encabezado fijo. */
+.app-tabla-contenedor--fijo {
+  max-height: min(70vh, 48rem);
+  max-height: min(70dvh, 48rem);
+  overflow: auto;
+}
+
+/* Sombra sutil que indica que hay más columnas hacia el lado derecho. */
+.app-tabla-contenedor--desplazable {
+  background-image:
+    linear-gradient(to right, var(--color-superficie), transparent 1.5rem),
+    linear-gradient(to left, var(--color-superficie), transparent 1.5rem);
+  background-position: left center, right center;
+  background-repeat: no-repeat;
+  background-size: 1.5rem 100%, 1.5rem 100%;
+  background-attachment: local, local;
+}
+
+/* Barra superior de la tabla: título, búsqueda, filtros y acciones.
+   Los controles internos reutilizan formularios.css. */
+.app-tabla__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4);
+  background-color: var(--color-superficie);
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+.app-tabla__barra-titulo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+  min-width: 0;
+}
+
+.app-tabla__barra-nombre {
+  margin: 0;
+  font-size: var(--texto-base);
+  font-weight: var(--peso-seminegrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+}
+
+.app-tabla__barra-descripcion {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+}
+
+.app-tabla__barra-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin-inline-start: auto;
+}
+
+/* ============================================================================
+   2. TABLA BASE, ENCABEZADOS, FILAS Y CELDAS
+   ============================================================================ */
+
+.app-tabla {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--fuente-base);
+  font-size: var(--texto-sm);
+  line-height: 1.5;
+  color: var(--color-texto);
+  background-color: var(--color-superficie);
+}
+
+.app-tabla__titulo {
+  padding: var(--espacio-3) var(--espacio-4);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.45;
+  color: var(--color-texto);
+  text-align: start;
+  caption-side: top;
+  background-color: var(--color-superficie);
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+/* Título accesible sin representación visual. */
+.app-tabla__titulo--oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+}
+
+.app-tabla__encabezado {
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-tabla__fila {
+  transition: background-color var(--transicion-rapida);
+}
+
+.app-tabla__celda {
+  padding: var(--espacio-3) var(--espacio-4);
+  vertical-align: middle;
+  text-align: start;
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+.app-tabla__cuerpo > .app-tabla__fila:last-child > .app-tabla__celda {
+  border-block-end: 0;
+}
+
+/* Encabezados de columna */
+.app-tabla__celda--encabezado {
+  padding-block: var(--espacio-3);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.35;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: var(--espaciado-letras-amplio);
+  white-space: nowrap;
+  background-color: var(--color-fondo-secundario);
+  border-block-end: 2px solid var(--color-borde);
+}
+
+/* Encabezado fijo dentro de un contenedor con altura limitada. */
+.app-tabla-contenedor--fijo .app-tabla__celda--encabezado {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 2;
+}
+
+/* Pie de tabla para totales o cierres. */
+.app-tabla__pie-tabla {
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-tabla__celda--pie {
+  padding-block: var(--espacio-3);
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-texto);
+  border-block-start: 2px solid var(--color-borde);
+  border-block-end: 0;
+}
+
+/* Filas alternadas. Se usa :where para que los estados de fila puedan
+   sobrescribir el fondo sin recurrir a !important. */
+.app-tabla__cuerpo > :where(.app-tabla__fila:nth-child(even)) > .app-tabla__celda {
+  background-color: var(--color-superficie-alterna);
+}
+
+.app-tabla__cuerpo > .app-tabla__fila:hover > .app-tabla__celda {
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-tabla__cuerpo > .app-tabla__fila:focus-within > .app-tabla__celda {
+  background-color: var(--color-primario-suave);
+}
+
+.app-tabla__cuerpo > .app-tabla__fila:focus-within > :first-child {
+  box-shadow: inset 3px 0 0 var(--color-primario);
+}
+
+/* Ordenamiento accesible: el botón vive dentro del <th> y aria-sort indica
+   la dirección. */
+.app-tabla__orden {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  padding: 0;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color var(--transicion-rapida);
+}
+
+.app-tabla__orden:hover {
+  color: var(--color-primario);
+}
+
+.app-tabla__orden:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: var(--desplazamiento-foco);
+}
+
+.app-tabla__orden-icono {
+  flex: 0 0 auto;
+  width: 0.75rem;
+  height: 0.75rem;
+  opacity: 0.35;
+  transition:
+    opacity var(--transicion-rapida),
+    transform var(--transicion-rapida);
+}
+
+.app-tabla__celda--encabezado[aria-sort="ascending"] .app-tabla__orden-icono {
+  opacity: 1;
+  transform: rotate(180deg);
+}
+
+.app-tabla__celda--encabezado[aria-sort="descending"] .app-tabla__orden-icono {
+  opacity: 1;
+}
+
+.app-tabla__celda--encabezado[aria-sort="ascending"] .app-tabla__orden,
+.app-tabla__celda--encabezado[aria-sort="descending"] .app-tabla__orden {
+  color: var(--color-primario);
+}
+
+/* ============================================================================
+   3. ALINEACIÓN, ANCHOS Y CONTENIDO ESPECIAL
+   ============================================================================ */
+
+.app-tabla__celda--izquierda {
+  text-align: start;
+}
+
+.app-tabla__celda--centro {
+  text-align: center;
+}
+
+.app-tabla__celda--derecha {
+  text-align: end;
+}
+
+.app-tabla__celda--arriba {
+  vertical-align: top;
+}
+
+/* Códigos, lotes y claves: tipografía monoespaciada y sin saltos. */
+.app-tabla__celda--codigo,
+.app-tabla__codigo {
+  font-family: var(--fuente-monoespaciada);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto-secundario);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.app-tabla__celda--codigo {
+  width: 8rem;
+}
+
+.app-tabla__celda--lote {
+  width: 9.5rem;
+  white-space: nowrap;
+}
+
+.app-tabla__lote {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem var(--espacio-2);
+  font-family: var(--fuente-monoespaciada);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto-secundario);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-xs);
+}
+
+/* Fechas: siempre en una sola línea y con cifras alineadas. */
+.app-tabla__celda--fecha,
+.app-tabla__celda--hora,
+.app-tabla__fecha {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.app-tabla__celda--fecha {
+  width: 8.5rem;
+}
+
+.app-tabla__celda--hora {
+  width: 6.5rem;
+}
+
+.app-tabla__fecha--secundaria {
+  display: block;
+  font-size: var(--texto-xs);
+  color: var(--color-texto-tenue);
+}
+
+/* Cantidades, existencias e importes: alineación numérica a la derecha. */
+.app-tabla__celda--cantidad,
+.app-tabla__celda--existencia,
+.app-tabla__celda--importe,
+.app-tabla__celda--moneda,
+.app-tabla__celda--numero,
+.app-tabla__numero {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.app-tabla__celda--cantidad,
+.app-tabla__celda--existencia {
+  width: 7.5rem;
+}
+
+.app-tabla__celda--importe,
+.app-tabla__celda--moneda,
+.app-tabla__celda--numero {
+  width: 9rem;
+}
+
+.app-tabla__numero--destacado {
+  font-size: var(--texto-base);
+  font-weight: var(--peso-negrita);
+  color: var(--color-texto);
+}
+
+.app-tabla__numero--bajo {
+  font-weight: var(--peso-negrita);
+  color: var(--color-advertencia-texto);
+}
+
+.app-tabla__numero--agotado {
+  font-weight: var(--peso-negrita);
+  color: var(--color-error-texto);
+}
+
+.app-tabla__unidad {
+  margin-inline-start: var(--espacio-1);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-normal);
+  color: var(--color-texto-tenue);
+}
+
+/* Nombre del producto con datos secundarios apilados. */
+.app-tabla__celda--nombre {
+  min-width: 15rem;
+  max-width: 28rem;
+}
+
+.app-tabla__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.app-tabla__texto-principal {
+  font-weight: var(--peso-medio);
+  line-height: 1.45;
+  color: var(--color-texto);
+  overflow-wrap: anywhere;
+}
+
+.app-tabla__texto-secundario {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-normal);
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+  overflow-wrap: anywhere;
+}
+
+/* Texto largo que debe conservarse completo. */
+.app-tabla__celda--texto {
+  min-width: 14rem;
+  max-width: 30rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  vertical-align: top;
+}
+
+/* Texto que se recorta visualmente; el atributo title del HTML muestra el
+   contenido completo. */
+.app-tabla__celda--truncar {
+  max-width: 18rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-tabla__celda--estado {
+  width: 9.5rem;
+  white-space: nowrap;
+}
+
+/* Procedencia, servicio o departamento. */
+.app-tabla__celda--procedencia,
+.app-tabla__celda--servicio,
+.app-tabla__celda--departamento {
+  min-width: 11rem;
+  max-width: 18rem;
+}
+
+/* Columna de acciones por fila: reutiliza los botones de componentes.css. */
+.app-tabla__celda--acciones {
+  width: 1%;
+  text-align: end;
+  white-space: nowrap;
+}
+
+.app-tabla__acciones {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacio-1);
+}
+
+.app-tabla__acciones > .app-btn {
+  width: var(--altura-control-compacto);
+  min-width: var(--altura-control-compacto);
+  min-height: var(--altura-control-compacto);
+  padding: 0;
+}
+
+.app-tabla__acciones > .app-btn .app-btn__icono {
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+}
+
+/* Separador visual entre grupos de acciones. */
+.app-tabla__acciones-separador {
+  align-self: stretch;
+  width: 1px;
+  margin-inline: var(--espacio-1);
+  background-color: var(--color-borde-suave);
+}
+
+/* ============================================================================
+   4. VARIANTES DE TABLAS Y TABLAS POR MÓDULO
+   ----------------------------------------------------------------------------
+   Las variantes --inventario, --movimientos, --kardex y --administrativa se
+   combinan con --media, --amplia o --extensa según la cantidad de columnas.
+   Sirven para Inventario Mayor/Detal, entradas F-15, salidas F-15-6C,
+   transferencias, donaciones, despachos, usuarios, bitácora y reportes.
+   ============================================================================ */
+
+/* Tabla compacta para listados administrativos extensos. */
+.app-tabla--compacta {
+  font-size: var(--texto-xs);
+}
+
+.app-tabla--compacta .app-tabla__celda {
+  padding: var(--espacio-2) var(--espacio-3);
+}
+
+.app-tabla--compacta .app-tabla__celda--encabezado {
+  padding-block: var(--espacio-2);
+}
+
+.app-tabla--compacta .app-tabla__lote,
+.app-tabla--compacta .app-tabla__estado {
+  font-size: 0.6875rem;
+}
+
+/* Tabla cómoda para fichas y reportes con pocas filas. */
+.app-tabla--comoda .app-tabla__celda {
+  padding: var(--espacio-4) var(--espacio-5);
+}
+
+/* Anchos mínimos que preservan todas las columnas y activan el
+   desplazamiento horizontal del contenedor. */
+.app-tabla--media {
+  min-width: 48rem;
+}
+
+.app-tabla--amplia {
+  min-width: 60rem;
+}
+
+.app-tabla--extensa {
+  min-width: 72rem;
+}
+
+/* Distribución fija cuando se conocen los anchos de columna. */
+.app-tabla--fija {
+  table-layout: fixed;
+}
+
+/* Cuadrícula completa entre celdas. */
+.app-tabla--cuadricula .app-tabla__celda {
+  border-inline-end: 1px solid var(--color-borde-suave);
+}
+
+.app-tabla--cuadricula .app-tabla__celda:last-child {
+  border-inline-end: 0;
+}
+
+/* Sin líneas horizontales internas. */
+.app-tabla--sin-lineas .app-tabla__celda {
+  border-block-end: 0;
+}
+
+.app-tabla--sin-lineas .app-tabla__celda--encabezado {
+  border-block-end: 2px solid var(--color-borde);
+}
+
+/* Primera columna fija (código o nombre del producto) al desplazarse.
+   Se usa :where para que los estados de fila conserven prioridad. */
+:where(.app-tabla--fijar-primera) .app-tabla__celda:first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background-color: var(--color-superficie);
+  box-shadow: inset -1px 0 0 var(--color-borde-suave);
+}
+
+:where(.app-tabla--fijar-primera) .app-tabla__celda--encabezado:first-child {
+  z-index: 3;
+  background-color: var(--color-fondo-secundario);
+}
+
+:where(.app-tabla--fijar-primera)
+  .app-tabla__cuerpo
+  > :where(.app-tabla__fila:nth-child(even))
+  > .app-tabla__celda:first-child {
+  background-color: var(--color-superficie-alterna);
+}
+
+/* Columna de acciones fija al lado derecho. */
+:where(.app-tabla--fijar-acciones) .app-tabla__celda--acciones {
+  position: sticky;
+  inset-inline-end: 0;
+  z-index: 1;
+  background-color: var(--color-superficie);
+  box-shadow: inset 1px 0 0 var(--color-borde-suave);
+}
+
+:where(.app-tabla--fijar-acciones)
+  .app-tabla__celda--encabezado.app-tabla__celda--acciones {
+  z-index: 3;
+  background-color: var(--color-fondo-secundario);
+}
+
+:where(.app-tabla--fijar-acciones)
+  .app-tabla__cuerpo
+  > :where(.app-tabla__fila:nth-child(even))
+  > .app-tabla__celda--acciones {
+  background-color: var(--color-superficie-alterna);
+}
+
+/* Tabla de inventario: código, producto, lote, fechas y existencias. */
+.app-tabla--inventario .app-tabla__celda--existencia {
+  background-color: var(--color-superficie-alterna);
+}
+
+/* Tabla de movimientos y Kardex: el saldo se distingue del movimiento. */
+.app-tabla--movimientos .app-tabla__celda--cantidad {
+  font-weight: var(--peso-seminegrita);
+}
+
+.app-tabla--kardex .app-tabla__celda--saldo {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--peso-seminegrita);
+  text-align: end;
+  white-space: nowrap;
+  background-color: var(--color-primario-suave);
+}
+
+.app-tabla--kardex .app-tabla__celda--encabezado.app-tabla__celda--saldo {
+  background-color: var(--color-fondo-secundario);
+}
+
+/* Tablas administrativas: usuarios, roles, servicios, bitácora, reportes. */
+.app-tabla--administrativa .app-tabla__celda--nombre {
+  min-width: 12rem;
+}
+
+.app-tabla--administrativa .app-tabla__celda--acciones {
+  min-width: 8rem;
+}
+
+/* Tablas de cierre o resumen: filas de totales con más peso. */
+.app-tabla--reporte .app-tabla__celda--pie {
+  font-size: var(--texto-sm);
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-tabla--reporte .app-tabla__celda--total {
+  font-size: var(--texto-base);
+  font-weight: var(--peso-negrita);
+  color: var(--color-primario);
+}
+
+/* Contenedor en estado de carga: atenúa el cuerpo sin ocultar la estructura. */
+.app-tabla-contenedor--cargando .app-tabla__cuerpo {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   5. ESTADOS VISUALES DE FILAS Y EXISTENCIAS
+   ----------------------------------------------------------------------------
+   Ningún estado depende sólo del color: se combinan bordes, tramas, iconos,
+   subrayados y etiquetas de texto incluidas en el HTML.
+   ============================================================================ */
+
+/* 5.1 Insignias de estado dentro de la tabla. Reutilizan la lógica visual de
+   las insignias de componentes.css, con variantes propias para stock. */
+.app-tabla__estado {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  padding: 0.15rem 0.55rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: var(--radio-completo);
+}
+
+.app-tabla__estado-icono {
+  flex: 0 0 auto;
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.app-tabla__estado--disponible,
+.app-tabla__estado--activo,
+.app-tabla__estado--confirmado {
+  color: var(--color-exito-texto);
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+  border-style: solid;
+}
+
+.app-tabla__estado--bajo {
+  color: var(--color-advertencia-texto);
+  background-color: var(--color-advertencia-fondo);
+  border-color: var(--color-advertencia);
+  border-style: dashed;
+}
+
+.app-tabla__estado--agotado {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error);
+  border-style: double;
+  border-width: 3px;
+}
+
+.app-tabla__estado--por-vencer {
+  color: var(--color-advertencia-texto);
+  background-color: var(--color-advertencia-fondo);
+  border-color: var(--color-advertencia);
+  border-style: dotted;
+  border-width: 2px;
+}
+
+.app-tabla__estado--vencido {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 6px,
+    rgba(180, 35, 24, 0.12) 6px 7px
+  );
+  border-color: var(--color-error);
+  border-style: solid;
+}
+
+.app-tabla__estado--anulado {
+  color: var(--color-texto-tenue);
+  text-decoration: line-through;
+  background-color: var(--color-fondo-secundario);
+  border-color: var(--color-borde);
+  border-style: solid;
+}
+
+.app-tabla__estado--pendiente {
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border-color: var(--color-info);
+  border-style: dashed;
+}
+
+.app-tabla__estado--neutro {
+  color: var(--color-texto-secundario);
+  background-color: var(--color-fondo-secundario);
+  border-color: var(--color-borde);
+}
+
+/* 5.2 Tipos de movimiento: color y forma del marcador. */
+.app-tabla__movimiento {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.app-tabla__movimiento::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 0.55rem;
+  height: 0.55rem;
+  background-color: currentColor;
+}
+
+.app-tabla__movimiento--entrada {
+  color: var(--color-exito-texto);
+}
+
+.app-tabla__movimiento--entrada::before {
+  border-radius: 2px;
+}
+
+.app-tabla__movimiento--salida {
+  color: var(--color-advertencia-texto);
+}
+
+.app-tabla__movimiento--salida::before {
+  background-color: transparent;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+}
+
+.app-tabla__movimiento--transferencia {
+  color: var(--color-info-texto);
+}
+
+.app-tabla__movimiento--transferencia::before {
+  border-radius: var(--radio-completo);
+}
+
+.app-tabla__movimiento--despacho {
+  color: var(--color-primario);
+}
+
+.app-tabla__movimiento--despacho::before {
+  width: 0.65rem;
+  height: 2px;
+  border-radius: var(--radio-completo);
+}
+
+.app-tabla__movimiento--ajuste {
+  color: var(--color-error-texto);
+}
+
+.app-tabla__movimiento--ajuste::before {
+  border-radius: 0;
+  transform: rotate(45deg);
+}
+
+.app-tabla__movimiento--correccion {
+  color: var(--color-texto-secundario);
+}
+
+.app-tabla__movimiento--correccion::before {
+  width: 0.65rem;
+  height: 0.2rem;
+  border-radius: 0;
+}
+
+.app-tabla__movimiento--historico {
+  color: var(--color-texto-tenue);
+}
+
+.app-tabla__movimiento--historico::before {
+  background-color: transparent;
+  border: 1px dashed currentColor;
+  border-radius: var(--radio-completo);
+}
+
+/* 5.3 Existencia con detalle secundario. */
+.app-tabla__existencia {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.app-tabla__existencia-valor {
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.35;
+  color: var(--color-texto);
+  white-space: nowrap;
+}
+
+.app-tabla__existencia-detalle {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-normal);
+  line-height: 1.35;
+  color: var(--color-texto-tenue);
+  white-space: nowrap;
+}
+
+/* 5.4 Estados de fila. El borde izquierdo cambia de estilo además de color. */
+.app-tabla__cuerpo > .app-tabla__fila--seleccionada > .app-tabla__celda {
+  background-color: var(--color-primario-suave);
+}
+
+.app-tabla__cuerpo > .app-tabla__fila--seleccionada:hover > .app-tabla__celda {
+  background-color: var(--color-primario-suave);
+}
+
+.app-tabla__fila--seleccionada > :first-child {
+  box-shadow: inset 3px 0 0 var(--color-primario);
+}
+
+.app-tabla__cuerpo > .app-tabla__fila--resaltada > .app-tabla__celda {
+  background-color: var(--color-advertencia-fondo);
+}
+
+.app-tabla__fila--resaltada > :first-child {
+  box-shadow: inset 3px 0 0 var(--color-advertencia);
+}
+
+/* Stock bajo: borde discontinuo. */
+.app-tabla__fila--stock-bajo > :first-child {
+  border-inline-start: 4px dashed var(--color-advertencia);
+}
+
+/* Agotado: borde doble. */
+.app-tabla__fila--agotado > :first-child {
+  border-inline-start: 4px double var(--color-error);
+}
+
+/* Próximo a vencer: borde punteado. */
+.app-tabla__fila--por-vencer > :first-child {
+  border-inline-start: 4px dotted var(--color-advertencia);
+}
+
+/* Vencido: borde sólido y trama en la celda de estado. */
+.app-tabla__fila--vencido > :first-child {
+  border-inline-start: 4px solid var(--color-error);
+}
+
+/* Registro anulado: texto tachado y color atenuado, sin depender del fondo. */
+.app-tabla__cuerpo > .app-tabla__fila--anulada > .app-tabla__celda {
+  color: var(--color-texto-tenue);
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-tabla__fila--anulada .app-tabla__texto-principal,
+.app-tabla__fila--anulada .app-tabla__numero,
+.app-tabla__fila--anulada .app-tabla__codigo,
+.app-tabla__fila--anulada .app-tabla__fecha {
+  text-decoration: line-through;
+}
+
+.app-tabla__fila--anulada .app-tabla__texto-secundario {
+  text-decoration: none;
+}
+
+/* Movimiento pendiente: fila con borde punteado y texto en cursiva. */
+.app-tabla__fila--pendiente > :first-child {
+  border-inline-start: 4px dotted var(--color-info);
+}
+
+.app-tabla__fila--pendiente .app-tabla__texto-principal {
+  font-style: italic;
+}
+
+/* Movimiento confirmado: marca lateral sólida. */
+.app-tabla__fila--confirmada > :first-child {
+  border-inline-start: 4px solid var(--color-exito);
+}
+
+/* Fila deshabilitada por permisos: se mantiene legible, sin acciones.
+   La decisión de mostrar u ocultar datos según el rol corresponde a la lógica
+   del sistema; aquí sólo se representa el estado cuando ya fue restringido. */
+.app-tabla__cuerpo > .app-tabla__fila--restringida > .app-tabla__celda {
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-tabla__fila--restringida .app-tabla__acciones {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+/* ============================================================================
+   6. CÓDIGO DE BARRAS DEL LOTE
+   ----------------------------------------------------------------------------
+   La imagen del código la genera el módulo correspondiente. Estas clases sólo
+   reservan el espacio, ordenan los datos y ubican el botón de impresión.
+   ============================================================================ */
+
+.app-codigo-barras {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  min-width: 0;
+  padding: var(--espacio-2);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-codigo-barras--compacto {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.app-codigo-barras--vertical {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+}
+
+.app-codigo-barras__imagen-envoltura {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  padding: var(--espacio-1);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-sm);
+}
+
+.app-codigo-barras__imagen {
+  display: block;
+  width: auto;
+  max-width: 8rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.app-codigo-barras__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.app-codigo-barras__etiqueta {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  line-height: 1.35;
+  color: var(--color-texto-tenue);
+  text-transform: uppercase;
+  letter-spacing: var(--espaciado-letras-amplio);
+}
+
+.app-codigo-barras__numero {
+  overflow-wrap: anywhere;
+  font-family: var(--fuente-monoespaciada);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto);
+  letter-spacing: 0.08em;
+}
+
+.app-codigo-barras__lote {
+  font-size: var(--texto-xs);
+  line-height: 1.4;
+  color: var(--color-texto-secundario);
+}
+
+.app-codigo-barras__acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  margin-inline-start: auto;
+}
+
+.app-codigo-barras__acciones > .app-btn {
+  width: var(--altura-control-compacto);
+  min-width: var(--altura-control-compacto);
+  min-height: var(--altura-control-compacto);
+  padding: 0;
+}
+
+.app-codigo-barras__nota {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.45;
+  color: var(--color-texto-tenue);
+}
+
+/* Celda de tabla que contiene el bloque de código de barras. */
+.app-tabla__celda--codigo-barras {
+  min-width: 16rem;
+}
+
+/* ============================================================================
+   7. TABLAS VACÍAS, CARGA, BARRA DE HERRAMIENTAS Y PIE
+   ============================================================================ */
+
+/* 7.1 Tabla sin resultados */
+.app-tabla__vacio > .app-tabla__celda {
+  padding: var(--espacio-12) var(--espacio-5);
+  text-align: center;
+  border-block-end: 0;
+}
+
+.app-tabla__vacio-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-2);
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+.app-tabla__vacio-icono {
+  display: inline-grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-block-end: var(--espacio-1);
+  color: var(--color-texto-tenue);
+  background-color: var(--color-fondo-secundario);
+  border-radius: var(--radio-completo);
+}
+
+.app-tabla__vacio-icono > svg {
+  width: var(--tamano-icono-lg);
+  height: var(--tamano-icono-lg);
+}
+
+.app-tabla__vacio-titulo {
+  margin: 0;
+  font-size: var(--texto-base);
+  font-weight: var(--peso-seminegrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+}
+
+.app-tabla__vacio-texto {
+  max-width: 42ch;
+  margin: 0;
+  font-size: var(--texto-sm);
+  line-height: 1.55;
+  color: var(--color-texto-secundario);
+}
+
+.app-tabla__vacio-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
+  margin-block-start: var(--espacio-2);
+}
+
+/* 7.2 Fila de carga */
+.app-tabla__cargando > .app-tabla__celda {
+  padding: var(--espacio-8) var(--espacio-4);
+  text-align: center;
+  border-block-end: 0;
+}
+
+.app-tabla__cargando-contenido {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-3);
+  font-size: var(--texto-sm);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+}
+
+/* 7.3 Pie de tabla: conteo de registros y paginación.
+   La paginación visual se toma de .app-paginacion (componentes.css). */
+.app-tabla__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-4);
+  background-color: var(--color-superficie);
+  border-block-start: 1px solid var(--color-borde-suave);
+}
+
+.app-tabla__conteo {
+  margin: 0;
+  font-size: var(--texto-sm);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+}
+
+.app-tabla__conteo-valor {
+  font-weight: var(--peso-seminegrita);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto);
+}
+
+.app-tabla__pie-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.app-tabla__paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin-inline-start: auto;
+}
+
+/* 7.4 Mensajes y notas al pie de la tabla. */
+.app-tabla__nota {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: var(--espacio-2) var(--espacio-4);
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-texto-tenue);
+  background-color: var(--color-superficie-alterna);
+  border-block-start: 1px solid var(--color-borde-suave);
+}
+
+.app-tabla__nota-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  margin-block-start: 0.1rem;
+}
+
+/* 7.5 Barra de filtros activos sobre la tabla. */
+.app-tabla__filtros-activos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-4);
+  background-color: var(--color-superficie-alterna);
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+.app-tabla__filtros-etiqueta {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto-secundario);
+}
+
+/* ============================================================================
+   8. AJUSTES ADAPTABLES
+   ----------------------------------------------------------------------------
+   No se oculta información de inventario: la tabla conserva todas sus columnas
+   y el contenedor habilita el desplazamiento horizontal.
+   ============================================================================ */
+
+/* Tabletas */
+@media (max-width: 1023px) {
+  .app-tabla {
+    font-size: var(--texto-xs);
+  }
+
+  .app-tabla__celda {
+    padding: var(--espacio-2) var(--espacio-3);
+  }
+
+  .app-tabla__celda--encabezado {
+    padding-block: var(--espacio-2);
+  }
+
+  .app-tabla--comoda .app-tabla__celda {
+    padding: var(--espacio-3) var(--espacio-4);
+  }
+
+  .app-tabla--media {
+    min-width: 42rem;
+  }
+
+  .app-tabla--amplia {
+    min-width: 52rem;
+  }
+
+  .app-tabla--extensa {
+    min-width: 64rem;
+  }
+
+  .app-tabla-contenedor {
+    border-radius: var(--radio-md);
+  }
+
+  .app-codigo-barras__imagen {
+    max-width: 6.5rem;
+  }
+}
+
+/* Tabletas pequeñas y móviles */
+@media (max-width: 767px) {
+  .app-tabla__barra {
+    align-items: stretch;
+    padding: var(--espacio-3);
+  }
+
+  .app-tabla__barra-acciones {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+
+  .app-tabla__barra-acciones > .app-btn {
+    flex: 1 1 auto;
+  }
+
+  .app-tabla__filtros-activos {
+    padding-inline: var(--espacio-3);
+  }
+
+  .app-tabla__pie {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--espacio-3);
+  }
+
+  .app-tabla__conteo {
+    width: 100%;
+  }
+
+  .app-tabla__paginacion {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+
+  .app-tabla__vacio > .app-tabla__celda {
+    padding: var(--espacio-10) var(--espacio-4);
+  }
+
+  .app-tabla__cargando > .app-tabla__celda {
+    padding: var(--espacio-6) var(--espacio-3);
+  }
+
+  .app-codigo-barras {
+    flex-wrap: wrap;
+  }
+
+  .app-codigo-barras__acciones {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+
+  /* En pantallas pequeñas se libera la columna de acciones para no reducir
+     el área útil de las columnas de inventario. */
+  .app-tabla--fijar-acciones .app-tabla__celda--acciones {
+    position: static;
+    box-shadow: none;
+  }
+}
+
+/* Móviles compactos */
+@media (max-width: 575px) {
+  .app-tabla__celda {
+    padding: var(--espacio-2) var(--espacio-3);
+  }
+
+  .app-tabla--comoda .app-tabla__celda {
+    padding: var(--espacio-2) var(--espacio-3);
+  }
+
+  .app-tabla__barra {
+    padding: var(--espacio-3) var(--espacio-2);
+  }
+
+  .app-tabla__barra-nombre {
+    font-size: var(--texto-sm);
+  }
+
+  .app-tabla__estado,
+  .app-tabla__movimiento {
+    font-size: 0.6875rem;
+  }
+
+  .app-tabla__acciones {
+    gap: 0.15rem;
+  }
+
+  .app-tabla__acciones > .app-btn {
+    width: 2.125rem;
+    min-width: 2.125rem;
+    min-height: 2.125rem;
+  }
+
+  .app-tabla__filtros-activos,
+  .app-tabla__nota {
+    padding-inline: var(--espacio-3);
+  }
+
+  .app-tabla__paginacion {
+    justify-content: flex-start;
+  }
+
+  .app-tabla__vacio-titulo {
+    font-size: var(--texto-sm);
+  }
+
+  .app-tabla__vacio-texto {
+    font-size: var(--texto-xs);
+  }
+
+  .app-codigo-barras {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .app-codigo-barras__imagen {
+    max-width: 5.5rem;
+  }
+}
+
+/* ============================================================================
+   9. ACCESIBILIDAD Y PREFERENCIAS DE MOVIMIENTO
+   ============================================================================ */
+
+/* Celdas o filas con interacción por teclado. */
+.app-tabla__celda:focus-visible,
+.app-tabla__fila:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: -3px;
+}
+
+/* En modo de alto contraste se refuerzan bordes y marcas de estado, que no
+   pueden depender de colores personalizados. */
+@media (forced-colors: active) {
+  .app-tabla__celda {
+    border-color: CanvasText;
+  }
+
+  .app-tabla__celda--encabezado {
+    border-block-end-color: CanvasText;
+  }
+
+  .app-tabla__estado,
+  .app-tabla__lote {
+    border: 1px solid CanvasText;
+  }
+
+  .app-tabla__fila--seleccionada > :first-child,
+  .app-tabla__fila--resaltada > :first-child {
+    box-shadow: inset 3px 0 0 Highlight;
+  }
+
+  .app-tabla__fila--anulada .app-tabla__texto-principal,
+  .app-tabla__fila--anulada .app-tabla__numero {
+    text-decoration: line-through;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-tabla__fila,
+  .app-tabla__orden,
+  .app-tabla__orden-icono {
+    transition: none;
+  }
+}
+
+/* Impresión de reportes y listados: se conserva la estructura y se ocultan
+   únicamente los controles que no tienen sentido en papel. */
+@media print {
+  .app-tabla-contenedor {
+    overflow: visible;
+    border-color: #999999;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .app-tabla {
+    min-width: 0;
+    font-size: 10pt;
+  }
+
+  .app-tabla__celda--encabezado {
+    position: static;
+    background-color: transparent;
+  }
+
+  .app-tabla__cuerpo > .app-tabla__fila:hover > .app-tabla__celda {
+    background-color: transparent;
+  }
+
+  .app-tabla__barra-acciones,
+  .app-tabla__acciones,
+  .app-tabla__pie-acciones {
+    display: none;
+  }
+}
+

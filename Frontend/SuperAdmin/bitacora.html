@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Bitácora general del Sistema Institucional de Inventario Hospitalario. Acceso restringido a SuperAdmin."
+    />
+    <title>Bitácora del sistema | SuperAdmin</title>
+    <link rel="stylesheet" href="../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/tablas.css" />
+    <link rel="stylesheet" href="bitacora.css" />
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral administrativo">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>SuperAdmin</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal">
+          <ul>
+            <li><button type="button" class="app-superadmin-nav-item">Panel principal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Farmacia</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Almacén</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Usuarios</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Catálogos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item is-active" aria-current="page">Bitácora</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Respaldos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Configuración</button></li>
+            <li><button type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger">Cerrar sesión</button></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>SuperAdmin</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span class="app-superadmin-user-name">Usuario principal</span>
+              <span class="app-superadmin-user-meta">SuperAdmin</span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <header class="app-superadmin-header">
+            <div>
+              <h2 class="app-superadmin-section-title">Bitácora del sistema</h2>
+              <p class="app-superadmin-section-description">
+                Consulta el historial de actividades, accesos y operaciones del sistema hospitalario. Esta ventana
+                es de lectura exclusiva para SuperAdmin y respeta la trazabilidad aplicada por el backend.
+              </p>
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-exportar-bitacora">Exportar</button>
+          </header>
+
+          <section id="bitacora-resumen" class="app-superadmin-bitacora-resumen" aria-label="Resumen de la bitácora">
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Total de eventos</span>
+              <strong id="bitacora-total-eventos" class="app-superadmin-stat-value">0</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Inicios de sesión</span>
+              <strong id="bitacora-login-exitoso" class="app-superadmin-stat-value">0</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Intentos fallidos</span>
+              <strong id="bitacora-login-fallido" class="app-superadmin-stat-value">0</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Administrativo</span>
+              <strong id="bitacora-eventos-admin" class="app-superadmin-stat-value">0</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Farmacia</span>
+              <strong id="bitacora-eventos-farmacia" class="app-superadmin-stat-value">0</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Almacén</span>
+              <strong id="bitacora-eventos-almacen" class="app-superadmin-stat-value">0</strong>
+            </article>
+          </section>
+
+          <section class="app-superadmin-bitacora-panel app-superadmin-card" aria-label="Filtros de la bitácora">
+            <div class="app-superadmin-bitacora-filtros">
+              <div class="app-superadmin-field">
+                <label for="filtro-usuario">Usuario</label>
+                <input id="filtro-usuario" type="text" placeholder="Nombre o identificación" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-rol">Rol</label>
+                <select id="filtro-rol">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-departamento">Departamento</label>
+                <select id="filtro-departamento">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-modulo">Módulo</label>
+                <select id="filtro-modulo">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-operacion">Tipo de operación</label>
+                <select id="filtro-operacion">
+                  <option value="">Todas</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-fecha-inicio">Fecha inicial</label>
+                <input id="filtro-fecha-inicio" type="date" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-fecha-fin">Fecha final</label>
+                <input id="filtro-fecha-fin" type="date" />
+              </div>
+
+              <div class="app-superadmin-field">
+                <label for="filtro-resultado">Resultado</label>
+                <select id="filtro-resultado">
+                  <option value="">Todos</option>
+                </select>
+              </div>
+
+              <div class="app-superadmin-field app-superadmin-field-actions">
+                <label>&nbsp;</label>
+                <div class="app-superadmin-actions-row">
+                  <button type="button" class="btn btn-primary" id="btn-buscar-bitacora">Buscar</button>
+                  <button type="button" class="btn btn-secondary" id="btn-limpiar-filtros">Limpiar filtros</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="app-superadmin-filtros-estado" aria-live="polite">
+              <span class="app-superadmin-filtro-indicador">Indicador de filtros activos</span>
+              <span id="bitacora-filtros-activos">Ninguno</span>
+            </div>
+          </section>
+
+          <section class="app-superadmin-bitacora-tabla-wrap app-superadmin-card">
+            <div class="app-superadmin-tabla-header">
+              <h3>Eventos registrados</h3>
+              <span class="app-superadmin-solo-lectura">Solo lectura</span>
+            </div>
+
+            <div class="app-superadmin-tabla-scroll">
+              <table id="tabla-bitacora" aria-label="Tabla de bitácora del sistema">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Fecha y hora</th>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Departamento</th>
+                    <th>Módulo</th>
+                    <th>Tipo de operación</th>
+                    <th>Registro afectado</th>
+                    <th>Resultado</th>
+                    <th>Acción</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="10" class="app-superadmin-empty-state">Cargando bitácora...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="app-superadmin-paginacion" aria-label="Paginación de resultados">
+              <button type="button" class="app-superadmin-page-btn" data-page="prev">Anterior</button>
+              <span class="app-superadmin-page-info">Página 1</span>
+              <button type="button" class="app-superadmin-page-btn" data-page="next">Siguiente</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="modal-detalle-evento" class="app-superadmin-modal" aria-hidden="true">
+      <div class="app-superadmin-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-detalle-titulo">
+        <div class="app-superadmin-modal-header">
+          <h3 id="modal-detalle-titulo">Detalle del evento</h3>
+          <button type="button" class="mini-btn" data-close-modal="detalle">Cerrar</button>
+        </div>
+
+        <div id="detalle-evento-contenido" class="app-superadmin-modal-body">
+          <p class="app-superadmin-empty-state">Seleccione un evento para consultar su detalle.</p>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="bitacora.js"></script>
+  </body>
+</html>

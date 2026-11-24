@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Panel principal de SuperAdmin del Sistema Institucional de Inventario Hospitalario."
+    />
+    <title>SuperAdmin | Sistema Institucional de Inventario Hospitalario</title>
+    <link rel="stylesheet" href="../Compartidos/CSS/base.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/componentes.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/formularios.css" />
+    <link rel="stylesheet" href="../Compartidos/CSS/tablas.css" />
+    <link rel="stylesheet" href="superadmin.css" />
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral de SuperAdmin">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>SuperAdmin</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal">
+          <ul>
+            <li>
+              <button type="button" class="app-superadmin-nav-item is-active" aria-current="page">
+                Panel principal
+              </button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="farmacia">Farmacia</button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="almacen">Almacén</button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="usuarios">Usuarios</button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="catalogos">Catálogos</button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="bitacora">Bitácora</button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="respaldos">Respaldos</button>
+            </li>
+            <li>
+              <button type="button" class="app-superadmin-nav-item" data-target="configuracion">Configuración</button>
+            </li>
+            <li class="app-superadmin-nav-separator"></li>
+            <li>
+              <button id="btn-cerrar-sesion" type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger">
+                Cerrar sesión
+              </button>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>SuperAdmin</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span class="app-superadmin-user-name" id="superadmin-nombre">Cargando…</span>
+              <span class="app-superadmin-user-meta">
+                <span id="superadmin-rol">Rol</span>
+              </span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+            <button id="btn-acceder-farmacia" type="button" class="btn btn-secondary">Farmacia</button>
+            <button id="btn-acceder-almacen" type="button" class="btn btn-secondary">Almacén</button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <section class="app-superadmin-summary" aria-label="Resumen general">
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Medicamentos</span>
+              <strong id="superadmin-total-medicamentos" class="stat-card-value">—</strong>
+              <small>Registrados en Farmacia</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Insumos</span>
+              <strong id="superadmin-total-insumos" class="stat-card-value">—</strong>
+              <small>Registrados en Almacén</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Usuarios activos</span>
+              <strong id="superadmin-usuarios-activos" class="stat-card-value">—</strong>
+              <small>Usuarios con acceso activo</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Usuarios inactivos</span>
+              <strong id="superadmin-usuarios-inactivos" class="stat-card-value">—</strong>
+              <small>Usuarios no activos</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Movimientos</span>
+              <strong id="superadmin-movimientos-periodo" class="stat-card-value">—</strong>
+              <small>Registrados en el período</small>
+            </article>
+
+            <article class="app-superadmin-card stat-card">
+              <span class="stat-card-label">Alertas</span>
+              <strong id="superadmin-alertas" class="stat-card-value">—</strong>
+              <small>Inventario y seguridad</small>
+            </article>
+          </section>
+
+          <section class="app-superadmin-grid" aria-label="Accesos principales">
+            <article class="app-superadmin-card app-superadmin-access-card">
+              <div class="app-superadmin-access-card-header">
+                <span class="app-superadmin-tag app-superadmin-tag-farmacia">FARMACIA</span>
+              </div>
+              <h2>Farmacia</h2>
+              <p>Acceso al módulo general de Farmacia para supervisión, gestión y reportes.</p>
+              <ul>
+                <li>Inventario general</li>
+                <li>Recepciones y movimientos</li>
+                <li>Indicadores operativos</li>
+              </ul>
+              <button type="button" class="btn btn-primary" data-access="farmacia">Acceder</button>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-access-card">
+              <div class="app-superadmin-access-card-header">
+                <span class="app-superadmin-tag app-superadmin-tag-almacen">ALMACÉN</span>
+              </div>
+              <h2>Almacén</h2>
+              <p>Acceso al módulo general de Almacén para gestión de entradas, salidas y servicios.</p>
+              <ul>
+                <li>Inventario y kardex</li>
+                <li>Despachos y distribuciones</li>
+                <li>Monitoreo de movimientos</li>
+              </ul>
+              <button type="button" class="btn btn-primary" data-access="almacen">Acceder</button>
+            </article>
+          </section>
+
+          <section class="app-superadmin-lower-grid">
+            <article class="app-superadmin-card app-superadmin-panel-card">
+              <div class="app-superadmin-panel-heading">
+                <h2>Actividad reciente</h2>
+              </div>
+              <div id="superadmin-actividad-reciente" class="app-superadmin-activity-list" aria-live="polite">
+                <p class="app-superadmin-empty-state">Cargando actividad reciente…</p>
+              </div>
+            </article>
+
+            <article class="app-superadmin-card app-superadmin-panel-card">
+              <div class="app-superadmin-panel-heading">
+                <h2>Notificaciones y alertas</h2>
+              </div>
+              <div class="app-superadmin-alert-list">
+                <p class="app-superadmin-empty-state">Cargando alertas…</p>
+              </div>
+            </article>
+          </section>
+
+          <section class="app-superadmin-card app-superadmin-profile-card" aria-labelledby="superadmin-datos-titulo">
+            <div class="app-superadmin-panel-heading">
+              <h2 id="superadmin-datos-titulo">Información del usuario</h2>
+            </div>
+
+            <dl class="app-superadmin-profile-info">
+              <div>
+                <dt>Nombre</dt>
+                <dd id="superadmin-nombre-detalle">—</dd>
+              </div>
+              <div>
+                <dt>Usuario</dt>
+                <dd id="superadmin-usuario">—</dd>
+              </div>
+              <div>
+                <dt>Rol</dt>
+                <dd id="superadmin-rol-detalle">—</dd>
+              </div>
+              <div>
+                <dt>Departamento</dt>
+                <dd id="superadmin-departamento">—</dd>
+              </div>
+            </dl>
+
+            <div class="app-superadmin-profile-actions">
+              <button id="btn-ir-usuarios" type="button" class="btn btn-secondary">Usuarios</button>
+              <button id="btn-ir-catalogos" type="button" class="btn btn-secondary">Catálogos</button>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <script type="module" src="superadmin.js"></script>
+  </body>
+</html>

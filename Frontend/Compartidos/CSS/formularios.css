@@ -1,0 +1,2345 @@
+/**
+ * ============================================================================
+ * SISTEMA INSTITUCIONAL DE INVENTARIO HOSPITALARIO
+ * Archivo: Frontend/Compartidos/CSS/formularios.css
+ * ----------------------------------------------------------------------------
+ * Sistema visual uniforme para todos los formularios del sistema. Depende de
+ * base.css (tokens) y reutiliza los componentes de componentes.css (botones,
+ * alertas, tarjetas, etc.); no los redefine.
+ *
+ * CONTENIDO
+ *   1. Contenedores y estructura de formularios
+ *   2. Encabezados, secciones y pies
+ *   3. Filas, columnas y grupos de campos
+ *   4. Etiquetas, textos de ayuda e indicaciones
+ *   5. Campos de entrada
+ *   6. Variantes de campos
+ *   7. Campos con acciones asociadas (+ Agregar nuevo)
+ *   8. Listas desplegables con buscador
+ *   9. Validación visual y mensajes
+ *  10. Patrones de formularios documentales
+ *  11. Ajustes adaptables
+ *
+ * Todas las clases usan el prefijo app-. Este archivo sólo define la
+ * presentación: la búsqueda, el filtrado, las validaciones y el envío se
+ * implementan en JavaScript y en el backend.
+ * ============================================================================
+ */
+
+/* ============================================================================
+   1. CONTENEDORES Y ESTRUCTURA DE FORMULARIOS
+   ============================================================================ */
+
+.app-formulario {
+  display: grid;
+  gap: var(--espacio-5);
+  width: 100%;
+  min-width: 0;
+  padding: var(--espacio-6);
+  color: var(--color-texto);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-xs);
+}
+
+/* Formulario sin superficie propia, para incrustarlo en tarjetas o modales. */
+.app-formulario--plano {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Formulario compacto para barras de filtros y paneles laterales. */
+.app-formulario--compacto {
+  gap: var(--espacio-4);
+  padding: var(--espacio-4);
+}
+
+/* Formulario de ancho controlado, útil en Login y configuraciones. */
+.app-formulario--estrecho {
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+/* Formulario dentro de un modal: sin borde ni sombra duplicados. */
+.app-formulario--modal {
+  gap: var(--espacio-4);
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.app-formulario__cuerpo {
+  display: grid;
+  gap: var(--espacio-5);
+  min-width: 0;
+}
+
+.app-formulario__cuerpo--compacto {
+  gap: var(--espacio-3);
+}
+
+/* Rejilla de formularios relacionados o columnas de apoyo. */
+.app-formulario__rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: var(--espacio-5);
+  min-width: 0;
+}
+
+/* Barra de filtros: campos en línea con ajuste automático. */
+.app-formulario__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--espacio-3);
+  padding: var(--espacio-4);
+  background-color: var(--color-superficie-alterna);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+}
+
+.app-formulario__filtros .app-campo {
+  flex: 1 1 13rem;
+  min-width: 0;
+}
+
+.app-formulario__filtros .app-formulario__acciones {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
+}
+
+/* ============================================================================
+   2. ENCABEZADOS, SECCIONES Y PIES
+   ============================================================================ */
+
+.app-formulario__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--espacio-3);
+  padding-block-end: var(--espacio-4);
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+.app-formulario__encabezado-texto {
+  min-width: 0;
+}
+
+.app-formulario__titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: var(--texto-xl);
+  font-weight: var(--peso-negrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+  letter-spacing: var(--espaciado-letras-titulos);
+}
+
+.app-formulario__descripcion {
+  max-width: 72ch;
+  margin: var(--espacio-1) 0 0;
+  font-size: var(--texto-sm);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto-secundario);
+}
+
+.app-formulario__codigo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-1) var(--espacio-3);
+  font-family: var(--fuente-monoespaciada);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-primario);
+  white-space: nowrap;
+  background-color: var(--color-primario-suave);
+  border: 1px solid var(--color-primario-borde);
+  border-radius: var(--radio-sm);
+}
+
+.app-formulario__acciones-encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+/* Secciones internas del formulario. */
+.app-formulario__seccion {
+  display: grid;
+  gap: var(--espacio-4);
+  min-width: 0;
+}
+
+.app-formulario__seccion--destacada {
+  padding: var(--espacio-4);
+  background-color: var(--color-superficie-alterna);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-formulario__seccion--error {
+  border-color: var(--color-error-borde);
+}
+
+.app-formulario__seccion-encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+}
+
+.app-formulario__seccion-titulo {
+  margin: 0;
+  font-size: var(--texto-base);
+  font-weight: var(--peso-seminegrita);
+  line-height: var(--interlineado-titulos);
+  color: var(--color-texto);
+}
+
+.app-formulario__seccion-descripcion {
+  max-width: 72ch;
+  margin: var(--espacio-1) 0 0;
+  font-size: var(--texto-xs);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto-secundario);
+}
+
+.app-formulario__seccion-numero {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-inline-end: var(--espacio-2);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-negrita);
+  color: var(--color-texto-inverso);
+  background-color: var(--color-primario);
+  border-radius: var(--radio-completo);
+}
+
+/* Separador propio de formularios (los separadores generales viven en
+   componentes.css como .app-separador). */
+.app-formulario__separador {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  background-color: var(--color-borde-suave);
+  border: 0;
+}
+
+.app-formulario__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--espacio-3);
+  padding-block-start: var(--espacio-4);
+  border-block-start: 1px solid var(--color-borde-suave);
+}
+
+.app-formulario__pie--separado {
+  justify-content: space-between;
+}
+
+.app-formulario__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.app-formulario__acciones--inicio {
+  margin-inline-end: auto;
+}
+
+.app-formulario__nota-pie {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-texto-tenue);
+}
+
+/* ============================================================================
+   3. FILAS, COLUMNAS Y GRUPOS DE CAMPOS
+   ============================================================================ */
+
+/* Fila base de dos columnas. El modificador --N cambia la cantidad. */
+.app-formulario__fila {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--espacio-4);
+  min-width: 0;
+}
+
+.app-formulario__fila--1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.app-formulario__fila--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.app-formulario__fila--3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-formulario__fila--4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Fila de 12 fracciones para anchos relativos. */
+.app-formulario__fila--12 {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.app-formulario__col--completa {
+  grid-column: 1 / -1;
+}
+
+/* Anchos relativos válidos dentro de .app-formulario__fila--12. */
+.app-formulario__fila--12 .app-formulario__col--mitad {
+  grid-column: span 6;
+}
+
+.app-formulario__fila--12 .app-formulario__col--tercio {
+  grid-column: span 4;
+}
+
+.app-formulario__fila--12 .app-formulario__col--dos-tercios {
+  grid-column: span 8;
+}
+
+.app-formulario__fila--12 .app-formulario__col--cuarto {
+  grid-column: span 3;
+}
+
+.app-formulario__fila--12 .app-formulario__col--tres-cuartos {
+  grid-column: span 9;
+}
+
+.app-formulario__fila--12 .app-formulario__col--3 {
+  grid-column: span 3;
+}
+
+.app-formulario__fila--12 .app-formulario__col--4 {
+  grid-column: span 4;
+}
+
+.app-formulario__fila--12 .app-formulario__col--6 {
+  grid-column: span 6;
+}
+
+.app-formulario__fila--12 .app-formulario__col--8 {
+  grid-column: span 8;
+}
+
+.app-formulario__fila--12 .app-formulario__col--9 {
+  grid-column: span 9;
+}
+
+/* Grupo de campos apilados. */
+.app-formulario__grupo {
+  display: grid;
+  gap: var(--espacio-2);
+  align-content: start;
+  min-width: 0;
+}
+
+.app-formulario__grupo--horizontal {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  align-items: end;
+  gap: var(--espacio-3);
+}
+
+/* Conjunto de campos que comparten una misma etiqueta o marco. */
+.app-formulario__conjunto {
+  min-width: 0;
+  margin: 0;
+  padding: var(--espacio-4);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-formulario__conjunto-leyenda {
+  padding-inline: var(--espacio-2);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto);
+}
+
+.app-formulario__conjunto-descripcion {
+  margin: 0 0 var(--espacio-3);
+  font-size: var(--texto-xs);
+  line-height: var(--interlineado-normal);
+  color: var(--color-texto-secundario);
+}
+
+/* ============================================================================
+   4. ETIQUETAS, TEXTOS DE AYUDA E INDICACIONES
+   ============================================================================ */
+
+.app-campo {
+  display: grid;
+  gap: var(--espacio-2);
+  align-content: start;
+  min-width: 0;
+}
+
+.app-campo__etiqueta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--espacio-1);
+  max-width: 100%;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.45;
+  color: var(--color-texto);
+}
+
+.app-campo__requerido {
+  color: var(--color-error);
+  font-weight: var(--peso-negrita);
+}
+
+.app-campo__opcional {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-normal);
+  color: var(--color-texto-tenue);
+}
+
+.app-campo__ayuda {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+}
+
+.app-campo__ayuda--destacada {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-3);
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border: 1px solid var(--color-info-borde);
+  border-radius: var(--radio-sm);
+}
+
+.app-campo__ayuda-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  margin-block-start: 0.1rem;
+}
+
+.app-formulario__indicacion {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: var(--espacio-3);
+  font-size: var(--texto-sm);
+  line-height: 1.55;
+  color: var(--color-info-texto);
+  background-color: var(--color-info-fondo);
+  border-inline-start: 3px solid var(--color-info);
+  border-radius: var(--radio-sm);
+}
+
+.app-formulario__indicacion--advertencia {
+  color: var(--color-advertencia-texto);
+  background-color: var(--color-advertencia-fondo);
+  border-inline-start-color: var(--color-advertencia);
+}
+
+.app-formulario__indicacion-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono);
+  height: var(--tamano-icono);
+  margin-block-start: 0.1rem;
+}
+
+/* ============================================================================
+   5. CAMPOS DE ENTRADA
+   ============================================================================ */
+
+.app-campo__control {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: var(--altura-control);
+  padding: var(--espacio-2) var(--espacio-3);
+  font-family: var(--fuente-base);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-normal);
+  line-height: 1.45;
+  color: var(--color-texto);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-interna);
+  transition:
+    background-color var(--transicion-rapida),
+    border-color var(--transicion-rapida),
+    box-shadow var(--transicion-rapida),
+    color var(--transicion-rapida);
+}
+
+.app-campo__control::placeholder {
+  color: var(--color-texto-tenue);
+  opacity: 1;
+}
+
+.app-campo__control:hover:not(:disabled):not([readonly]) {
+  border-color: var(--color-borde-fuerte);
+}
+
+.app-campo__control:focus {
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: var(--sombra-foco);
+}
+
+.app-campo__control:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: var(--desplazamiento-foco);
+}
+
+.app-campo__control:disabled,
+.app-campo__control[aria-disabled="true"] {
+  color: var(--color-deshabilitado-texto);
+  background-color: var(--color-deshabilitado-fondo);
+  border-color: var(--color-deshabilitado-borde);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.app-campo__control[readonly] {
+  color: var(--color-texto-secundario);
+  background-color: var(--color-fondo-secundario);
+  border-color: var(--color-borde-suave);
+  box-shadow: none;
+  cursor: default;
+}
+
+.app-campo__control[readonly]:focus {
+  border-color: var(--color-primario-borde);
+  box-shadow: var(--sombra-foco);
+}
+
+/* Estado de error controlado por la clase del campo o por aria-invalid. */
+.app-campo--error .app-campo__control,
+.app-campo__control[aria-invalid="true"] {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error);
+}
+
+.app-campo--error .app-campo__control:focus,
+.app-campo__control[aria-invalid="true"]:focus {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 4px rgba(180, 35, 24, 0.18);
+}
+
+/* Estado correcto controlado por la clase del campo. */
+.app-campo--exito .app-campo__control {
+  border-color: var(--color-exito);
+  background-color: var(--color-exito-fondo);
+}
+
+.app-campo--exito .app-campo__control:focus {
+  border-color: var(--color-exito);
+  box-shadow: 0 0 0 4px rgba(22, 122, 78, 0.18);
+}
+
+/* Textareas */
+.app-campo__control--textarea {
+  min-height: 7rem;
+  padding-block: var(--espacio-3);
+  line-height: 1.55;
+  resize: vertical;
+}
+
+.app-campo__control--textarea-sm {
+  min-height: 4.5rem;
+}
+
+.app-campo__control--textarea-lg {
+  min-height: 12rem;
+}
+
+.app-campo__control--sin-redimensionar {
+  resize: none;
+}
+
+/* Contador de caracteres de un textarea o campo de texto. */
+.app-campo__contador {
+  margin: 0;
+  font-size: var(--texto-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+  text-align: end;
+}
+
+/* Select nativo con indicador visual propio. */
+.app-campo__control--select {
+  padding-inline-end: calc(var(--espacio-3) * 2 + 1rem);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235b6e82' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--espacio-3) center;
+  background-size: 1rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+.app-campo__control--select:disabled {
+  cursor: not-allowed;
+}
+
+/* El selector nativo puede mostrar varias líneas (multiple). */
+.app-campo__control--multiple {
+  min-height: 8rem;
+  padding-block: var(--espacio-2);
+  background-image: none;
+}
+
+/* Campos de fecha y hora: no se limita el rango permitido. */
+.app-campo__control--fecha,
+.app-campo__control--hora,
+.app-campo__control--fecha-hora,
+.app-campo__control--mes {
+  font-variant-numeric: tabular-nums;
+  cursor: text;
+}
+
+.app-campo__control--fecha::-webkit-calendar-picker-indicator,
+.app-campo__control--hora::-webkit-calendar-picker-indicator,
+.app-campo__control--fecha-hora::-webkit-calendar-picker-indicator,
+.app-campo__control--mes::-webkit-calendar-picker-indicator {
+  padding: var(--espacio-1);
+  border-radius: var(--radio-xs);
+  cursor: pointer;
+  opacity: 0.65;
+  transition:
+    background-color var(--transicion-rapida),
+    opacity var(--transicion-rapida);
+}
+
+.app-campo__control--fecha::-webkit-calendar-picker-indicator:hover,
+.app-campo__control--hora::-webkit-calendar-picker-indicator:hover,
+.app-campo__control--fecha-hora::-webkit-calendar-picker-indicator:hover,
+.app-campo__control--mes::-webkit-calendar-picker-indicator:hover {
+  background-color: var(--color-fondo-terciario);
+  opacity: 1;
+}
+
+/* Aviso de fecha retroactiva: el campo sigue permitiendo cualquier fecha;
+   este mensaje sólo informa que el registro se hará con fecha anterior. */
+.app-campo__aviso-fecha {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  margin: 0;
+  padding: var(--espacio-2) var(--espacio-3);
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-advertencia-texto);
+  background-color: var(--color-advertencia-fondo);
+  border: 1px solid var(--color-advertencia-borde);
+  border-radius: var(--radio-sm);
+}
+
+.app-campo__aviso-fecha-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  margin-block-start: 0.1rem;
+}
+
+/* Tamaños de control */
+.app-campo__control--sm {
+  min-height: var(--altura-control-compacto);
+  padding-block: var(--espacio-1);
+  font-size: var(--texto-xs);
+}
+
+.app-campo__control--lg {
+  min-height: var(--altura-control-amplio);
+  padding-inline: var(--espacio-4);
+  font-size: var(--texto-base);
+}
+
+/* ============================================================================
+   6. VARIANTES DE CAMPOS
+   ============================================================================ */
+
+/* Campos numéricos: alineación y cifras tabulares para facilitar la lectura. */
+.app-campo__control--numero,
+.app-campo__control--cantidad,
+.app-campo__control--moneda {
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+}
+
+.app-campo__control--moneda {
+  padding-inline-start: calc(var(--espacio-3) + 0.75rem);
+}
+
+/* Envoltura para iconos, prefijos y sufijos dentro del campo. */
+.app-campo__envoltura {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.app-campo__envoltura > .app-campo__control {
+  flex: 1 1 auto;
+}
+
+.app-campo__icono {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: var(--espacio-3);
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  color: var(--color-texto-tenue);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.app-campo__envoltura--icono > .app-campo__control {
+  padding-inline-start: calc(var(--espacio-3) * 2 + var(--tamano-icono-sm));
+}
+
+.app-campo__icono--derecha {
+  inset-inline-start: auto;
+  inset-inline-end: var(--espacio-3);
+}
+
+.app-campo__envoltura--icono-derecha > .app-campo__control {
+  padding-inline-end: calc(var(--espacio-3) * 2 + var(--tamano-icono-sm));
+}
+
+/* Campo de búsqueda */
+.app-campo__busqueda {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.app-campo__busqueda > .app-campo__control {
+  padding-inline-start: calc(var(--espacio-3) * 2 + var(--tamano-icono-sm));
+  padding-inline-end: calc(var(--espacio-3) * 2 + var(--tamano-icono-sm));
+}
+
+.app-campo__busqueda-icono {
+  position: absolute;
+  inset-inline-start: var(--espacio-3);
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  color: var(--color-texto-tenue);
+  pointer-events: none;
+}
+
+.app-campo__busqueda-limpiar {
+  position: absolute;
+  inset-inline-end: var(--espacio-2);
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  color: var(--color-texto-tenue);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--radio-completo);
+  cursor: pointer;
+  transition:
+    background-color var(--transicion-rapida),
+    color var(--transicion-rapida);
+}
+
+.app-campo__busqueda-limpiar:hover {
+  color: var(--color-texto);
+  background-color: var(--color-fondo-terciario);
+}
+
+.app-campo__busqueda-limpiar:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: 1px;
+}
+
+.app-campo__busqueda-limpiar > svg {
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+}
+
+/* Grupo control + prefijo/sufijo (unidad de medida, moneda, etc.). */
+.app-campo__grupo-control {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.app-campo__grupo-control > .app-campo__control {
+  flex: 1 1 auto;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.app-campo__addon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: var(--altura-control);
+  padding-inline: var(--espacio-3);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.3;
+  color: var(--color-texto-secundario);
+  white-space: nowrap;
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde);
+  border-inline-start: 0;
+  border-start-end-radius: var(--radio-md);
+  border-end-end-radius: var(--radio-md);
+}
+
+.app-campo__grupo-control--prefijo > .app-campo__control {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-start-end-radius: var(--radio-md);
+  border-end-end-radius: var(--radio-md);
+}
+
+.app-campo__grupo-control--prefijo .app-campo__addon {
+  border-inline: 1px solid var(--color-borde);
+  border-inline-end: 0;
+  border-start-start-radius: var(--radio-md);
+  border-end-start-radius: var(--radio-md);
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* Acción de solo lectura: muestra un valor calculado sin editable. */
+.app-campo__valor-fijo {
+  display: flex;
+  align-items: center;
+  min-height: var(--altura-control);
+  padding: var(--espacio-2) var(--espacio-3);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+  background-color: var(--color-fondo-secundario);
+  border: 1px dashed var(--color-borde);
+  border-radius: var(--radio-md);
+}
+
+.app-campo__valor-fijo--numero {
+  justify-content: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Campo deshabilitado a nivel de contenedor. */
+.app-campo--deshabilitado .app-campo__etiqueta,
+.app-campo--deshabilitado .app-campo__ayuda {
+  color: var(--color-deshabilitado-texto);
+}
+
+/* ============================================================================
+   7. CAMPOS CON ACCIONES ASOCIADAS (+ AGREGAR NUEVO)
+   ============================================================================ */
+
+/* Distribuye el campo y su botón de acción en la misma línea. */
+.app-campo__con-accion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: var(--espacio-2);
+  min-width: 0;
+}
+
+.app-campo__con-accion > .app-campo__control,
+.app-campo__con-accion > .app-campo__grupo-control,
+.app-campo__con-accion > .app-selector {
+  min-width: 0;
+}
+
+/* Envoltura del botón que acompaña al campo. Reutiliza .app-btn de
+   componentes.css; aquí sólo se ajusta su altura al control. */
+.app-campo__accion {
+  display: inline-flex;
+  align-items: stretch;
+  flex: 0 0 auto;
+}
+
+.app-campo__accion > .app-btn {
+  min-height: var(--altura-control);
+  white-space: nowrap;
+}
+
+.app-campo__accion--icono > .app-btn {
+  width: var(--altura-control);
+  min-width: var(--altura-control);
+  padding: 0;
+}
+
+/* Acciones secundarias debajo del campo (agregar, editar, ver catálogo). */
+.app-campo__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+}
+
+.app-campo__acciones > .app-btn {
+  min-height: var(--altura-control-compacto);
+  font-size: var(--texto-xs);
+}
+
+/* Referencia del registro del que depende el campo (por ejemplo, el insumo
+   seleccionado antes de elegir el lote). */
+.app-campo__referencia {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-3);
+  font-size: var(--texto-xs);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-sm);
+}
+
+.app-campo__referencia-etiqueta {
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-texto);
+}
+
+.app-campo__referencia-valor {
+  overflow: hidden;
+  color: var(--color-primario);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Aviso de dependencia: recuerda qué selección habilita este campo. */
+.app-campo__dependencia {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  font-size: var(--texto-xs);
+  line-height: 1.45;
+  color: var(--color-info-texto);
+}
+
+.app-campo__dependencia-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  margin-block-start: 0.1rem;
+}
+
+/* Bloque de ayuda para el alta rápida de insumos o medicamentos. */
+.app-campo__alta-rapida {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+  padding: var(--espacio-2) var(--espacio-3);
+  font-size: var(--texto-xs);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+  background-color: var(--color-superficie-alterna);
+  border: 1px dashed var(--color-borde);
+  border-radius: var(--radio-sm);
+}
+
+/* ============================================================================
+   8. LISTAS DESPLEGABLES CON BUSCADOR
+   ----------------------------------------------------------------------------
+   La apertura se controla con .app-selector--abierto (o aria-expanded="true"
+   en el control). La búsqueda, el filtrado y la carga de opciones dependen de
+   JavaScript.
+   ============================================================================ */
+
+.app-selector {
+  position: relative;
+  display: grid;
+  gap: var(--espacio-1);
+  min-width: 0;
+}
+
+/* Control visible del selector (normalmente un <button>). */
+.app-selector__control {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  width: 100%;
+  min-width: 0;
+  min-height: var(--altura-control);
+  padding: var(--espacio-2) var(--espacio-3);
+  font-family: var(--fuente-base);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-normal);
+  line-height: 1.45;
+  color: var(--color-texto);
+  text-align: start;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  box-shadow: var(--sombra-interna);
+  cursor: pointer;
+  transition:
+    background-color var(--transicion-rapida),
+    border-color var(--transicion-rapida),
+    box-shadow var(--transicion-rapida);
+}
+
+.app-selector__control:hover:not(:disabled) {
+  border-color: var(--color-borde-fuerte);
+}
+
+.app-selector__control:focus-visible {
+  border-color: var(--color-primario);
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: var(--desplazamiento-foco);
+}
+
+.app-selector--abierto .app-selector__control,
+.app-selector__control[aria-expanded="true"] {
+  border-color: var(--color-primario);
+  box-shadow: var(--sombra-foco);
+}
+
+.app-selector__control:disabled,
+.app-selector__control[aria-disabled="true"] {
+  color: var(--color-deshabilitado-texto);
+  background-color: var(--color-deshabilitado-fondo);
+  border-color: var(--color-deshabilitado-borde);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Selector aún no habilitado porque falta la selección padre. */
+.app-selector--bloqueado .app-selector__control {
+  color: var(--color-deshabilitado-texto);
+  background-color: var(--color-deshabilitado-fondo);
+  border-style: dashed;
+  border-color: var(--color-deshabilitado-borde);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.app-selector--error .app-selector__control,
+.app-selector__control[aria-invalid="true"] {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error);
+}
+
+.app-selector--exito .app-selector__control {
+  border-color: var(--color-exito);
+  background-color: var(--color-exito-fondo);
+}
+
+.app-selector--sm .app-selector__control {
+  min-height: var(--altura-control-compacto);
+  padding-block: var(--espacio-1);
+  font-size: var(--texto-xs);
+}
+
+.app-selector--lg .app-selector__control {
+  min-height: var(--altura-control-amplio);
+  padding-inline: var(--espacio-4);
+  font-size: var(--texto-base);
+}
+
+.app-selector__valor {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-selector__valor--vacio,
+.app-selector__placeholder {
+  color: var(--color-texto-tenue);
+}
+
+.app-selector__resumen {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.app-selector__resumen-titulo {
+  overflow: hidden;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-medio);
+  color: var(--color-texto);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-selector__resumen-detalle {
+  overflow: hidden;
+  font-size: var(--texto-xs);
+  color: var(--color-texto-tenue);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-selector__flecha {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  color: var(--color-texto-tenue);
+  transition: transform var(--transicion-rapida);
+}
+
+.app-selector--abierto .app-selector__flecha,
+.app-selector__control[aria-expanded="true"] .app-selector__flecha {
+  transform: rotate(180deg);
+}
+
+.app-selector__limpiar {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: var(--color-texto-tenue);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--radio-completo);
+  cursor: pointer;
+  transition:
+    background-color var(--transicion-rapida),
+    color var(--transicion-rapida);
+}
+
+.app-selector__limpiar:hover {
+  color: var(--color-texto);
+  background-color: var(--color-fondo-terciario);
+}
+
+.app-selector__limpiar:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: 1px;
+}
+
+.app-selector__limpiar > svg {
+  width: var(--tamano-icono-xs);
+  height: var(--tamano-icono-xs);
+}
+
+/* Panel de opciones */
+.app-selector__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--espacio-1));
+  inset-inline: 0;
+  z-index: var(--z-menu);
+  display: none;
+  flex-direction: column;
+  min-width: 100%;
+  max-width: min(28rem, calc(100vw - var(--espacio-8)));
+  overflow: hidden;
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-lg);
+  box-shadow: var(--sombra-lg);
+}
+
+.app-selector--abierto .app-selector__panel {
+  display: flex;
+}
+
+.app-selector__panel--amplio {
+  min-width: min(32rem, calc(100vw - var(--espacio-8)));
+}
+
+/* Variante para abrir hacia arriba cuando no hay espacio inferior. */
+.app-selector__panel--arriba {
+  inset-block-start: auto;
+  inset-block-end: calc(100% + var(--espacio-1));
+}
+
+.app-selector__panel--sin-borde {
+  border: 0;
+}
+
+/* Buscador interno */
+.app-selector__buscador {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: var(--espacio-2);
+  background-color: var(--color-superficie);
+  border-block-end: 1px solid var(--color-borde-suave);
+}
+
+.app-selector__buscador-icono {
+  position: absolute;
+  inset-inline-start: var(--espacio-4);
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  color: var(--color-texto-tenue);
+  pointer-events: none;
+}
+
+.app-selector__buscador-campo {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--altura-control-compacto);
+  padding: var(--espacio-1) var(--espacio-3) var(--espacio-1)
+    calc(var(--espacio-3) * 2 + var(--tamano-icono-sm));
+  font-family: var(--fuente-base);
+  font-size: var(--texto-sm);
+  line-height: 1.45;
+  color: var(--color-texto);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-sm);
+  appearance: none;
+  transition:
+    background-color var(--transicion-rapida),
+    border-color var(--transicion-rapida),
+    box-shadow var(--transicion-rapida);
+}
+
+.app-selector__buscador-campo::placeholder {
+  color: var(--color-texto-tenue);
+  opacity: 1;
+}
+
+.app-selector__buscador-campo:focus {
+  background-color: var(--color-superficie);
+  border-color: var(--color-primario);
+  outline: none;
+  box-shadow: var(--sombra-foco);
+}
+
+.app-selector__buscador-campo:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: 1px;
+}
+
+.app-selector__buscador-limpiar {
+  position: absolute;
+  inset-inline-end: var(--espacio-3);
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  color: var(--color-texto-tenue);
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--radio-completo);
+  cursor: pointer;
+}
+
+.app-selector__buscador-limpiar:hover {
+  color: var(--color-texto);
+  background-color: var(--color-fondo-terciario);
+}
+
+.app-selector__buscador-limpiar:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: 1px;
+}
+
+.app-selector__buscador-limpiar > svg {
+  width: var(--tamano-icono-xs);
+  height: var(--tamano-icono-xs);
+}
+
+/* Lista de opciones */
+.app-selector__lista {
+  display: grid;
+  gap: 2px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: 16rem;
+  margin: 0;
+  padding: var(--espacio-1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  list-style: none;
+}
+
+.app-selector__lista--amplia {
+  max-height: 22rem;
+}
+
+/* Encabezado de grupo de opciones (por ejemplo, lotes de un insumo). */
+.app-selector__grupo {
+  display: grid;
+  gap: 2px;
+}
+
+.app-selector__grupo + .app-selector__grupo {
+  margin-block-start: var(--espacio-1);
+  padding-block-start: var(--espacio-1);
+  border-block-start: 1px solid var(--color-borde-suave);
+}
+
+.app-selector__grupo-titulo {
+  margin: 0;
+  padding: var(--espacio-1) var(--espacio-3);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+  text-transform: uppercase;
+  letter-spacing: var(--espaciado-letras-amplio);
+}
+
+/* Opción individual */
+.app-selector__opcion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  width: 100%;
+  min-width: 0;
+  padding: var(--espacio-2) var(--espacio-3);
+  font-family: var(--fuente-base);
+  font-size: var(--texto-sm);
+  line-height: 1.45;
+  color: var(--color-texto);
+  text-align: start;
+  background-color: transparent;
+  border: 0;
+  border-radius: var(--radio-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--transicion-rapida),
+    color var(--transicion-rapida);
+}
+
+.app-selector__opcion:hover,
+.app-selector__opcion--activa {
+  background-color: var(--color-fondo-secundario);
+}
+
+.app-selector__opcion:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: -1px;
+}
+
+.app-selector__opcion--seleccionada {
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-primario);
+  background-color: var(--color-primario-suave);
+}
+
+.app-selector__opcion--seleccionada:hover {
+  background-color: var(--azul-100);
+}
+
+.app-selector__opcion--deshabilitada,
+.app-selector__opcion:disabled,
+.app-selector__opcion[aria-disabled="true"] {
+  color: var(--color-deshabilitado-texto);
+  background-color: transparent;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.app-selector__opcion-contenido {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.app-selector__opcion-titulo {
+  overflow: hidden;
+  font-size: var(--texto-sm);
+  font-weight: inherit;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-selector__opcion-detalle {
+  overflow: hidden;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-normal);
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-selector__opcion-meta {
+  flex: 0 0 auto;
+  font-size: var(--texto-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto-tenue);
+  white-space: nowrap;
+}
+
+.app-selector__opcion-marca {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  color: var(--color-primario);
+}
+
+.app-selector__opcion-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono);
+  height: var(--tamano-icono);
+  color: var(--color-texto-tenue);
+}
+
+/* Texto coincidente resaltado dentro de una opción. */
+.app-selector__opcion mark {
+  color: inherit;
+  background-color: var(--color-advertencia-fondo);
+  border-radius: var(--radio-xs);
+}
+
+/* Opción con distribución de columnas (lote, caducidad, existencia). */
+.app-selector__opcion--datos {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
+.app-selector__opcion--datos .app-selector__opcion-titulo {
+  white-space: normal;
+}
+
+.app-selector__opcion--datos .app-selector__opcion-detalle {
+  white-space: normal;
+}
+
+/* Estados del panel: vacío, carga, error y dependencia pendiente. */
+.app-selector__vacio,
+.app-selector__cargando,
+.app-selector__error,
+.app-selector__dependencia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-2);
+  padding: var(--espacio-6) var(--espacio-4);
+  font-size: var(--texto-sm);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+.app-selector__vacio-icono,
+.app-selector__error-icono,
+.app-selector__dependencia-icono {
+  width: var(--tamano-icono-lg);
+  height: var(--tamano-icono-lg);
+  color: var(--color-texto-tenue);
+}
+
+.app-selector__error {
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+}
+
+.app-selector__error-icono {
+  color: var(--color-error);
+}
+
+.app-selector__vacio-titulo,
+.app-selector__error-titulo {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.45;
+  color: inherit;
+}
+
+.app-selector__vacio-texto,
+.app-selector__error-texto,
+.app-selector__dependencia-texto {
+  max-width: 34ch;
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: inherit;
+}
+
+.app-selector__cargando {
+  flex-direction: row;
+  color: var(--color-texto-secundario);
+}
+
+/* Pie del panel: contador de resultados o acción de alta rápida. */
+.app-selector__pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+  flex: 0 0 auto;
+  padding: var(--espacio-2) var(--espacio-3);
+  background-color: var(--color-superficie-alterna);
+  border-block-start: 1px solid var(--color-borde-suave);
+}
+
+.app-selector__contador {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+}
+
+.app-selector__pie-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin-inline-start: auto;
+}
+
+.app-selector__pie-acciones > .app-btn {
+  min-height: var(--altura-control-compacto);
+  font-size: var(--texto-xs);
+}
+
+/* Mensaje bajo el selector cuando la lista depende de otro campo. */
+.app-selector__nota {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-texto-tenue);
+}
+
+/* ============================================================================
+   9. VALIDACIÓN VISUAL Y MENSAJES
+   ----------------------------------------------------------------------------
+   Las clases de estado no validan nada: la aplicación decide cuándo aplicar
+   .app-campo--error, .app-campo--exito o aria-invalid="true".
+   ============================================================================ */
+
+.app-campo--error .app-campo__etiqueta {
+  color: var(--color-error-texto);
+}
+
+.app-campo--exito .app-campo__etiqueta {
+  color: var(--color-exito-texto);
+}
+
+.app-campo--error .app-campo__ayuda {
+  color: var(--color-error-texto);
+}
+
+/* Mensaje asociado a un campo (obligatorio vacío, cantidad excedida, lote no
+   seleccionado, fecha no válida, etc.). */
+.app-campo__mensaje {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--espacio-2);
+  margin: 0;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+}
+
+.app-campo__mensaje-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+  margin-block-start: 0.1rem;
+}
+
+.app-campo__mensaje-texto {
+  min-width: 0;
+}
+
+.app-campo__mensaje-detalle {
+  display: block;
+  margin-block-start: 0.1rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-normal);
+  line-height: 1.5;
+  color: inherit;
+  opacity: 0.9;
+}
+
+.app-campo__mensaje--error {
+  color: var(--color-error-texto);
+}
+
+.app-campo__mensaje--exito {
+  color: var(--color-exito-texto);
+}
+
+.app-campo__mensaje--advertencia {
+  color: var(--color-advertencia-texto);
+}
+
+.app-campo__mensaje--info {
+  color: var(--color-info-texto);
+}
+
+/* Variante destacada para errores que deben resaltar junto al campo. */
+.app-campo__mensaje--destacado {
+  padding: var(--espacio-2) var(--espacio-3);
+  border: 1px solid transparent;
+  border-radius: var(--radio-sm);
+}
+
+.app-campo__mensaje--error.app-campo__mensaje--destacado {
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error-borde);
+}
+
+.app-campo__mensaje--exito.app-campo__mensaje--destacado {
+  background-color: var(--color-exito-fondo);
+  border-color: var(--color-exito-borde);
+}
+
+.app-campo__mensaje--advertencia.app-campo__mensaje--destacado {
+  background-color: var(--color-advertencia-fondo);
+  border-color: var(--color-advertencia-borde);
+}
+
+.app-campo__mensaje--info.app-campo__mensaje--destacado {
+  background-color: var(--color-info-fondo);
+  border-color: var(--color-info-borde);
+}
+
+/* Mensajes generales del formulario: error del servidor, resultado del envío
+   o advertencias globales. Se colocan antes del pie o al inicio del cuerpo.
+   El bloque visual de cada mensaje se toma de .app-alerta (componentes.css). */
+.app-formulario__mensajes {
+  display: grid;
+  gap: var(--espacio-2);
+  min-width: 0;
+}
+
+.app-formulario__mensajes > .app-alerta {
+  margin: 0;
+}
+
+/* Estado del envío junto a los botones de acción. */
+.app-formulario__estado-envio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--espacio-2);
+  margin-inline-end: auto;
+  font-size: var(--texto-xs);
+  line-height: 1.4;
+  color: var(--color-texto-secundario);
+}
+
+.app-formulario__estado-envio--exito {
+  color: var(--color-exito-texto);
+}
+
+.app-formulario__estado-envio--error {
+  color: var(--color-error-texto);
+}
+
+.app-formulario__estado-envio-icono {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-sm);
+  height: var(--tamano-icono-sm);
+}
+
+/* Resumen de errores de validación al inicio del formulario. */
+.app-formulario__resumen-errores {
+  padding: var(--espacio-4);
+  color: var(--color-error-texto);
+  background-color: var(--color-error-fondo);
+  border: 1px solid var(--color-error-borde);
+  border-inline-start: 4px solid var(--color-error);
+  border-radius: var(--radio-md);
+}
+
+.app-formulario__resumen-errores-titulo {
+  margin: 0 0 var(--espacio-2);
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-negrita);
+  line-height: 1.45;
+}
+
+.app-formulario__resumen-errores-lista {
+  display: grid;
+  gap: var(--espacio-1);
+  margin: 0;
+  padding-inline-start: var(--espacio-5);
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+}
+
+.app-formulario__resumen-errores-enlace {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+
+.app-formulario__resumen-errores-enlace:hover {
+  color: var(--color-error);
+}
+
+.app-formulario__resumen-errores-enlace:focus-visible {
+  outline: var(--grosor-foco) solid var(--color-foco);
+  outline-offset: var(--desplazamiento-foco);
+}
+
+/* ============================================================================
+   10. PATRONES DE FORMULARIOS DOCUMENTALES
+   ----------------------------------------------------------------------------
+   Base reutilizable para F-15, F-15-6C, transferencias Mayor a Detal,
+   recepciones, donaciones, lotes, usuarios, configuración y ajustes.
+   ============================================================================ */
+
+.app-formulario--documento {
+  gap: var(--espacio-4);
+  padding: var(--espacio-8);
+  box-shadow: var(--sombra-sm);
+}
+
+.app-formulario--documento .app-formulario__cuerpo {
+  gap: var(--espacio-4);
+}
+
+/* Acento superior según el tipo de movimiento documental. */
+.app-formulario--ingreso {
+  border-block-start: 4px solid var(--color-exito);
+}
+
+.app-formulario--salida {
+  border-block-start: 4px solid var(--color-advertencia);
+}
+
+.app-formulario--transferencia {
+  border-block-start: 4px solid var(--color-info);
+}
+
+.app-formulario--ajuste {
+  border-block-start: 4px solid var(--color-error);
+}
+
+.app-formulario--recepcion,
+.app-formulario--donacion {
+  border-block-start: 4px solid var(--color-primario);
+}
+
+/* Membrete institucional */
+.app-formulario__membrete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-4);
+  padding-block-end: var(--espacio-4);
+  border-block-end: 2px solid var(--color-borde);
+}
+
+.app-formulario__membrete-logo {
+  flex: 0 0 auto;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: contain;
+}
+
+.app-formulario__membrete-datos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+  min-width: 0;
+}
+
+.app-formulario__membrete-institucion {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-negrita);
+  line-height: 1.3;
+  color: var(--color-texto);
+}
+
+.app-formulario__membrete-dependencia {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+}
+
+.app-formulario__membrete-codigo {
+  margin-inline-start: auto;
+  font-family: var(--fuente-monoespaciada);
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-texto-secundario);
+  text-align: end;
+}
+
+/* Título del documento oficial */
+.app-formulario__documento-titulo {
+  margin: 0;
+  font-family: var(--fuente-titulos);
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-negrita);
+  line-height: 1.35;
+  color: var(--color-texto);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: var(--espaciado-letras-amplio);
+}
+
+.app-formulario__documento-subtitulo {
+  margin: var(--espacio-1) 0 0;
+  font-size: var(--texto-xs);
+  line-height: 1.5;
+  color: var(--color-texto-secundario);
+  text-align: center;
+}
+
+/* Datos de cabecera del documento: folio, fecha, unidad, responsable. */
+.app-formulario__datos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--espacio-3) var(--espacio-4);
+  padding: var(--espacio-4);
+  background-color: var(--color-superficie-alterna);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-formulario__dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.app-formulario__dato-etiqueta {
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-medio);
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+  text-transform: uppercase;
+  letter-spacing: var(--espaciado-letras-amplio);
+}
+
+.app-formulario__dato-valor {
+  overflow: hidden;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.45;
+  color: var(--color-texto);
+  text-overflow: ellipsis;
+}
+
+.app-formulario__dato-valor--numero {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Partidas o renglones de un documento (insumo, lote, cantidad, unidad). */
+.app-formulario__partidas {
+  display: grid;
+  gap: var(--espacio-2);
+  min-width: 0;
+}
+
+.app-formulario__partida {
+  display: grid;
+  grid-template-columns:
+    auto minmax(0, 2fr) minmax(0, 1.2fr)
+    minmax(5rem, 0.9fr) minmax(4.5rem, 0.7fr) auto;
+  align-items: end;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3);
+  background-color: var(--color-superficie);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-formulario__partida--error {
+  background-color: var(--color-error-fondo);
+  border-color: var(--color-error-borde);
+}
+
+.app-formulario__partida-numero {
+  display: inline-grid;
+  place-items: center;
+  align-self: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  font-size: var(--texto-xs);
+  font-weight: var(--peso-negrita);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-texto-secundario);
+  background-color: var(--color-fondo-secundario);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-completo);
+}
+
+.app-formulario__partida-campo {
+  min-width: 0;
+}
+
+.app-formulario__partida-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-1);
+  align-self: center;
+}
+
+.app-formulario__partida-acciones > .app-btn {
+  width: var(--altura-control-compacto);
+  min-width: var(--altura-control-compacto);
+  min-height: var(--altura-control-compacto);
+  padding: 0;
+}
+
+/* Pie de partidas: agregar renglón o total de artículos. */
+.app-formulario__partidas-pie {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+}
+
+.app-formulario__partidas-conteo {
+  margin: 0;
+  font-size: var(--texto-xs);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.4;
+  color: var(--color-texto-tenue);
+}
+
+/* Flujo origen → destino para transferencias Mayor a Detal. */
+.app-formulario__flujo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--espacio-3);
+}
+
+.app-formulario__flujo-paso {
+  display: grid;
+  gap: var(--espacio-3);
+  min-width: 0;
+  padding: var(--espacio-4);
+  background-color: var(--color-superficie-alterna);
+  border: 1px solid var(--color-borde-suave);
+  border-radius: var(--radio-md);
+}
+
+.app-formulario__flujo-titulo {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto);
+}
+
+.app-formulario__flujo-flecha {
+  flex: 0 0 auto;
+  width: var(--tamano-icono-lg);
+  height: var(--tamano-icono-lg);
+  color: var(--color-primario);
+}
+
+/* Totales del documento */
+.app-formulario__totales {
+  display: grid;
+  gap: 0;
+  width: 100%;
+  max-width: 26rem;
+  margin-inline-start: auto;
+}
+
+.app-formulario__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--espacio-4);
+  padding-block: var(--espacio-2);
+  border-block-end: 1px dashed var(--color-borde);
+}
+
+.app-formulario__total-etiqueta {
+  margin: 0;
+  font-size: var(--texto-sm);
+  line-height: 1.45;
+  color: var(--color-texto-secundario);
+}
+
+.app-formulario__total-valor {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.45;
+  color: var(--color-texto);
+  text-align: end;
+}
+
+.app-formulario__total--final {
+  margin-block-start: var(--espacio-1);
+  padding-block: var(--espacio-3) 0;
+  border-block-start: 2px solid var(--color-borde);
+  border-block-end: 0;
+}
+
+.app-formulario__total--final .app-formulario__total-etiqueta {
+  font-weight: var(--peso-seminegrita);
+  color: var(--color-texto);
+}
+
+.app-formulario__total--final .app-formulario__total-valor {
+  font-size: var(--texto-lg);
+  font-weight: var(--peso-negrita);
+  color: var(--color-primario);
+}
+
+/* Firmas y responsabilidades */
+.app-formulario__firmas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: var(--espacio-8) var(--espacio-6);
+  margin-block-start: var(--espacio-6);
+}
+
+.app-formulario__firma {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espacio-1);
+  min-width: 0;
+  text-align: center;
+}
+
+.app-formulario__firma-linea {
+  width: 100%;
+  height: 1px;
+  margin-block-end: var(--espacio-2);
+  background-color: var(--color-borde-fuerte);
+}
+
+.app-formulario__firma-nombre {
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: var(--peso-seminegrita);
+  line-height: 1.4;
+  color: var(--color-texto);
+}
+
+.app-formulario__firma-cargo {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.4;
+  color: var(--color-texto-secundario);
+}
+
+.app-formulario__firma--izquierda {
+  align-items: flex-start;
+  text-align: start;
+}
+
+/* Nota legal o instrucción al pie del documento. */
+.app-formulario__legal {
+  margin: 0;
+  font-size: var(--texto-xs);
+  line-height: 1.55;
+  color: var(--color-texto-tenue);
+}
+
+/* ============================================================================
+   11. AJUSTES ADAPTABLES
+   ============================================================================ */
+
+/* Tabletas */
+@media (max-width: 1023px) {
+  .app-formulario {
+    padding: var(--espacio-5);
+  }
+
+  .app-formulario--documento {
+    padding: var(--espacio-6);
+  }
+
+  .app-formulario__fila--3,
+  .app-formulario__fila--4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .app-formulario__fila--12 .app-formulario__col--3,
+  .app-formulario__fila--12 .app-formulario__col--4 {
+    grid-column: span 6;
+  }
+
+  .app-formulario__fila--12 .app-formulario__col--8,
+  .app-formulario__fila--12 .app-formulario__col--9 {
+    grid-column: 1 / -1;
+  }
+
+  .app-formulario__partida {
+    gap: var(--espacio-2);
+    padding: var(--espacio-3);
+  }
+
+  .app-formulario__flujo {
+    gap: var(--espacio-2);
+  }
+
+  .app-selector__panel--amplio {
+    min-width: min(26rem, calc(100vw - var(--espacio-6)));
+  }
+}
+
+/* Tabletas pequeñas y móviles: una sola columna de campos. */
+@media (max-width: 767px) {
+  .app-formulario,
+  .app-formulario--documento {
+    padding: var(--espacio-4);
+  }
+
+  .app-formulario--plano,
+  .app-formulario--modal {
+    padding: 0;
+  }
+
+  .app-formulario__fila,
+  .app-formulario__fila--1,
+  .app-formulario__fila--2,
+  .app-formulario__fila--3,
+  .app-formulario__fila--4,
+  .app-formulario__fila--12 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-formulario__col--completa,
+  .app-formulario__col--mitad,
+  .app-formulario__col--tercio,
+  .app-formulario__col--dos-tercios,
+  .app-formulario__col--cuarto,
+  .app-formulario__col--tres-cuartos,
+  .app-formulario__fila--12 .app-formulario__col--mitad,
+  .app-formulario__fila--12 .app-formulario__col--tercio,
+  .app-formulario__fila--12 .app-formulario__col--dos-tercios,
+  .app-formulario__fila--12 .app-formulario__col--cuarto,
+  .app-formulario__fila--12 .app-formulario__col--tres-cuartos,
+  .app-formulario__fila--12 .app-formulario__col--3,
+  .app-formulario__fila--12 .app-formulario__col--4,
+  .app-formulario__fila--12 .app-formulario__col--6,
+  .app-formulario__fila--12 .app-formulario__col--8,
+  .app-formulario__fila--12 .app-formulario__col--9 {
+    grid-column: 1 / -1;
+  }
+
+  .app-formulario__filtros .app-campo {
+    flex-basis: 100%;
+  }
+
+  .app-formulario__filtros .app-formulario__acciones {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+
+  .app-formulario__filtros .app-formulario__acciones > .app-btn {
+    flex: 1 1 auto;
+  }
+
+  .app-formulario__pie {
+    align-items: stretch;
+  }
+
+  .app-formulario__pie > .app-formulario__acciones {
+    width: 100%;
+  }
+
+  .app-formulario__pie > .app-formulario__acciones > .app-btn {
+    flex: 1 1 auto;
+  }
+
+  .app-formulario__membrete-codigo {
+    margin-inline-start: 0;
+    text-align: start;
+  }
+
+  /* Partidas en disposición vertical. */
+  .app-formulario__partida {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .app-formulario__partida-campo,
+  .app-formulario__partida-acciones {
+    grid-column: 2;
+  }
+
+  .app-formulario__partida-acciones {
+    justify-self: start;
+  }
+
+  /* Flujo origen → destino apilado. */
+  .app-formulario__flujo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-formulario__flujo-flecha {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+
+  .app-formulario__totales {
+    max-width: none;
+    margin-inline-start: 0;
+  }
+
+  .app-formulario__firmas {
+    gap: var(--espacio-6) var(--espacio-4);
+  }
+
+  .app-selector__panel,
+  .app-selector__panel--amplio {
+    max-width: none;
+    min-width: 0;
+  }
+
+  .app-selector__lista {
+    max-height: 14rem;
+  }
+
+  .app-selector__opcion--datos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-selector__opcion--datos .app-selector__opcion-meta {
+    text-align: start;
+  }
+}
+
+/* Móviles compactos */
+@media (max-width: 575px) {
+  .app-formulario {
+    gap: var(--espacio-4);
+    padding: var(--espacio-3);
+  }
+
+  .app-formulario__fila {
+    gap: var(--espacio-3);
+  }
+
+  .app-formulario__encabezado {
+    padding-block-end: var(--espacio-3);
+  }
+
+  .app-formulario__titulo {
+    font-size: var(--texto-lg);
+  }
+
+  .app-formulario__documento-titulo {
+    font-size: var(--texto-base);
+  }
+
+  .app-formulario__membrete {
+    gap: var(--espacio-3);
+  }
+
+  .app-formulario__membrete-logo {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .app-formulario__datos {
+    padding: var(--espacio-3);
+  }
+
+  /* El campo y su acción se apilan para no comprimir el control. */
+  .app-campo__con-accion {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-campo__accion > .app-btn {
+    width: 100%;
+  }
+
+  .app-campo__accion--icono > .app-btn {
+    width: 100%;
+  }
+
+  .app-formulario__seccion--destacada {
+    padding: var(--espacio-3);
+  }
+
+  .app-formulario__acciones {
+    width: 100%;
+  }
+
+  .app-formulario__acciones > .app-btn {
+    flex: 1 1 auto;
+  }
+
+  .app-formulario__estado-envio {
+    width: 100%;
+    margin-inline-end: 0;
+  }
+
+  .app-selector__opcion--datos {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .app-formulario__partida {
+    padding: var(--espacio-2);
+  }
+
+  .app-formulario__totales {
+    padding: 0;
+  }
+
+  .app-formulario__firma {
+    align-items: flex-start;
+    text-align: start;
+  }
+}
+
+/* Respeta la preferencia de movimiento reducido. */
+@media (prefers-reduced-motion: reduce) {
+  .app-campo__control,
+  .app-selector__control,
+  .app-selector__flecha,
+  .app-selector__limpiar,
+  .app-selector__opcion,
+  .app-formulario__flujo-flecha {
+    transition: none;
+  }
+}
+

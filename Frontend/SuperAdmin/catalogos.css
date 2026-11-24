@@ -1,0 +1,505 @@
+/* ==========================================================
+   CATÁLOGOS - SUPERADMIN
+   Estilos dedicados para la administración de catálogos
+   ========================================================== */
+
+:root {
+  --app-superadmin-catalogos-bg: var(--color-fondo, #f3f6fa);
+  --app-superadmin-catalogos-surface: var(--color-superficie, #ffffff);
+  --app-superadmin-catalogos-surface-alt: var(--color-superficie-alterna, #f7f9fc);
+  --app-superadmin-catalogos-border: var(--color-borde-suave, #e4ebf2);
+  --app-superadmin-catalogos-text: var(--color-texto, #1f2a37);
+  --app-superadmin-catalogos-text-soft: var(--color-texto-secundario, #5a6878);
+  --app-superadmin-catalogos-primary: var(--color-primario, #0b5ed7);
+  --app-superadmin-catalogos-primary-dark: var(--color-primario-oscuro, #0a3f8c);
+  --app-superadmin-catalogos-success: var(--color-exito, #198754);
+  --app-superadmin-catalogos-success-soft: #eaf7f0;
+  --app-superadmin-catalogos-warning: var(--color-advertencia, #d97706);
+  --app-superadmin-catalogos-warning-soft: #fff5e6;
+  --app-superadmin-catalogos-danger: var(--color-error, #dc3545);
+  --app-superadmin-catalogos-danger-soft: #fff0ef;
+  --app-superadmin-catalogos-shadow: 0 16px 34px rgba(12, 25, 43, 0.08);
+  --app-superadmin-catalogos-radius: 18px;
+  --app-superadmin-catalogos-radius-sm: 12px;
+  --app-superadmin-catalogos-radius-xs: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.app-superadmin-page {
+  background: var(--app-superadmin-catalogos-bg);
+  color: var(--app-superadmin-catalogos-text);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+input,
+select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: var(--grosor-foco, 3px) solid rgba(11, 94, 215, 0.2);
+  outline-offset: var(--desplazamiento-foco, 2px);
+}
+
+.app-superadmin-catalogos-container {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.app-superadmin-catalogos-card {
+  background: var(--app-superadmin-catalogos-surface);
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  border-radius: var(--app-superadmin-catalogos-radius);
+  box-shadow: var(--app-superadmin-catalogos-shadow);
+}
+
+.app-superadmin-catalogos-panel {
+  padding: 1.1rem 1.2rem 1.25rem;
+}
+
+.app-superadmin-catalogos-pestanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 1rem;
+}
+
+.app-superadmin-catalogos-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  background: #f8fbff;
+  color: var(--app-superadmin-catalogos-text);
+  border-radius: var(--app-superadmin-catalogos-radius-xs);
+  padding: 0.72rem 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.app-superadmin-catalogos-tab:hover,
+.app-superadmin-catalogos-tab:focus-visible {
+  border-color: rgba(11, 94, 215, 0.3);
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.08);
+}
+
+.app-superadmin-catalogos-tab.is-active {
+  background: linear-gradient(180deg, var(--app-superadmin-catalogos-primary) 0%, var(--app-superadmin-catalogos-primary-dark) 100%);
+  border-color: var(--app-superadmin-catalogos-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(11, 94, 215, 0.18);
+}
+
+.app-superadmin-catalogos-buscar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.85rem;
+  align-items: end;
+  padding: 0.9rem 1rem;
+  background: var(--app-superadmin-catalogos-surface-alt);
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  border-radius: 14px;
+  margin-bottom: 1rem;
+}
+
+.app-superadmin-catalogos-field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.app-superadmin-catalogos-field label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--app-superadmin-catalogos-text-soft);
+}
+
+.app-superadmin-catalogos-input,
+.app-superadmin-catalogos-select,
+.app-superadmin-catalogos-field input,
+.app-superadmin-catalogos-field select,
+.app-superadmin-catalogos-field textarea {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  border-radius: var(--app-superadmin-catalogos-radius-xs);
+  padding: 0.68rem 0.8rem;
+  background: var(--app-superadmin-catalogos-surface);
+  color: var(--app-superadmin-catalogos-text);
+}
+
+.app-superadmin-catalogos-input::placeholder,
+.app-superadmin-catalogos-field input::placeholder,
+.app-superadmin-catalogos-field textarea::placeholder {
+  color: #8a98ab;
+}
+
+.app-superadmin-catalogos-input:hover,
+.app-superadmin-catalogos-select:hover,
+.app-superadmin-catalogos-field input:hover,
+.app-superadmin-catalogos-field select:hover {
+  border-color: rgba(11, 94, 215, 0.3);
+}
+
+.app-superadmin-catalogos-input:focus,
+.app-superadmin-catalogos-select:focus,
+.app-superadmin-catalogos-field input:focus,
+.app-superadmin-catalogos-field select:focus,
+.app-superadmin-catalogos-field textarea:focus {
+  border-color: var(--app-superadmin-catalogos-primary);
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+  outline: none;
+}
+
+.app-superadmin-catalogos-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.app-superadmin-catalogos-total {
+  color: var(--app-superadmin-catalogos-text-soft);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.app-superadmin-catalogos-message {
+  min-height: 18px;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--app-superadmin-catalogos-text-soft);
+}
+
+.app-superadmin-catalogos-message.error {
+  color: var(--app-superadmin-catalogos-danger);
+}
+
+.app-superadmin-catalogos-message.success {
+  color: var(--app-superadmin-catalogos-success);
+}
+
+.app-superadmin-catalogos-table-wrap {
+  overflow: auto;
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  border-radius: 14px;
+}
+
+.app-superadmin-catalogos-table-wrap table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+  background: var(--app-superadmin-catalogos-surface);
+}
+
+.app-superadmin-catalogos-table-wrap thead th {
+  background: #f5f9ff;
+  color: var(--app-superadmin-catalogos-text-soft);
+  font-size: 0.73rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 0.85rem 0.9rem;
+  border-bottom: 1px solid var(--app-superadmin-catalogos-border);
+}
+
+.app-superadmin-catalogos-table-wrap tbody td {
+  padding: 0.82rem 0.9rem;
+  border-bottom: 1px solid var(--app-superadmin-catalogos-border);
+  vertical-align: middle;
+  color: var(--app-superadmin-catalogos-text);
+}
+
+.app-superadmin-catalogos-table-wrap tbody tr:hover {
+  background: rgba(11, 94, 215, 0.02);
+}
+
+.app-superadmin-catalogos-table-wrap td:last-child,
+.app-superadmin-catalogos-table-wrap th:last-child {
+  white-space: nowrap;
+}
+
+.estado-chip,
+.app-superadmin-catalogos-estado {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.estado-chip.activo,
+.app-superadmin-catalogos-estado.activo {
+  background: var(--app-superadmin-catalogos-success-soft);
+  color: #11613e;
+}
+
+.estado-chip.inactivo,
+.app-superadmin-catalogos-estado.inactivo {
+  background: var(--app-superadmin-catalogos-danger-soft);
+  color: #912018;
+}
+
+.tabla-acciones,
+.app-superadmin-catalogos-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem;
+}
+
+.mini-btn,
+.app-superadmin-catalogos-btn,
+.app-superadmin-catalogos-btn-accion {
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  border-radius: 8px;
+  background: var(--app-superadmin-catalogos-surface);
+  color: var(--app-superadmin-catalogos-text);
+  padding: 0.4rem 0.6rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.mini-btn.primary,
+.app-superadmin-catalogos-btn.primary,
+.app-superadmin-catalogos-btn-accion.primary {
+  background: #edf5ff;
+  border-color: rgba(11, 94, 215, 0.22);
+  color: var(--app-superadmin-catalogos-primary);
+}
+
+.mini-btn.warning,
+.app-superadmin-catalogos-btn.warning,
+.app-superadmin-catalogos-btn-accion.warning {
+  background: var(--app-superadmin-catalogos-warning-soft);
+  border-color: rgba(217, 119, 6, 0.28);
+  color: var(--app-superadmin-catalogos-warning);
+}
+
+.mini-btn.danger,
+.app-superadmin-catalogos-btn.danger,
+.app-superadmin-catalogos-btn-accion.danger {
+  background: var(--app-superadmin-catalogos-danger-soft);
+  border-color: rgba(220, 53, 69, 0.25);
+  color: #b42318;
+}
+
+.app-superadmin-catalogos-pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 1rem;
+}
+
+.app-superadmin-catalogos-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0.45rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  background: var(--app-superadmin-catalogos-surface);
+  color: var(--app-superadmin-catalogos-text);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.app-superadmin-catalogos-page-btn.is-active {
+  background: var(--app-superadmin-catalogos-primary);
+  border-color: var(--app-superadmin-catalogos-primary);
+  color: #ffffff;
+}
+
+.app-superadmin-catalogos-empty {
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  color: var(--app-superadmin-catalogos-text-soft);
+  text-align: center;
+  background: #fbfcfe;
+}
+
+.app-superadmin-catalogos-modal {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 19, 33, 0.54);
+  padding: 1rem;
+  z-index: 2000;
+}
+
+.app-superadmin-catalogos-modal.is-open {
+  display: flex;
+}
+
+.app-superadmin-catalogos-modal-card {
+  width: min(760px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  background: var(--app-superadmin-catalogos-surface);
+  border: 1px solid var(--app-superadmin-catalogos-border);
+  border-radius: var(--app-superadmin-catalogos-radius);
+  box-shadow: var(--app-superadmin-catalogos-shadow);
+}
+
+.app-superadmin-catalogos-modal-header,
+.app-superadmin-catalogos-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.05rem 1.2rem;
+}
+
+.app-superadmin-catalogos-modal-header {
+  border-bottom: 1px solid var(--app-superadmin-catalogos-border);
+}
+
+.app-superadmin-catalogos-modal-footer {
+  justify-content: flex-end;
+  border-top: 1px solid var(--app-superadmin-catalogos-border);
+}
+
+.app-superadmin-catalogos-modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: var(--app-superadmin-catalogos-text);
+}
+
+.app-superadmin-catalogos-modal-body {
+  padding: 1.2rem;
+}
+
+.app-superadmin-catalogos-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.app-superadmin-catalogos-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.app-superadmin-catalogos-field.has-error input,
+.app-superadmin-catalogos-field.has-error select,
+.app-superadmin-catalogos-field.has-error textarea {
+  border-color: var(--app-superadmin-catalogos-danger);
+}
+
+.app-superadmin-catalogos-field-error {
+  display: none;
+  margin-top: 0.2rem;
+  font-size: 0.76rem;
+  color: var(--app-superadmin-catalogos-danger);
+}
+
+.app-superadmin-catalogos-field.has-error .app-superadmin-catalogos-field-error {
+  display: block;
+}
+
+.app-superadmin-catalogos-modal .btn,
+.app-superadmin-catalogos-modal .app-btn,
+.app-superadmin-catalogos-modal button[type="submit"],
+.app-superadmin-catalogos-modal .btn-secondary {
+  min-height: 42px;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  border: 1px solid transparent;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.app-superadmin-catalogos-modal .btn,
+.app-superadmin-catalogos-modal button[type="submit"] {
+  background: linear-gradient(180deg, var(--app-superadmin-catalogos-primary) 0%, var(--app-superadmin-catalogos-primary-dark) 100%);
+  border-color: var(--app-superadmin-catalogos-primary);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(11, 94, 215, 0.18);
+}
+
+.app-superadmin-catalogos-modal .btn-secondary {
+  background: var(--app-superadmin-catalogos-surface);
+  border-color: var(--app-superadmin-catalogos-border);
+  color: var(--app-superadmin-catalogos-text);
+}
+
+.app-superadmin-catalogos-modal .btn:hover,
+.app-superadmin-catalogos-modal .btn-secondary:hover,
+.app-superadmin-catalogos-modal button[type="submit"]:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 940px) {
+  .app-superadmin-catalogos-panel {
+    padding: 1rem 0.9rem 1.1rem;
+  }
+
+  .app-superadmin-catalogos-pestanas {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.2rem;
+    scrollbar-width: thin;
+  }
+
+  .app-superadmin-catalogos-tab {
+    white-space: nowrap;
+  }
+
+  .app-superadmin-catalogos-form-grid,
+  .app-superadmin-catalogos-buscar {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-superadmin-catalogos-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .app-superadmin-catalogos-modal-header,
+  .app-superadmin-catalogos-modal-footer {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  .app-superadmin-catalogos-modal-footer {
+    justify-content: flex-end;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

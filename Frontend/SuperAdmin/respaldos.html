@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Administración de respaldos del Sistema Institucional de Inventario Hospitalario. Acceso exclusivo para SuperAdmin."
+    />
+    <title>Administración de respaldos | SuperAdmin</title>
+    <link rel="stylesheet" href="../compartidos/css/base.css" />
+    <link rel="stylesheet" href="../compartidos/css/componentes.css" />
+    <link rel="stylesheet" href="../compartidos/css/formularios.css" />
+    <link rel="stylesheet" href="../compartidos/css/tablas.css" />
+    <link rel="stylesheet" href="respaldos.css" />
+  </head>
+  <body class="app-superadmin-page">
+    <div class="app-superadmin-layout">
+      <aside class="app-superadmin-sidebar" aria-label="Menú lateral administrativo">
+        <div class="app-superadmin-brand">
+          <div class="app-superadmin-brand-mark" aria-hidden="true">SI</div>
+          <div class="app-superadmin-brand-copy">
+            <span class="app-superadmin-kicker">Sistema</span>
+            <strong>SuperAdmin</strong>
+          </div>
+        </div>
+
+        <nav class="app-superadmin-nav" aria-label="Menú principal">
+          <ul>
+            <li><button type="button" class="app-superadmin-nav-item">Panel principal</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Farmacia</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Almacén</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Usuarios</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Catálogos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Bitácora</button></li>
+            <li><button type="button" class="app-superadmin-nav-item is-active" aria-current="page">Respaldos</button></li>
+            <li><button type="button" class="app-superadmin-nav-item">Configuración</button></li>
+            <li><button type="button" class="app-superadmin-nav-item app-superadmin-nav-item-danger">Cerrar sesión</button></li>
+          </ul>
+        </nav>
+      </aside>
+
+      <div class="app-superadmin-main">
+        <header class="app-superadmin-topbar" aria-label="Barra superior">
+          <div>
+            <p class="app-superadmin-topbar-label">Sistema Institucional de Inventario Hospitalario</p>
+            <h1>SuperAdmin</h1>
+          </div>
+
+          <div class="app-superadmin-topbar-actions">
+            <div class="app-superadmin-user-mini" aria-live="polite">
+              <span class="app-superadmin-user-name">Usuario principal</span>
+              <span class="app-superadmin-user-meta">SuperAdmin</span>
+            </div>
+            <button type="button" class="app-superadmin-notification-btn" aria-label="Notificaciones">
+              Notificaciones <span class="badge">0</span>
+            </button>
+          </div>
+        </header>
+
+        <main class="app-superadmin-content">
+          <header class="app-superadmin-header">
+            <div>
+              <h2 class="app-superadmin-section-title">Administración de respaldos</h2>
+              <p class="app-superadmin-section-description">
+                Consulta, supervisa y administra las copias de seguridad del sistema, asegurando la continuidad,
+                integridad y disponibilidad de la información institucional.
+              </p>
+            </div>
+            <div class="app-superadmin-header-actions">
+              <button type="button" class="btn btn-primary" id="btn-crear-respaldo">Crear respaldo</button>
+            </div>
+          </header>
+
+          <section class="app-superadmin-respaldos-resumen" aria-label="Estado general de respaldos">
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Último estado</span>
+              <strong id="respaldo-ultimo-estado" class="app-superadmin-stat-value">—</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Último respaldo</span>
+              <strong id="respaldo-ultima-fecha" class="app-superadmin-stat-value">—</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Disponibles</span>
+              <strong id="respaldo-total-disponibles" class="app-superadmin-stat-value">0</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Espacio ocupado</span>
+              <strong id="respaldo-espacio-ocupado" class="app-superadmin-stat-value">—</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Copia externa</span>
+              <strong id="respaldo-estado-externo" class="app-superadmin-stat-value">—</strong>
+            </article>
+            <article class="app-superadmin-card app-superadmin-stat-card">
+              <span class="app-superadmin-stat-label">Última verificación</span>
+              <strong id="respaldo-ultima-verificacion" class="app-superadmin-stat-value">—</strong>
+            </article>
+          </section>
+
+          <section class="app-superadmin-respaldos-panel app-superadmin-card">
+            <div class="app-superadmin-respaldos-panel-head">
+              <h3>Configuración resumida</h3>
+            </div>
+
+            <div class="app-superadmin-respaldos-config-grid">
+              <div class="app-superadmin-respaldos-config-box">
+                <span class="app-superadmin-config-label">Tipo de respaldo</span>
+                <strong>Base de datos + archivos</strong>
+              </div>
+              <div class="app-superadmin-respaldos-config-box">
+                <span class="app-superadmin-config-label">Cobertura</span>
+                <strong>MySQL, documentos y archivos institucionales</strong>
+              </div>
+              <div class="app-superadmin-respaldos-config-box">
+                <span class="app-superadmin-config-label">Verificación</span>
+                <strong>Requerida antes de restauración</strong>
+              </div>
+              <div class="app-superadmin-respaldos-config-box">
+                <span class="app-superadmin-config-label">Acceso</span>
+                <strong>Solo SuperAdmin</strong>
+              </div>
+            </div>
+          </section>
+
+          <section class="app-superadmin-respaldos-tabla-wrap app-superadmin-card">
+            <div class="app-superadmin-tabla-header">
+              <h3>Historial de respaldos</h3>
+              <span class="app-superadmin-solo-lectura">Solo lectura</span>
+            </div>
+
+            <div class="app-superadmin-tabla-scroll">
+              <table id="tabla-respaldos" aria-label="Tabla de respaldos del sistema">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Fecha y hora</th>
+                    <th>Tamaño</th>
+                    <th>Destino</th>
+                    <th>Estado</th>
+                    <th>Verificación</th>
+                    <th>Copia externa</th>
+                    <th>Responsable</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="10" class="app-superadmin-empty-state">Cargando historial de respaldos...</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="app-superadmin-respaldos-acciones app-superadmin-card">
+            <div class="app-superadmin-respaldos-acciones-header">
+              <h3>Verificación y restauración</h3>
+            </div>
+
+            <div class="app-superadmin-respaldos-acciones-grid">
+              <button type="button" class="btn btn-primary" id="btn-verificar-respaldo">Verificar integridad</button>
+              <button type="button" class="btn btn-secondary" id="btn-restaurar-respaldo">Restaurar respaldo</button>
+            </div>
+
+            <div id="mensaje-respaldos" class="app-superadmin-respaldos-message" aria-live="polite"></div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="modal-detalle-respaldo" class="app-superadmin-modal" aria-hidden="true">
+      <div class="app-superadmin-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-detalle-respaldo-titulo">
+        <div class="app-superadmin-modal-header">
+          <h3 id="modal-detalle-respaldo-titulo">Detalle del respaldo</h3>
+          <button type="button" class="mini-btn" data-close-modal="detalle-respaldo">Cerrar</button>
+        </div>
+
+        <div id="detalle-respaldo-contenido" class="app-superadmin-modal-body">
+          <p class="app-superadmin-empty-state">Seleccione un respaldo para ver su detalle.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-confirmar-restauracion" class="app-superadmin-modal" aria-hidden="true">
+      <div class="app-superadmin-modal-card app-superadmin-modal-card-sm" role="dialog" aria-modal="true" aria-labelledby="modal-confirmar-restauracion-titulo">
+        <div class="app-superadmin-modal-header">
+          <h3 id="modal-confirmar-restauracion-titulo">Confirmar restauración</h3>
+          <button type="button" class="mini-btn" data-close-modal="confirmar-restauracion">Cerrar</button>
+        </div>
+
+        <div class="app-superadmin-modal-body">
+          <p>
+            La restauración puede afectar los datos actuales y debe ejecutarse únicamente cuando el backend confirme
+            la disponibilidad y validez del respaldo seleccionado.
+          </p>
+          <div class="app-superadmin-restauracion-acciones">
+            <button type="button" class="btn btn-secondary" data-close-modal="confirmar-restauracion">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btn-confirmar-restauracion">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="respaldos.js"></script>
+  </body>
+</html>
